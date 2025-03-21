@@ -1,5 +1,6 @@
 ## 5TEAM
 - 5팀 초급프로젝트 작업공간 입니다.
+- https://zest-kitchen-ec0.notion.site/1bd7be15f9c880c8a9bee89cee58b9dc?v=1bd7be15f9c881a29670000c4644aaee&pvs=4
 
 ### 팀원 구성
 - 김다은 https://github.com/fs6-kde
