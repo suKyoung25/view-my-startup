@@ -1,0 +1,15 @@
+import { TextInputField, PasswordInputField } from "../../components/Input";
+
+{/* props: size="big/small"  placeholder="" */}
+{/* 유저 이름, 비번 input -> Input파일에 각각의 function으로 분리 */}
+<TextInputField size="big" placeholder="투자자 이름을 입력해 주세요" />
+<TextInputField
+    size="small"
+    placeholder="투자자 이름을 입력해 주세요"
+/>
+<PasswordInputField size="big" placeholder="비밀번호를 입력해 주세요" />
+<PasswordInputField
+    size="small"
+    placeholder="비밀번호를 입력해 주세요"
+/>
+
