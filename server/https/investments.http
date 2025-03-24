@@ -68,8 +68,8 @@ POST http://localhost:7777/investments
 Content-Type: application/json
 
 {
-  "username": "이나경",
-  "email": "test5@test.com",
+  "username": "투자자6",
+  "email": "test6@test.com",
   "password": "1234",
   "startupId": 6,
   "amount": 90000000,
@@ -78,17 +78,17 @@ Content-Type: application/json
 
 
 ### [가상 투자 수정] PUT /investments/:investmentId
-PUT http://localhost:7777/investments/3b502236-64ba-44c9-aa0a-2261bba9ff36
+PUT http://localhost:7777/investments/e87ae226-4eaa-4849-9de1-f84ac1415c8c
 Content-Type: application/json
 
 {
   "password": "1234",
-  "amount": 200000000,
+  "amount": 300000000,
   "comment": "금액 올립니다. 화이팅!"
 }
 
 ### [가상 투자 삭제] DELETE /investments/:investmentId
-DELETE http://localhost:7777/investments/여기에_투자ID_입력
+DELETE http://localhost:7777/investments/8bd8bf38-4671-46bc-bd88-d3444dedf84c
 Content-Type: application/json
 
 {
