@@ -3,8 +3,59 @@ POST  http://localhost:7777/users/sign-up
 Content-Type: application/json
 
 {
-    "email": "test@test.com",
-    "username": "아무개",
+    "email": "test1@test.com",
+    "username": "최지예",
+    "password": "1234"
+}
+
+### 회원가입하기
+POST  http://localhost:7777/users/sign-up
+Content-Type: application/json
+
+{
+    "email": "test2@test.com",
+    "username": "신수민",
+    "password": "1234"
+}
+
+### 회원가입하기
+POST  http://localhost:7777/users/sign-up
+Content-Type: application/json
+
+{
+    "email": "test3@test.com",
+    "username": "김수경",
+    "password": "1234"
+}
+
+### 회원가입하기
+POST  http://localhost:7777/users/sign-up
+Content-Type: application/json
+
+{
+    "email": "test4@test.com",
+    "username": "김다은",
+    "password": "1234"
+}
+
+### 회원가입하기
+POST  http://localhost:7777/users/sign-up
+Content-Type: application/json
+
+{
+    "email": "test5@test.com",
+    "username": "이나경",
+    "password": "1234"
+}
+
+
+
+### 로그인
+POST http://localhost:7777/users/log-in
+Content-Type: application/json
+
+{
+    "username": "최지예",
     "password": "1234"
 }
 
@@ -13,6 +64,37 @@ POST http://localhost:7777/users/log-in
 Content-Type: application/json
 
 {
-    "username": "아무개",
+    "username": "신수민",
     "password": "1234"
 }
+
+### 로그인
+POST http://localhost:7777/users/log-in
+Content-Type: application/json
+
+{
+    "username": "김수경",
+    "password": "1234"
+}
+
+### 로그인
+POST http://localhost:7777/users/log-in
+Content-Type: application/json
+
+{
+    "username": "김다은",
+    "password": "1234"
+}
+
+### 로그인
+POST http://localhost:7777/users/log-in
+Content-Type: application/json
+
+{
+    "username": "이나경",
+    "password": "1234"
+}
+
+
+### [전체 사용자 리스트 조회]
+GET http://localhost:7777/users

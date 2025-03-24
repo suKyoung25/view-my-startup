@@ -1,4 +1,4 @@
-### [기업 등록] POST /startups
+### [기업 등록] 코드잇
 POST http://localhost:7777/startups
 Content-Type: application/json
 
@@ -12,12 +12,82 @@ Content-Type: application/json
   "vmsTotalInvestment": 0
 }
 
+### [기업 등록] 코드스테이츠
+POST http://localhost:7777/startups
+Content-Type: application/json
 
-### [전체 기업 리스트 조회] GET /startups
+{
+  "companyName": "코드스테이츠",
+  "introduce": "실무형 인재 양성을 지향하는 교육 스타트업입니다.",
+  "category": "에듀테크",
+  "totalAmount": 12000000000,
+  "salesRevenue": 4000000000,
+  "numOfEmployees": 55,
+  "vmsTotalInvestment": 0
+}
+
+### [기업 등록] 엘리스
+POST http://localhost:7777/startups
+Content-Type: application/json
+
+{
+  "companyName": "엘리스",
+  "introduce": "AI 교육 플랫폼을 운영 중입니다.",
+  "category": "에듀테크",
+  "totalAmount": 13000000000,
+  "salesRevenue": 4200000000,
+  "numOfEmployees": 70,
+  "vmsTotalInvestment": 0
+}
+
+### [기업 등록] 스파르타코딩클럽
+POST http://localhost:7777/startups
+Content-Type: application/json
+
+{
+  "companyName": "스파르타코딩클럽",
+  "introduce": "단기간 집중형 부트캠프 스타트업입니다.",
+  "category": "에듀테크",
+  "totalAmount": 9000000000,
+  "salesRevenue": 3000000000,
+  "numOfEmployees": 40,
+  "vmsTotalInvestment": 0
+}
+
+### [기업 등록] 멋쟁이사자처럼
+POST http://localhost:7777/startups
+Content-Type: application/json
+
+{
+  "companyName": "멋쟁이사자처럼",
+  "introduce": "대학생 중심의 IT 교육 스타트업입니다.",
+  "category": "에듀테크",
+  "totalAmount": 8500000000,
+  "salesRevenue": 2500000000,
+  "numOfEmployees": 35,
+  "vmsTotalInvestment": 0
+}
+
+### [기업 등록] 아이베이트플러그인버그즈
+POST http://localhost:7777/startups
+Content-Type: application/json
+
+{
+  "companyName": "아이베이트플러그인버그즈",
+  "introduce": "에듀테크 기술 기반 문제 해결형 기업입니다.",
+  "category": "에듀테크",
+  "totalAmount": 10000000000,
+  "salesRevenue": 3500000000,
+  "numOfEmployees": 50,
+  "vmsTotalInvestment": 0
+}
+
+
+### [전체 기업 리스트 조회]
 GET http://localhost:7777/startups
 
-
-### [특정 기업 조회] GET /startups/:id
+### [특정 기업 조회]
 GET http://localhost:7777/startups/1
 
-
+### [특정 기업 삭제] DELETE /startups/:startupId
+DELETE http://localhost:7777/startups/1

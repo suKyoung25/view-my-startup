@@ -88,6 +88,34 @@ startupsRouter.get("/:startupId", async (req, res, next) => {
 });
 
 /**
+ * 기업 삭제
+ */
+startupsRouter.delete("/:startupId", async (req, res, next) => {
+  try {
+    const startupId = Number(req.params.startupId);
+
+    if (isNaN(startupId)) {
+      throw new Exception(400, "올바르지 않은 ID입니다.");
+    }
+
+    const existing = await prisma.startup.findUnique({
+      where: { id: startupId },
+    });
+
+    if (!existing) {
+      throw new Exception(404, "해당 기업이 존재하지 않습니다.");
+    }
+
+    await prisma.investment.deleteMany({ where: { startupId } });
+    await prisma.startup.delete({ where: { id: startupId } });
+
+    res.json({ message: "기업 및 가상 투자 내역 삭제 완료" });
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
  * BigInt 필드를 string으로 변환하는 함수
  */
 function formatStartupBigInt(startup) {
