@@ -1,0 +1,23 @@
+### [기업 등록] POST /startups
+POST http://localhost:7777/startups
+Content-Type: application/json
+
+{
+  "companyName": "코드잇",
+  "introduce": "저희만 믿고 따라오십쇼",
+  "category": "에듀테크",
+  "totalAmount": 14000000000,
+  "salesRevenue": 5000000000,
+  "numOfEmployees": 68,
+  "vmsTotalInvestment": 0
+}
+
+
+### [전체 기업 리스트 조회] GET /startups
+GET http://localhost:7777/startups
+
+
+### [특정 기업 조회] GET /startups/:id
+GET http://localhost:7777/startups/1
+
+

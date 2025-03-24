@@ -1,0 +1,43 @@
+### [가상 투자 등록] POST /investments
+POST http://localhost:7777/investments
+Content-Type: application/json
+
+{
+  "username": "홍길동",
+  "email": "hong@example.com",
+  "password": "1234",
+  "startupId": 1,
+  "amount": 100000000,
+  "comment": "진짜 믿음 가는 스타트업이에요!"
+}
+
+
+### [가상 투자 수정] PUT /investments/:investmentId
+PUT http://localhost:7777/investments/25ebb6cb-d335-4d94-853b-75e502d76d09
+Content-Type: application/json
+
+{
+  "password": "1234",
+  "amount": 200000000,
+  "comment": "금액 올립니다. 화이팅!"
+}
+
+
+### [가상 투자 삭제] DELETE /investments/:investmentId
+DELETE http://localhost:7777/investments/25ebb6cb-d335-4d94-853b-75e502d76d09
+Content-Type: application/json
+
+{
+  "password": "1234"
+}
+
+
+### [기업 비교] POST /investments/compare
+
+### [가상 투자 순위 조회] GET /investments/rankings
+
+
+
+
+
+
