@@ -4,5 +4,5 @@ Content-Type: application/json
 
 {
   "myCompanyId": 1,
-  "compareCompanyIds": [2, 3, 4]
+  "compareCompanyIds": [2, 3, 4, 5, 6]
 }
