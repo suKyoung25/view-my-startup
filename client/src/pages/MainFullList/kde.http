@@ -11,4 +11,4 @@ import { TextInputField, PasswordInputField } from "../../components/Input";
 <PasswordInputField
     size="small"
     placeholder="비밀번호를 입력해 주세요"
-/>
+
