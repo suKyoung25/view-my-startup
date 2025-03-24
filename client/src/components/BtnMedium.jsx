@@ -3,6 +3,9 @@ import styled from "styled-components";
 import whiteLoadingImg from "../assets/whiteLoading.png";
 import grayLoadingImg from "../assets/grayLoading.png";
 
+{
+  /* 아래 props는 type=black/orange  size=big/small src=white/gray 추가 */
+}
 function BtnMedium({ type, size, src }) {
   const imageSrc =
     src === "white" ? whiteLoadingImg : src === "gray" ? grayLoadingImg : null;
