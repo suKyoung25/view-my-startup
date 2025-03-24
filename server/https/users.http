@@ -48,7 +48,15 @@ Content-Type: application/json
     "password": "1234"
 }
 
+### 회원가입하기
+POST  http://localhost:7777/users/sign-up
+Content-Type: application/json
 
+{
+    "email": "test6@test.com",
+    "username": "투자자6",
+    "password": "1234"
+}
 
 ### 로그인
 POST http://localhost:7777/users/log-in
@@ -94,6 +102,16 @@ Content-Type: application/json
     "username": "이나경",
     "password": "1234"
 }
+
+### 로그인
+POST http://localhost:7777/users/log-in
+Content-Type: application/json
+
+{
+    "username": "투자자6",
+    "password": "1234"
+}
+
 
 
 ### [전체 사용자 리스트 조회]
