@@ -1,19 +1,84 @@
-### [가상 투자 등록] POST /investments
+### [1] 코드잇에 가상 투자 등록
 POST http://localhost:7777/investments
 Content-Type: application/json
 
 {
-  "username": "홍길동",
-  "email": "hong@example.com",
+  "username": "최지예",
+  "email": "test1@test.com",
   "password": "1234",
   "startupId": 1,
   "amount": 100000000,
-  "comment": "진짜 믿음 가는 스타트업이에요!"
+  "comment": "코드잇 믿고 갑니다!"
+}
+
+### [2] 코드스테이츠에 가상 투자 등록
+POST http://localhost:7777/investments
+Content-Type: application/json
+
+{
+  "username": "신수민",
+  "email": "test2@test.com",
+  "password": "1234",
+  "startupId": 2,
+  "amount": 80000000,
+  "comment": "좋은 교육 기업 같아요."
+}
+
+### [3] 엘리스에 가상 투자 등록
+POST http://localhost:7777/investments
+Content-Type: application/json
+
+{
+  "username": "김수경",
+  "email": "test3@test.com",
+  "password": "1234",
+  "startupId": 3,
+  "amount": 120000000,
+  "comment": "기대됩니다!"
+}
+
+### [4] 스파르타코딩클럽에 가상 투자 등록
+POST http://localhost:7777/investments
+Content-Type: application/json
+
+{
+  "username": "김다은",
+  "email": "test4@test.com",
+  "password": "1234",
+  "startupId": 4,
+  "amount": 60000000,
+  "comment": "가성비 갑인 기업!"
+}
+
+### [5] 멋쟁이사자처럼에 가상 투자 등록
+POST http://localhost:7777/investments
+Content-Type: application/json
+
+{
+  "username": "이나경",
+  "email": "test5@test.com",
+  "password": "1234",
+  "startupId": 5,
+  "amount": 75000000,
+  "comment": "개발자 양성 기대!"
+}
+
+### [6] 아이베이트플러그인버그즈에 가상 투자 등록
+POST http://localhost:7777/investments
+Content-Type: application/json
+
+{
+  "username": "이나경",
+  "email": "test5@test.com",
+  "password": "1234",
+  "startupId": 6,
+  "amount": 90000000,
+  "comment": "잠재력 있는 팀 같아요."
 }
 
 
 ### [가상 투자 수정] PUT /investments/:investmentId
-PUT http://localhost:7777/investments/25ebb6cb-d335-4d94-853b-75e502d76d09
+PUT http://localhost:7777/investments/3b502236-64ba-44c9-aa0a-2261bba9ff36
 Content-Type: application/json
 
 {
@@ -22,22 +87,16 @@ Content-Type: application/json
   "comment": "금액 올립니다. 화이팅!"
 }
 
-
 ### [가상 투자 삭제] DELETE /investments/:investmentId
-DELETE http://localhost:7777/investments/25ebb6cb-d335-4d94-853b-75e502d76d09
+DELETE http://localhost:7777/investments/여기에_투자ID_입력
 Content-Type: application/json
 
 {
   "password": "1234"
 }
 
+### [전체 가상 투자 내역 조회]
+GET http://localhost:7777/investments
 
-### [기업 비교] POST /investments/compare
-
-### [가상 투자 순위 조회] GET /investments/rankings
-
-
-
-
-
-
+### [가상 투자 순위 조회]
+GET http://localhost:7777/investments/rankings

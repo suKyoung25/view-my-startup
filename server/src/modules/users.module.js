@@ -53,4 +53,23 @@ usersRouter.post("/log-in", async (req, res, next) => {
   }
 });
 
+/**
+ * 전체 사용자 리스트 조회
+ */
+usersRouter.get("/", async (req, res, next) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        createdAt: true,
+      },
+    });
+    res.json(users);
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = usersRouter;

@@ -1,0 +1,8 @@
+### [기업 비교] POST /compare
+POST http://localhost:7777/compare
+Content-Type: application/json
+
+{
+  "myCompanyId": 1,
+  "compareCompanyIds": [2, 3, 4]
+}

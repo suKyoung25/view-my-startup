@@ -127,36 +127,7 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * 4. 스타트업 비교
- */
-investmentsRouter.post("/compare", async (req, res, next) => {
-  try {
-    const { myCompanyId, compareCompanyIds } = req.body;
-
-    if (!myCompanyId || !compareCompanyIds || compareCompanyIds.length === 0) {
-      throw new Exception(400, "비교할 기업 정보를 제공해주세요.");
-    }
-
-    const companies = await prisma.startup.findMany({
-      where: {
-        id: {
-          in: [myCompanyId, ...compareCompanyIds],
-        },
-      },
-      orderBy: {
-        totalAmount: "desc",
-      },
-    });
-
-    const formatted = companies.map(serializeBigInts);
-    res.json(formatted);
-  } catch (e) {
-    next(e);
-  }
-});
-
-/**
- * 5. 가상 투자 순위 조회
+ * 4. 가상 투자 순위 조회
  */
 investmentsRouter.get("/rankings", async (req, res, next) => {
   try {
@@ -183,6 +154,47 @@ investmentsRouter.get("/rankings", async (req, res, next) => {
     }));
 
     res.json(ranked);
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ * 6. 전체 가상 투자 내역 조회
+ */
+investmentsRouter.get("/", async (req, res, next) => {
+  try {
+    const investments = await prisma.investment.findMany({
+      include: {
+        startup: {
+          select: {
+            id: true,
+            companyName: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const formatted = investments.map((inv) => ({
+      id: inv.id,
+      amount: inv.amount.toString(),
+      comment: inv.comment,
+      createdAt: inv.createdAt,
+      startup: inv.startup,
+      user: inv.user,
+    }));
+
+    res.json(formatted);
   } catch (e) {
     next(e);
   }
