@@ -29,6 +29,8 @@ function BtnOutline({ text, type, size, src }) {
 }
 
 const Container = styled.div`
+  flex-shrink: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
