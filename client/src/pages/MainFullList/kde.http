@@ -10,5 +10,11 @@ import { TextInputField, PasswordInputField } from "../../components/Input";
 <PasswordInputField size="big" placeholder="비밀번호를 입력해 주세요" />
 <PasswordInputField
     size="small"
-    placeholder="비밀번호를 입력해 주세요"
+    placeholder="비밀번호를 입력해 주세요" />
+
+# 정렬기준 선택버튼 
+import SortDropdown from "../../components/Dropdown";
+
+<SortDropdown size="large" />
+<SortDropdown size="medium" />
 
