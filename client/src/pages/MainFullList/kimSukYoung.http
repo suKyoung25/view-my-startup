@@ -43,7 +43,7 @@ src={"existSmall"}
 
 //오른쪽 페이지 이동 버튼
 <BtnRight size={"big"} />
-<BtnRight size={"big"} />
+<BtnRight size={"small"} />
 
 //(숫자) 페이지 이동 버튼
 <BtnPage text={1} size={"big"} />
@@ -57,3 +57,7 @@ src={"existSmall"}
 <BtnPage text={3} size={"small"} />
 <BtnPage text={4} size={"small"} />
 <BtnPage text={5} size={"small"} />
+
+//페이지네이션
+<BtnPagination size={"big"} />
+<BtnPagination size={"small"} />

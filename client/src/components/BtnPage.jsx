@@ -6,7 +6,7 @@ function BtnPage({ text, size }) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     setIsClicked(true);
 
     setTimeout(() => {
