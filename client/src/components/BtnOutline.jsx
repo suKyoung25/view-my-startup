@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import bigCheck from "../assets/check.png";
-import smallCheck from "../assets/smallCheck.png";
+import bigCheck from "../assets/images/btnOutline/check.png";
+import smallCheck from "../assets/images/btnOutline/smallCheck.png";
 
 {
   /* 아래 props는 text=choice/complete/cancel type=black/orange/none size=big/small src=exixtBig/existSmall/"" */

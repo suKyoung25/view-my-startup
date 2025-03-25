@@ -61,3 +61,12 @@ src={"existSmall"}
 //페이지네이션
 <BtnPagination size={"big"} />
 <BtnPagination size={"small"} />
+
+//gnb 
+<>
+<Gnb length={"long"} clickedcolor={"white"} color={"gray"}/>
+<Gnb length={"long"} clickedcolor={"gray"} color={"white"}/>
+<Gnb length={"middle"} clickedcolor={"white"} color={"gray"}/> 
+<Gnb length={"middle"} clickedcolor={"gray"} color={"white"}/>
+<Gnb length={"short"} clickedcolor={"white"} color={"gray"}/> 
+<Gnb length={"short"} clickedcolor={"gray"} color={"white"}/>
