@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import whiteLoadingImg from "../assets/whiteLoading.png";
-import grayLoadingImg from "../assets/grayLoading.png";
+import whiteLoadingImg from "../assets/images/btnMedium/whiteLoading.png";
+import grayLoadingImg from "../assets/images/btnMedium/grayLoading.png";
 
 {
   /* 아래 props는 type=black/orange  size=big/small src=white/gray 추가 */
