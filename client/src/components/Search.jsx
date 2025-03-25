@@ -22,7 +22,7 @@ function Search({ size = "medium", state = "none" }) {
       ) : (
         <>
           <Img src={searchImg} alt="Search" />
-          <Text $size={size}>{innerText}</Text>
+          <Input placeholder={innerText} />
         </>
       )}
     </Container>
@@ -63,24 +63,25 @@ const Img = styled.img`
   height: 15px;
 `;
 
-const Text = styled.div`
-  font-size: ${(props) =>
-    props.$size === "big"
-      ? "14px"
-      : props.$size === "medium"
-      ? "13px"
-      : props.$size === "small"
-      ? "13px"
-      : null};
-  font-family: "Pretendard";
-  font-weight: 400;
-`;
-
 const Input = styled.input`
   border: none;
   outline: none;
-  font-size: 14px;
   width: 100%;
-  background: transparent;
+  background-color: #212121;
+  color: #d8d8d8;
   padding: 5px;
+
+  &::placeholder {
+    color: #d8d8d8;
+    font-family: "Pretendard";
+    font-weight: 300;
+    font-size: ${(props) =>
+      props.$size === "big"
+        ? "14px"
+        : props.$size === "medium"
+        ? "13px"
+        : props.$size === "small"
+        ? "13px"
+        : null};
+  }
 `;
