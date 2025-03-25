@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import searchImg from "../assets/images/search/lenz.png";
 import xImg from "../assets/images/search/x.png";
-import { balck_200, gray_200, gray_100 } from "../styles/colors";
+import { black_300, gray_200, gray_100 } from "../styles/colors";
 
 function Search({ size = "big", state = "none" }) {
   const innerText =
@@ -36,7 +36,7 @@ const Container = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  color: #d8d8d8;
+  color: ${gray_100};
   background-color: ${black_300};
   border: 1px solid ${gray_200};
   border-radius: 10px;
