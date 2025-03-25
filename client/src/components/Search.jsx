@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import searchImg from "../assets/images/search/lenz.png";
 import xImg from "../assets/images/search/x.png";
+import { balck_200, gray_200, gray_100 } from "../styles/colors";
 
-function Search({ size = "medium", state = "none" }) {
+function Search({ size = "big", state = "none" }) {
   const innerText =
     state === "searching"
       ? "입력하는 중입니다..|"
@@ -32,11 +33,12 @@ function Search({ size = "medium", state = "none" }) {
 export default Search;
 
 const Container = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   color: #d8d8d8;
-  background-color: #212121;
-  border: 1px solid #747474;
+  background-color: ${black_300};
+  border: 1px solid ${gray_200};
   border-radius: 10px;
   padding: 5px;
   width: ${(props) =>
@@ -67,12 +69,12 @@ const Input = styled.input`
   border: none;
   outline: none;
   width: 100%;
-  background-color: #212121;
-  color: #d8d8d8;
+  background-color: ${black_300};
+  color: ${gray_100};
   padding: 5px;
 
   &::placeholder {
-    color: #d8d8d8;
+    color:${gray_100}
     font-family: "Pretendard";
     font-weight: 300;
     font-size: ${(props) =>
