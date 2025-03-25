@@ -6,11 +6,10 @@ const app = express();
 const PORT = 7777;
 
 app.use(express.json());
-
 app.use(cors());
-
 app.use(router);
 
+// 예외 처리 미들웨어
 app.use((err, req, res, next) => {
   console.error(err);
 
@@ -21,5 +20,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 서버 실행 중: http://localhost:${PORT}`);
+  console.log(`서버 실행 중: http://localhost:${PORT}`);
 });

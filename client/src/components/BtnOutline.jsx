@@ -3,6 +3,10 @@ import styled from "styled-components";
 import bigCheck from "../assets/check.png";
 import smallCheck from "../assets/smallCheck.png";
 
+{
+  /* 아래 props는 text=choice/complete/cancel type=black/orange/none size=big/small src=exixtBig/existSmall/"" */
+}
+
 function BtnOutline({ text, type, size, src }) {
   const imageSrc =
     src === "existBig" ? bigCheck : src === "existSmall" ? smallCheck : null;
@@ -11,9 +15,9 @@ function BtnOutline({ text, type, size, src }) {
     text === "choice"
       ? "선택하기"
       : text === "complete"
-      ? "선택 완료"
+      ? "선택완료"
       : text === "cancel"
-      ? "선택 취소"
+      ? "선택 해제"
       : null;
 
   return (

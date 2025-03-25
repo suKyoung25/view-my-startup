@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
+{
+  /* 아래 props는 type=black/orange/""  size=big/small*/
+}
 function BtnLarge({ type, size }) {
   return (
     <Container $type={type} $size={size}>

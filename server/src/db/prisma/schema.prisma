@@ -1,6 +1,3 @@
-// This is your Prisma schema file
-// Learn more at: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,42 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 투자자 정보
-model User {
-  id          String       @id @default(uuid())
-  username    String       @unique // 투자자 이름 (고유)
-  email       String       @unique
-  password    String // 비밀번호 (해싱 필요)
-  investments Investment[]
-  createdAt   DateTime     @default(now())
-}
-
-// 전체 스타트업 목록
 model Startup {
-  id                 Int          @id @default(autoincrement())
-  companyName        String
-  introduce          String
-  category           String
-  totalAmount        BigInt // 실제 스타트업이 받은 총 투자금
-  salesRevenue       BigInt // 매출액
-  numOfEmployees     Int
-  vmsTotalInvestment BigInt       @default(0) // View My Startup에서 받은 가상 투자 총합
-  investments        Investment[]
-  createdAt          DateTime     @default(now())
+  id              Int           @id @default(autoincrement())
+  companyName     String
+  introduce       String
+  category        String
+  totalAmount     BigInt
+  salesRevenue    BigInt
+  numOfEmployees  Int
+  investments     Investment[]
+  createdAt       DateTime      @default(now())
 }
 
-// 투자 정보
 model Investment {
-  id       String  @id @default(uuid())
-  amount   BigInt // 투자 금액
-  comment  String? // 투자 코멘트
-  password String // 삭제/수정용 비밀번호 (해싱 저장)
-
-  startupId Int
-  startup   Startup @relation(fields: [startupId], references: [id])
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  username   String
+  amount     BigInt
+  comment    String?
+  password   String
+  startupId  Int
+  startup    Startup    @relation(fields: [startupId], references: [id])
+  createdAt  DateTime   @default(now())
 }
