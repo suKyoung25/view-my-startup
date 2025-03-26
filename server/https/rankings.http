@@ -1,0 +1,2 @@
+### [View My Startup 가상 투자 현황 조회]
+GET http://localhost:7777/rankings/virtual

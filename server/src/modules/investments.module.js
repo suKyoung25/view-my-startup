@@ -1,7 +1,7 @@
-// src/modules/investments.module.js
 const express = require("express");
 const prisma = require("../db/prisma/client.prisma");
 const Exception = require("../exceptions");
+const bcrypt = require("bcrypt");
 
 const investmentsRouter = express.Router();
 
@@ -17,40 +17,25 @@ function serializeBigInts(obj) {
 }
 
 /**
- * 1. 가상 투자 등록 (유저 자동 생성 포함)
+ * 1. 가상 투자 등록
  */
 investmentsRouter.post("/", async (req, res, next) => {
   try {
-    const { username, email, password, startupId, amount, comment } = req.body;
+    const { username, password, startupId, amount, comment } = req.body;
 
-    if (!username || !email || !password || !startupId || !amount) {
+    if (!username || !password || !startupId || !amount) {
       throw new Exception(400, "필수 항목 누락");
     }
 
-    // 유저 생성 or 조회
-    let user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      user = await prisma.user.create({
-        data: { username, email, password },
-      });
-    }
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const investment = await prisma.investment.create({
       data: {
+        username,
+        password: hashedPassword,
+        startupId: Number(startupId),
         amount: BigInt(amount),
         comment,
-        password,
-        startupId: Number(startupId),
-        userId: user.id,
-      },
-    });
-
-    await prisma.startup.update({
-      where: { id: Number(startupId) },
-      data: {
-        vmsTotalInvestment: {
-          increment: BigInt(amount),
-        },
       },
     });
 
@@ -72,14 +57,16 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
     const { password, amount, comment } = req.body;
 
     const investment = await prisma.investment.findUnique({
-      where: { id: investmentId },
+      where: { id: Number(investmentId) },
     });
+
     if (!investment) throw new Exception(404, "투자 내역이 존재하지 않습니다.");
-    if (investment.password !== password)
-      throw new Exception(403, "비밀번호가 일치하지 않습니다.");
+
+    const isMatch = await bcrypt.compare(password, investment.password);
+    if (!isMatch) throw new Exception(403, "비밀번호가 일치하지 않습니다.");
 
     const updated = await prisma.investment.update({
-      where: { id: investmentId },
+      where: { id: Number(investmentId) },
       data: {
         amount: BigInt(amount),
         comment,
@@ -104,22 +91,16 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
     const { password } = req.body;
 
     const investment = await prisma.investment.findUnique({
-      where: { id: investmentId },
+      where: { id: Number(investmentId) },
     });
+
     if (!investment) throw new Exception(404, "투자 내역이 존재하지 않습니다.");
-    if (investment.password !== password)
-      throw new Exception(403, "비밀번호가 일치하지 않습니다.");
 
-    await prisma.startup.update({
-      where: { id: investment.startupId },
-      data: {
-        vmsTotalInvestment: {
-          decrement: investment.amount,
-        },
-      },
-    });
+    const isMatch = await bcrypt.compare(password, investment.password);
+    if (!isMatch) throw new Exception(403, "비밀번호가 일치하지 않습니다.");
 
-    await prisma.investment.delete({ where: { id: investmentId } });
+    await prisma.investment.delete({ where: { id: Number(investmentId) } });
+
     res.json({ message: "투자 삭제 완료" });
   } catch (e) {
     next(e);
@@ -127,40 +108,7 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * 4. 가상 투자 순위 조회
- */
-investmentsRouter.get("/rankings", async (req, res, next) => {
-  try {
-    const startups = await prisma.startup.findMany({
-      orderBy: {
-        vmsTotalInvestment: "desc",
-      },
-      select: {
-        id: true,
-        companyName: true,
-        category: true,
-        introduce: true,
-        vmsTotalInvestment: true,
-      },
-    });
-
-    const ranked = startups.map((startup, index) => ({
-      rank: index + 1,
-      companyId: startup.id,
-      companyName: startup.companyName,
-      category: startup.category,
-      introduce: startup.introduce,
-      vmsTotalInvestment: startup.vmsTotalInvestment.toString(),
-    }));
-
-    res.json(ranked);
-  } catch (e) {
-    next(e);
-  }
-});
-
-/**
- * 6. 전체 가상 투자 내역 조회
+ * 4. 전체 가상 투자 내역 조회
  */
 investmentsRouter.get("/", async (req, res, next) => {
   try {
@@ -172,13 +120,6 @@ investmentsRouter.get("/", async (req, res, next) => {
             companyName: true,
           },
         },
-        user: {
-          select: {
-            id: true,
-            username: true,
-            email: true,
-          },
-        },
       },
       orderBy: {
         createdAt: "desc",
@@ -187,11 +128,11 @@ investmentsRouter.get("/", async (req, res, next) => {
 
     const formatted = investments.map((inv) => ({
       id: inv.id,
+      username: inv.username,
       amount: inv.amount.toString(),
       comment: inv.comment,
       createdAt: inv.createdAt,
       startup: inv.startup,
-      user: inv.user,
     }));
 
     res.json(formatted);
@@ -199,5 +140,6 @@ investmentsRouter.get("/", async (req, res, next) => {
     next(e);
   }
 });
+
 
 module.exports = investmentsRouter;

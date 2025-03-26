@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import eyeVisibleImg from "../assets/passwordEye/eye-visible.svg";
-import eyeInvisibleImg from "../assets/passwordEye/eye-invisible.svg";
+import eyeVisibleImg from "../assets/images/passwordEye/eye-visible.svg";
+import eyeInvisibleImg from "../assets/images/passwordEye/eye-invisible.svg";
 
 // 유저 이름 입력칸
 export function TextInputField({ size, placeholder }) {
@@ -56,7 +56,7 @@ const Container = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  width: 50%; // 너비는 해당 페이지에 따라서 조절
+  width: 90%; // 너비는 해당 페이지에 따라서 조절 //modalPassword에서의 PC는 90%로 함.
   border-radius: 8px;
   border: 2px solid ${(props) => (props.$error ? "#EB5230" : "#444")};
   background-color: #333;
