@@ -3,6 +3,7 @@ import { useNavigation } from "../../hooks/navigation";
 import styled from "styled-components";
 import { brand_orange } from "../../styles/colors";
 import { media } from "../../styles/mixin";
+import PopupTwoButton from "../../components/modal/PopupTwoButton";
 
 function MainFullList() {
   const { goToCompanyDetail } = useNavigation();
