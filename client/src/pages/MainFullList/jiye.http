@@ -4,9 +4,6 @@ import PopupTwoButton from "../../components/modal/PopupOneButton";
 import PopupTwoButton from "../../components/modal/PopupTwoButton";
 
 
-      <ModalPassword size="big" onClose={() => {}} onDelete={() => {}} />
-      <ModalPassword size="small" onClose={() => {}} onDelete={() => {}} />
-      
       <div style={{ marginBottom: "20px" }}>
         <PopupOneButton size="big" onClose={() => {}} onDelete={() => {}} />
       </div>
@@ -22,6 +19,7 @@ import PopupTwoButton from "../../components/modal/PopupTwoButton";
 
 
 
+// default index
     <Wrap>
         <Title>ex. hello!</Title>
         <StartButton onClick={goToCompanyDetail}>시작하기</StartButton>
@@ -30,8 +28,21 @@ import PopupTwoButton from "../../components/modal/PopupTwoButton";
 
 
 
-
+// BtnDelete
 <BtnDelete onClick={handleDelete} />                    // 기본: 삭제하기
 <BtnDelete onClick={handleConfirm} type="confirm" />    // 확인
 <BtnDelete onClick={handleDelete} size="small" />       // 작은 삭제 버튼
 <BtnDelete onClick={handleConfirm} size="small" type="confirm" /> // 작은 확인 버튼
+
+
+//ModalPassword
+<ModalPassword size="big" onClose={() => {}} onDelete={() => {}} />
+<ModalPassword size="small" onClose={() => {}} onDelete={() => {}} />
+      
+
+// PopupOneButton
+<PopupOneButton size="big" type="error" onClose={() => {}} onDelete={() => {}} />
+<PopupOneButton size="big" type="success" onClose={() => {}} onDelete={() => {}} />
+<PopupOneButton size="small" type="error" onClose={() => {}} onDelete={() => {}} />
+<PopupOneButton size="small" type="success" onClose={() => {}} onDelete={() => {}} />
+
