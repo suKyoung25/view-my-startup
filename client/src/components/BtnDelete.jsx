@@ -1,11 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
-// size prop: "pc(big)" (default), "mobile(small)"
-export default function BtnDelete({ onClick, size = "big", style }) {
+// type prop: "delete" (default), "confirm"
+export default function BtnDelete({
+  onClick,
+  size = "big",
+  type = "delete",
+  style,
+}) {
+  const buttonText = type === "confirm" ? "확인" : "삭제하기";
+
   return (
     <ButtonWrapper onClick={onClick} $size={size} style={style}>
-      <ButtonText>삭제하기</ButtonText>
+      <ButtonText>{buttonText}</ButtonText>
     </ButtonWrapper>
   );
 }
