@@ -1,0 +1,4 @@
+
+import ModalPassword from "../../components/modal/modalPassword";
+
+<ModalPassword size="pc" onClose={() => {}} onDelete={() => {}} />
