@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
+import BtnLarge from "../BtnLarge"; //
 
 // props: onConfirm, onCancel, size ("big" | "small")
 export default function PopupTwoButton({ onConfirm, onCancel, size = "big" }) {
@@ -14,9 +15,7 @@ export default function PopupTwoButton({ onConfirm, onCancel, size = "big" }) {
       <Message>팝업 내용이 들어갑니다</Message>
 
       <ButtonGroup>
-        <CancelButton $size={size} onClick={onCancel}>
-          취소
-        </CancelButton>
+        <BtnLarge type="" size={size} label="취소" onClick={onCancel} />
         <BtnDelete onClick={onConfirm} size={size} type="confirm" />
       </ButtonGroup>
     </Wrapper>

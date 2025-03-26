@@ -31,6 +31,5 @@ const ButtonWrapper = styled.button`
 
 const ButtonText = styled.span`
   color: white;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
 `;
