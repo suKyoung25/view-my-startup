@@ -3,7 +3,6 @@ import { useNavigation } from "../../hooks/navigation";
 import styled from "styled-components";
 import { brand_orange } from "../../styles/colors";
 import { media } from "../../styles/mixin";
-import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
 
 function MainFullList() {
   const { goToCompanyDetail } = useNavigation();
@@ -13,8 +12,6 @@ function MainFullList() {
       <Wrap>
         <Title>ex. hello!</Title>
         <StartButton onClick={goToCompanyDetail}>시작하기</StartButton>
-
-        <SelectMyEnterprise size={"big"} state={"none"} />
       </Wrap>
     </>
   );

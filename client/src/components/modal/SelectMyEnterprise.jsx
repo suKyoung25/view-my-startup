@@ -1,22 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Search from "../Search";
 
 // 아래 props는 size=big/small
-function SelectMyEnterprise({ size, state }) {
-  const [search, setSearch] = useState("");
-
+function SelectMyEnterprise({ size }) {
   return (
     <Container $size={size}>
       <Title>
         <div>나의 기업 선택하기</div>
         <div>X</div>
       </Title>
-      <Search size={size} state={state} />
-      <div>
-        <div>검색 결과 (3)</div>
-        <div>검색 결과가 없습니다.</div>
-      </div>
+      <Search $size={size} />
     </Container>
   );
 }
@@ -30,7 +24,7 @@ const Container = styled.div`
   font-size: 20px;
   width: ${(props) => {
     if (props.$size === "big") return "496px";
-    if (props.$size === "small") return "343px";
+    if (props.$size === "short") return "343px";
   }};
 `;
 
@@ -38,6 +32,7 @@ const Title = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 24px;
 `;
 
 export default SelectMyEnterprise;
