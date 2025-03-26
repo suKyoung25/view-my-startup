@@ -3,6 +3,7 @@ import { useNavigation } from "../../hooks/navigation";
 import styled from "styled-components";
 import { brand_orange } from "../../styles/colors";
 import { media } from "../../styles/mixin";
+import TableHeader from "../../components/TableHeader";
 
 function MainFullList() {
   const { goToCompanyDetail } = useNavigation();
