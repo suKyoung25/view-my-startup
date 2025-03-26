@@ -1,0 +1,16 @@
+.contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 108px;
+}
+
+.content1,
+.content2,
+.content3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  width: 1200px;
+}
