@@ -71,4 +71,7 @@ src={"existSmall"}
 <Gnb length={"short"} clickedcolor={"gray"} color={"white"}/>
 
 //modal
-<>
+<SelectMyEnterprise size={"big"} />
+<SelectMyEnterprise size={"small"} />
+<SelectComparison size={"big"} />
+<SelectComparison size={"small"} />
