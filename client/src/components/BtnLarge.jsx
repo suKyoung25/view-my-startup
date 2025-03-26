@@ -4,10 +4,10 @@ import styled from "styled-components";
 {
   /* 아래 props는 type=black/orange/""  size=big/small*/
 }
-function BtnLarge({ type, size }) {
+function BtnLarge({ type, size, label }) {
   return (
     <Container $type={type} $size={size}>
-      <Text $size={size}>기업 비교하기</Text>
+      <Text $size={size}>{label}</Text>
     </Container>
   );
 }
