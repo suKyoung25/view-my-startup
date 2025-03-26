@@ -49,7 +49,7 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translateX(-50%);
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
-  height: ${(props) => (props.$size === "small" ? "225px" : "269px")};
+  height: ${(props) => (props.$size === "small" ? "235px" : "269px")};
 
   background-color: #212121;
   border-radius: 16px;
@@ -95,7 +95,7 @@ const Label = styled.label`
 `;
 
 const BtnDeleteWrapper = styled.div`
-  display: flex;
+  display: flex; // flex
   justify-content: center;
   width: 100%;
 `;
