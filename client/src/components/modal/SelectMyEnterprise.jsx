@@ -3,10 +3,12 @@ import styled from "styled-components";
 import Search from "../Search";
 
 // 아래 props는 size=big/small
-function SelectMyEnterprise({ size }) {
+function SelectMyEnterprise({ isOpen, onClose, size }) {
+  if (!isOpen) return null;
+
   return (
-    <Container $size={size}>
-      <Title>
+    <Container $size={size} onClick={onClose}>
+      <Title onClick={(e) => e.stopPropagation()}>
         <div>나의 기업 선택하기</div>
         <div>X</div>
       </Title>
