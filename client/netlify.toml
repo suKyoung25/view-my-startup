@@ -1,6 +1,5 @@
 [build]
-  base = "client"
-  publish = "client/dist"
+  publish = "dist"
 
 [[redirects]]
   from = "/*"
