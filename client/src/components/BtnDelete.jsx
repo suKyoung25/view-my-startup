@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { brand_orange } from "../styles/colors";
 
 // type prop: "delete" (default), "confirm"
 export default function BtnDelete({
@@ -23,7 +24,7 @@ const ButtonWrapper = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #eb5230;
+  background-color: ${brand_orange};
   border: none;
   border-radius: 50px;
   cursor: pointer;

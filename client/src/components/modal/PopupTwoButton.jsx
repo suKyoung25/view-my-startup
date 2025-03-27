@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 import BtnLarge from "../BtnLarge";
+import { black_300, black_400 } from "../../styles/colors";
 
 export default function PopupTwoButton({ onConfirm, onCancel, size = "big" }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -61,8 +62,7 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 999;
+  background-color: ${black_400}80;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,9 +76,9 @@ const Wrapper = styled.div`
   transform: translate(-50%, -50%);
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
   padding: ${(props) => (props.$size === "small" ? "20px 16px" : "24px")};
-  background-color: #212121;
+  background-color: ${black_300};
   border-radius: 16px;
-  color: #fff;
+  color: #ffff;
   z-index: 1000;
 `;
 
