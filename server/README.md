@@ -1,3 +1,6 @@
+# 배포 주소
+https://fs-d0af.onrender.com
+
 # server API 구조
 
 src/
