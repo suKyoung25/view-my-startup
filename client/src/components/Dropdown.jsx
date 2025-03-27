@@ -3,7 +3,6 @@ import styled, { css, keyframes } from "styled-components";
 import arrowDown from "../assets/images/dropdownarrow/arrow.svg";
 import { black_400, gray_200 } from "../styles/colors";
 
-
 const SORT_OPTIONS = [
   "View My Startup 투자 금액 높은순",
   "누적 투자금액 높은순",
