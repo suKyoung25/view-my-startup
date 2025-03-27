@@ -1,0 +1,62 @@
+.contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 108px;
+}
+
+.content1 {
+  padding-top: 100px;
+}
+
+.content1,
+.content2,
+.content3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  width: 1200px;
+}
+
+/*1200px 이상일 때 (PC) */
+@media (min-width: 1200px) {
+}
+
+/*376px~1199px일 때 (tablet) */
+@media (min-width: 744px) and (max-width: 1199px) {
+  .content1,
+  .content2,
+  .content3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    width: 1200px;
+    /**변경**/
+    width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+/*375px 이하일 때 (mobile) */
+@media (max-width: 743px) {
+  .content1 {
+    padding-top: 100px;
+    /**변경**/
+    padding-top: 88px;
+  }
+
+  .content1,
+  .content2,
+  .content3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    width: 1200px;
+    /**변경**/
+    width: 100%;
+  }
+}

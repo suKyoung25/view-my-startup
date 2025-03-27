@@ -12,7 +12,7 @@ const SORT_OPTIONS = [
   "고용 인원 적은순",
 ];
 
-function SortDropdown(size) {
+function SortDropdown({ size }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(SORT_OPTIONS[0]);
   const dropdownRef = useRef(null);
@@ -66,11 +66,11 @@ const DropdownButton = styled.button`
   color: #fff;
   border: 1px solid #fff;
   border-radius: 14px;
-  width: ${(props) => (props.$size === "large" ? "280px" : "240px")};
-  height: ${(props) => (props.$size === "large" ? "44px" : "39px")};
+  width: ${(props) => (props.$size === "big" ? "280px" : "240px")};
+  height: ${(props) => (props.$size === "big" ? "44px" : "39px")};
   padding: 0 16px;
 
-  font-size: ${(props) => (props.$size === "large" ? "14px" : "12px")};
+  font-size: ${(props) => (props.$size === "big" ? "14px" : "12px")};
   cursor: pointer;
 `;
 
