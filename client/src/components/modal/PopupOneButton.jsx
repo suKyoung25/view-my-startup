@@ -4,7 +4,7 @@ import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 import { black_400 } from "../../styles/colors";
 
-export default function PopupTwoButton({
+export default function PopupOneButton({
   onConfirm,
   onCancel,
   size = "big",

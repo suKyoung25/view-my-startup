@@ -5,8 +5,8 @@ import eyeInvisibleImg from "../assets/images/passwordEye/eye-invisible.svg";
 import { brand_orange, gray_200 } from "../styles/colors";
 
 // 유저 이름 입력칸
-export function TextInputField({ size, placeholder }) {
-  const [value, setValue] = useState("");
+export function TextInputField({ size, placeholder, value, onChange }) {
+  // const [value, setValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
   const showError = isTouched && value === "";
@@ -17,7 +17,7 @@ export function TextInputField({ size, placeholder }) {
         type="text"
         placeholder={placeholder}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={onChange}
         onFocus={() => setIsTouched(true)}
       />
       {showError && <ErrorMessage>*필수 입력사항입니다.</ErrorMessage>}
@@ -26,8 +26,8 @@ export function TextInputField({ size, placeholder }) {
 }
 
 // 비밀번호 입력칸
-export function PasswordInputField({ size, placeholder }) {
-  const [value, setValue] = useState("");
+export function PasswordInputField({ size, placeholder, value, onChange }) {
+  // const [value, setValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -39,7 +39,7 @@ export function PasswordInputField({ size, placeholder }) {
         type={isPasswordVisible ? "text" : "password"}
         placeholder={placeholder}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={onChange}
         onFocus={() => setIsTouched(true)}
       />
       <Icon
