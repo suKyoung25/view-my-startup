@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import searchImg from "../assets/images/search/lenz.png";
 import xImg from "../assets/images/search/x.png";
+import { black_300, gray_200, gray_100 } from "../styles/colors";
 
-function Search({ size = "medium", state = "none" }) {
+function Search({ size, state = "none" }) {
+  const [searchInput, setSearchInput] = useState("");
+
   const innerText =
     state === "searching"
       ? "입력하는 중입니다..|"
@@ -11,11 +14,26 @@ function Search({ size = "medium", state = "none" }) {
       ? "검색"
       : "검색어를 입력해주세요";
 
+  const handleInputChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+    }
+  };
+
   return (
     <Container $size={size}>
       {state === "searching" ? (
         <>
-          <Input placeholder={innerText} />
+          <Input
+            $size={size}
+            value={searchInput}
+            onChange={handleInputChange}
+            placeholder={innerText}
+            onKeyDown={handleKeyDown}
+          />
           <Img src={xImg} alt="Clear" />
           <Img src={searchImg} alt="Search" />
         </>
@@ -25,6 +43,12 @@ function Search({ size = "medium", state = "none" }) {
           <Input placeholder={innerText} />
         </>
       )}
+      {searchInput ? (
+        <div>
+          <div>검색 결과 (0)</div>
+          <div>검색 결과가 없습니다.</div>
+        </div>
+      ) : null}
     </Container>
   );
 }
@@ -32,11 +56,12 @@ function Search({ size = "medium", state = "none" }) {
 export default Search;
 
 const Container = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  color: #d8d8d8;
-  background-color: #212121;
-  border: 1px solid #747474;
+  color: ${gray_100};
+  background-color: ${black_300};
+  border: 1px solid ${gray_200};
   border-radius: 10px;
   padding: 5px;
   width: ${(props) =>
@@ -66,13 +91,16 @@ const Img = styled.img`
 const Input = styled.input`
   border: none;
   outline: none;
-  width: 100%;
-  background-color: #212121;
-  color: #d8d8d8;
+  width: ${(props) => {
+    if (props.$size === "short") return "311px";
+    return "100%";
+  }};
+  background-color: ${black_300};
+  color: ${gray_100};
   padding: 5px;
 
   &::placeholder {
-    color: #d8d8d8;
+    color: ${gray_100};
     font-family: "Pretendard";
     font-weight: 300;
     font-size: ${(props) =>
@@ -82,6 +110,6 @@ const Input = styled.input`
         ? "13px"
         : props.$size === "small"
         ? "13px"
-        : null};
+        : "13px"};
   }
 `;

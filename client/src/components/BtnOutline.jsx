@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import bigCheck from "../assets/check.png";
-import smallCheck from "../assets/smallCheck.png";
+import bigCheck from "../assets/images/btnOutline/check.png";
+import smallCheck from "../assets/images/btnOutline/smallCheck.png";
+import { black_100, brand_orange, gray_100, gray_200 } from "../styles/colors";
 
 {
   /* 아래 props는 text=choice/complete/cancel type=black/orange/none size=big/small src=exixtBig/existSmall/"" */
@@ -29,6 +30,8 @@ function BtnOutline({ text, type, size, src }) {
 }
 
 const Container = styled.div`
+  flex-shrink: 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,17 +41,17 @@ const Container = styled.div`
   border-width: 1px;
   border-color: ${(props) =>
     props.$type === "orange"
-      ? "#eb5230"
+      ? brand_orange
       : props.$type === "black"
-      ? "#2E2E2E"
+      ? black_100
       : props.$type === "white"
-      ? "#D8D8D8"
+      ? gray_100
       : null};
 
   color: ${(props) => {
-    if (props.$type === "black") return "#747474";
-    if (props.$type === "orange") return "#eb5230";
-    if (props.$type === "white") return "#D8D8D8";
+    if (props.$type === "black") return gray_200;
+    if (props.$type === "orange") return brand_orange;
+    if (props.$type === "white") return gray_100;
   }};
 
   width: ${(props) => {

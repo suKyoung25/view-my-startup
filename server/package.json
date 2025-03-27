@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/app.js"
+    "dev": "nodemon ./src/app.js",
+    "start": "node ./src/app.js"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/6th-ViewMyStartup-5team-FS/FS.git"
@@ -33,6 +35,7 @@
     "typescript": "^5.8.2"
   },
   "prisma": {
-    "schema": "./src/db/prisma/schema.prisma"
+    "schema": "./src/db/prisma/schema.prisma",
+    "seed": "node src/db/prisma/seed.js"
   }
 }

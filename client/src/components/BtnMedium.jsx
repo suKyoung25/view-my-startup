@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import whiteLoadingImg from "../assets/whiteLoading.png";
-import grayLoadingImg from "../assets/grayLoading.png";
+import whiteLoadingImg from "../assets/images/btnMedium/whiteLoading.png";
+import grayLoadingImg from "../assets/images/btnMedium/grayLoading.png";
+import { black_100, brand_orange, gray_200 } from "../styles/colors";
 
 {
   /* 아래 props는 type=black/orange  size=big/small src=white/gray 추가 */
@@ -28,22 +29,22 @@ const Container = styled.div`
 
   border-style: solid;
   border-radius: 50px;
-  border-color: #eb5230;
+  border-color: ${brand_orange};
   border-width: ${(props) => {
     if (props.$type === "") return "1px";
     return "0px";
   }};
 
   background-color: ${(props) => {
-    if (props.$type === "black") return "#2E2E2E";
-    if (props.$type === "orange") return "#EB5230";
+    if (props.$type === "black") return black_100;
+    if (props.$type === "orange") return brand_orange;
     return "none";
   }};
 
   color: ${(props) => {
-    if (props.$type === "black") return "#747474";
+    if (props.$type === "black") return gray_200;
     if (props.$type === "orange") return "#FFFFFF";
-    return "#EB5230";
+    return brand_orange;
   }};
 
   width: ${(props) => {

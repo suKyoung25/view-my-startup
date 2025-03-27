@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import eyeVisibleImg from "../assets/passwordEye/eye-visible.svg";
-import eyeInvisibleImg from "../assets/passwordEye/eye-invisible.svg";
+import eyeVisibleImg from "../assets/images/passwordEye/eye-visible.svg";
+import eyeInvisibleImg from "../assets/images/passwordEye/eye-invisible.svg";
+import { brand_orange, gray_200 } from "../styles/colors";
 
 // 유저 이름 입력칸
 export function TextInputField({ size, placeholder }) {
@@ -46,7 +47,12 @@ export function PasswordInputField({ size, placeholder }) {
         alt="Toggle Password Visibility"
         onClick={() => setIsPasswordVisible((prev) => !prev)}
       />
-      {showError && <ErrorMessage>*필수 입력사항입니다.</ErrorMessage>}
+      {/* {showError && <ErrorMessage>*필수 입력사항입니다.</ErrorMessage>} */}
+
+      {/*
+  항상 렌더링하지만, 조건에 따라 투명하게 처리로 변경
+*/}
+      <ErrorMessage $visible={showError}>*필수 입력사항입니다.</ErrorMessage>
     </Container>
   );
 }
@@ -56,7 +62,9 @@ const Container = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  width: 50%; // 너비는 해당 페이지에 따라서 조절
+  width: ${(props) =>
+    props.$size === "big" ? "90%" : props.$size === "small" ? "50%" : "100%"};
+  // 너비는 해당 페이지에 따라서 조절 //modalPassword에서의 PC는 90%로, MOBILE은 50%로 함.
   border-radius: 8px;
   border: 2px solid ${(props) => (props.$error ? "#EB5230" : "#444")};
   background-color: #333;
@@ -73,7 +81,7 @@ const StyledInput = styled.input`
   outline: none;
 
   &::placeholder {
-    color: #888;
+    color: ${gray_200};
   }
 `;
 
@@ -84,10 +92,22 @@ const Icon = styled.img`
   margin-right: 10px;
 `;
 
+// const ErrorMessage = styled.p`
+//   position: absolute;
+//   bottom: -33px;
+//   left: 5px;
+//   font-size: 13px;
+//   color: ${brand_orange};
+// `;
+
 const ErrorMessage = styled.p`
   position: absolute;
   bottom: -33px;
   left: 5px;
   font-size: 13px;
-  color: #eb5230;
+  color: ${brand_orange};
+  min-height: 0px;
+  margin-top: 0px;
+  opacity: ${(props) => (props.$visible ? 1 : 0)};
+  transition: opacity 0.2s ease;
 `;

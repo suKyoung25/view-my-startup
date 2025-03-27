@@ -1,19 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
-import MainFullList from "./pages/MainFullList";
-import SelectCompany from "./pages/SelectCompany";
+import MyCompanyComparison from "./pages/SelectCompany/MyCompanyComparison";
 import InvestStatus from "./pages/InvestStatus";
 import CompareStatus from "./pages/CompareStatus";
 import CompanyDetail from "./pages/CompanyDetail";
 import CompareResults from "./pages/SelectCompany/CompareResults";
+import HomePage from "./pages/MainFullList/Homepage";
 
 const routes = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<MainFullList />} />
-          <Route path="/select-company" element={<SelectCompany />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/select-company" element={<MyCompanyComparison />} />
           <Route path="/invest-status" element={<InvestStatus />} />
           <Route path="/compare-status" element={<CompareStatus />} />
           <Route path="/company-detail" element={<CompanyDetail />} />
