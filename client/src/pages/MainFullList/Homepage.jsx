@@ -7,6 +7,7 @@ import SortDropdown from "../../components/Dropdown";
 import styled from "styled-components";
 
 function HomePage() {
+  //TableHeader props
   const columns = [
     { label: "순위", name: "ranking", flex: 0.5 },
     { label: "기업명", name: "name", flex: 1.5 },
@@ -18,6 +19,16 @@ function HomePage() {
   ];
 
   const [mediaSize, setMediaSize] = useState("");
+
+  //SortDropdown props
+  const sortOptions = [
+    "누적 투자금액 높은순",
+    "누적 투자금액 낮은순",
+    "매출액 높은순",
+    "매출액 낮은순",
+    "고용 인원 많은순",
+    "고용 인원 적은순",
+  ];
 
   function updateMediaSize() {
     const { innerWidth: width } = window;
@@ -50,9 +61,7 @@ function HomePage() {
 
               <div className={styles.controls}>
                 <Search size={mediaSize} state={"none"} />
-                <div>
-                  <SortDropdown size={"medium"} />
-                </div>
+                <SortDropdown size={"medium"} options={sortOptions} />
               </div>
             </div>
 
