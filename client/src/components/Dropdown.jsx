@@ -3,6 +3,7 @@ import styled, { css, keyframes } from "styled-components";
 import arrowDown from "../assets/images/dropdownarrow/arrow.svg";
 import { black_400, gray_200 } from "../styles/colors";
 
+
 const SORT_OPTIONS = [
   "View My Startup 투자 금액 높은순",
   "누적 투자금액 높은순",
@@ -65,7 +66,7 @@ const DropdownButton = styled.button`
 
   background-color: ${black_400};
   color: #fff;
-  border: 1px solid #fff;
+  border: 1px solid ${gray_200};
   border-radius: 14px;
   width: ${(props) => (props.$size === "big" ? "280px" : "240px")};
   height: ${(props) => (props.$size === "big" ? "44px" : "39px")};
@@ -138,8 +139,8 @@ const DropdownItem = styled.button`
   }
 
   &:hover {
-    background-color: #fff;
-    color: ${black_400};
+    background-color: #212121;
+    color: #fff;
   }
 `;
 
