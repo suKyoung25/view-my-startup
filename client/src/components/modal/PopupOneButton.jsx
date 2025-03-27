@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 
@@ -9,6 +9,19 @@ export default function PopupTwoButton({
   size = "big",
   type,
 }) {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const isMobile = windowWidth <= 768;
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    document.body.style.overflow = "hidden"; // 스크롤 막기
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   const getMessage = () => {
     switch (type) {
       case "error":
@@ -21,24 +34,61 @@ export default function PopupTwoButton({
   };
 
   return (
-    <Wrapper $size={size}>
-      <CloseButton onClick={onCancel}>
-        <img src={closeIcon} alt="닫기" />
-      </CloseButton>
+    <Overlay onClick={onCancel}>
+      <Wrapper
+        $size={isMobile ? "small" : size}
+        onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
+      >
+        <CloseButton onClick={onCancel}>
+          <img src={closeIcon} alt="닫기" />
+        </CloseButton>
 
-      <ContentBox $size={size}>
-        <Message $size={size}>{getMessage()}</Message>
+        <ContentBox $size={isMobile ? "small" : size}>
+          <Message $size={isMobile ? "small" : size}>{getMessage()}</Message>
 
-        <ButtonGroup>
-          <BtnDelete onClick={onConfirm} size={size} type="confirm" />
-        </ButtonGroup>
-      </ContentBox>
-    </Wrapper>
+          <ButtonGroup>
+            <BtnDelete
+              onClick={onConfirm}
+              size={isMobile ? "small" : size}
+              type="confirm"
+            />
+          </ButtonGroup>
+        </ContentBox>
+      </Wrapper>
+    </Overlay>
   );
 }
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Wrapper = styled.div`
-  position: relative;
+  animation: ${fadeIn} 0.3s ease-out;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
   height: ${(props) => (props.$size === "small" ? "161px" : "186px")};
   padding: ${(props) => (props.$size === "small" ? "16px" : "24px")};
@@ -48,6 +98,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 `;
 
 const CloseButton = styled.button`

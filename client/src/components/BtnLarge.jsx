@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { brand_orange } from "../styles/colors";
+import { black_100 } from "../styles/colors";
+import { gray_200 } from "../styles/colors";
 
 {
   /* 아래 props는 type=black/orange/""  size=big/small*/
@@ -20,30 +23,32 @@ const Container = styled.div`
 
   border-style: solid;
   border-radius: 50px;
-  border-color: #eb5230;
+  border-color: ${brand_orange};
   border-width: ${(props) => {
     if (props.$type === "") return "1px";
     return "0px";
   }};
 
   background-color: ${(props) => {
-    if (props.$type === "black") return "#2E2E2E";
-    if (props.$type === "orange") return "#EB5230";
+    if (props.$type === "black") return black_100;
+    if (props.$type === "orange") return brand_orange;
     return "none";
   }};
 
   color: ${(props) => {
-    if (props.$type === "black") return "#747474";
+    if (props.$type === "black") return gray_200;
     if (props.$type === "orange") return "#FFFFFF";
     return "#EB5230";
   }};
 
   width: ${(props) => {
     if (props.$size === "big") return "183px";
+    if (props.$size === "medium") return "183px";
     if (props.$size === "small") return "135px";
   }};
   height: ${(props) => {
     if (props.$size === "big") return "48px";
+    if (props.$size === "medium") return "48px";
     if (props.$size === "small") return "40px";
   }};
 `;
@@ -55,6 +60,7 @@ const Text = styled.div`
   }};
   font-size: ${(props) => {
     if (props.$size === "big") return "16px";
+    if (props.$size === "medium") return "16px";
     if (props.$size === "small") return "14px";
   }};
 `;
