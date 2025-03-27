@@ -3,30 +3,58 @@ import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
 import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
-import { black_400 } from "../../styles/colors";
+import { black_300, black_400 } from "../../styles/colors";
+import { media } from "../../styles/mixin";
+import PopupOneButton from "../modal/PopupOneButton";
 
-const InvestmentModal = ({ onClose, isOpen }) => {
+const InvestmentModal = ({ onClose, size, openPopupModal }) => {
+  //각 input들의 value를 state로 저장해둠둠
+  const [inputValueName, setInputValueName] = useState("");
+  const [inputValueAmount, setInputValueAmount] = useState("");
+  const [inputValueComment, setInputValueComment] = useState("");
+  const [inputValuePassword, setInputValuePassword] = useState("");
+  const [inputValueCheckPassword, setInputValueCheckPassword] = useState("");
+
+  //useEffect를 사용하지 않아도 됨
+  const isInvestButtonAvailable =
+    inputValueName.trim().length > 0 &&
+    inputValueComment.trim().length > 0 &&
+    Number(inputValueAmount) &&
+    inputValuePassword === inputValueCheckPassword;
+
   const company = {
     name: "코드잇",
     category: "에듀테크",
     logoUrl: sampleLogo,
   };
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const isMobile = windowWidth <= 768;
+  const handleNameChange = (e) => {
+    setInputValueName(e.target.value);
+  };
+  const handleAmountChange = (e) => {
+    setInputValueAmount(e.target.value);
+  };
+  const handleCommentChange = (e) => {
+    setInputValueComment(e.target.value);
+  };
+  const handlePasswordChange = (e) => {
+    setInputValuePassword(e.target.value);
+  };
+  const handleCheckPasswordChange = (e) => {
+    setInputValueCheckPassword(e.target.value);
+  };
 
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const popupSuccess = (e) => {
+    e.preventDefault();
 
-  if (!isOpen) return null;
+    if (!isInvestButtonAvailable) return;
+    openPopupModal();
+    onClose();
+  };
 
   return (
     <Overlay onClick={onClose}>
       <ModalWrapper
-        $size={isMobile ? "small" : "big"}
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
       >
         <ModalHeader>
@@ -49,44 +77,62 @@ const InvestmentModal = ({ onClose, isOpen }) => {
           <FieldGroup>
             <FieldLabel>투자자 이름</FieldLabel>
             <TextInputField
-              size="big"
+              size={size}
               placeholder="투자자 이름을 입력해 주세요"
+              value={inputValueName}
+              onChange={handleNameChange}
             />
           </FieldGroup>
 
           <FieldGroup>
             <FieldLabel>투자 금액</FieldLabel>
             <TextInputField
-              size="big"
+              size={size}
               placeholder="투자 금액을 입력해 주세요"
+              value={inputValueAmount}
+              onChange={handleAmountChange}
             />
           </FieldGroup>
 
           <FieldGroup>
             <FieldLabel>투자 코멘트</FieldLabel>
-            <TextArea placeholder="투자에 대한 코멘트를 입력해 주세요" />
+            <TextArea
+              placeholder="투자에 대한 코멘트를 입력해 주세요"
+              value={inputValueComment}
+              onChange={handleCommentChange}
+            />
           </FieldGroup>
 
           <FieldGroup>
             <FieldLabel>비밀번호</FieldLabel>
             <PasswordInputField
-              size="big"
+              size={size}
               placeholder="비밀번호를 입력해주세요"
+              value={inputValuePassword}
+              onChange={handlePasswordChange}
             />
           </FieldGroup>
 
           <FieldGroup>
             <FieldLabel>비밀번호 확인</FieldLabel>
             <PasswordInputField
-              size="big"
+              size={size}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
+              value={inputValueCheckPassword}
+              onChange={handleCheckPasswordChange}
             />
           </FieldGroup>
         </Section>
 
         <ButtonRow>
-          <BtnLarge type="" size="big" label="취소" onClick={onClose} />
-          <BtnLarge type="orange" size="big" label="투자하기" />
+          <BtnLarge type="" size={size} label="취소" onClick={onClose} />
+          <BtnLarge
+            type="orange"
+            size={size}
+            label="투자하기"
+            onClick={popupSuccess}
+            disabled={!isInvestButtonAvailable}
+          />
         </ButtonRow>
       </ModalWrapper>
     </Overlay>
@@ -108,7 +154,7 @@ const Overlay = styled.div`
 `;
 
 const ModalWrapper = styled.div`
-  background: #212121;
+  background: ${black_300};
   padding: 24px;
   border-radius: 16px;
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
