@@ -12,7 +12,7 @@ const SORT_OPTIONS = [
   "고용 인원 적은순",
 ];
 
-function SortDropdown(size) {
+function SortDropdown({ size }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(SORT_OPTIONS[0]);
   const dropdownRef = useRef(null);
