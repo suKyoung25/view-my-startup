@@ -31,7 +31,6 @@ export default MyCompanyComparison;
 const Wrap = styled.div`
   background-color: #131313;
   min-height: 100vh;
-  //   width: 100%;
   padding: 100px 20px;
   display: flex;
   flex-direction: column;
