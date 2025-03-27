@@ -1,4 +1,4 @@
-### [1] 기업 등록
+### [1] 기업 등록 (seed.js로 대체하였음.)
 POST http://localhost:7777/api/companies
 Content-Type: application/json
 
