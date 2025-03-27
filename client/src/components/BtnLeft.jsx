@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { black_100, brand_orange, gray_200 } from "../styles/colors";
 
 // 아래 props는 size=big/small
 function BtnLeft({ size }) {
@@ -23,10 +24,10 @@ function BtnLeft({ size }) {
 
 const Button = styled.div`
   background-color: ${(props) => {
-    return props.$isClicked ? "#EB5230" : "#2E2E2E";
+    return props.$isClicked ? brand_orange : black_100;
   }};
   color: ${(props) => {
-    return props.$isClicked ? "#FFFFFF" : "#747474";
+    return props.$isClicked ? "#FFFFFF" : gray_200;
   }};
   border-radius: 10px;
   display: flex;

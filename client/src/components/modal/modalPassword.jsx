@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import { PasswordInputField } from "../Input";
 import BtnDelete from "../BtnDelete";
+import { black_400 } from "../../styles/colors";
 
 export default function ModalPassword({ onClose, onDelete, size = "pc" }) {
   const [password, setPassword] = useState("");
@@ -74,8 +75,7 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 999;
+  background-color: ${black_400}80;
   display: flex;
   justify-content: center;
   align-items: center;

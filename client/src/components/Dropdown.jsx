@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled, { css, keyframes } from "styled-components";
 import arrowDown from "../assets/images/dropdownarrow/arrow.svg";
-import { gray_200 } from "../styles/colors";
+import { black_400, gray_200 } from "../styles/colors";
+
 
 const SORT_OPTIONS = [
   "View My Startup 투자 금액 높은순",
@@ -63,7 +64,7 @@ const DropdownButton = styled.button`
   align-items: center;
   justify-content: space-between;
 
-  background-color: #000;
+  background-color: ${black_400};
   color: #fff;
   border: 1px solid ${gray_200};
   border-radius: 14px;
@@ -104,8 +105,8 @@ const DropdownList = styled.div`
   left: 0;
   width: 100%;
 
-  background-color: #000;
-  border: 1px solid #000;
+  background-color: ${black_400};
+  border: 1px solid ${black_400};
   border-radius: 14px;
   overflow: hidden;
   z-index: 1000;
@@ -126,12 +127,12 @@ const DropdownItem = styled.button`
   text-align: left;
   padding: 10px 16px;
   color: #fff;
-  background-color: #000;
+  background-color: ${black_400};
   border: none;
   font-size: 12px;
   cursor: pointer;
 
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid ${gray_200};
 
   &:last-child {
     border-bottom: none;

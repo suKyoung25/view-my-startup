@@ -38,7 +38,7 @@ const Container = styled.div`
   color: ${(props) => {
     if (props.$type === "black") return gray_200;
     if (props.$type === "orange") return "#FFFFFF";
-    return "#EB5230";
+    return brand_orange;
   }};
 
   width: ${(props) => {
