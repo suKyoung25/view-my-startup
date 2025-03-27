@@ -1,50 +1,67 @@
-### [1] 투자자1 - 코드잇에 1억 투자
+### [1] 투자금 입력 // 뱅크샐러드, 무신사, 센드버드
 POST http://localhost:7777/api/investments
 Content-Type: application/json
 
 {
   "investorName": "투자자1",
   "password": "password1",
-  "companyId": "cm8qqy23n0003uu91cmadz42f",
-  "amount": 100000000,
+  "companyId": "cm8qxqjvt000quu2rtydqmkqc",  
+  "amount": 100,
   "comment": "기대되는 스타트업이에요!"
 }
 
 ###
 
-### [2] 투자자2 - 매스프레소에 8천만 투자
+### 투자자2
 POST http://localhost:7777/api/investments
 Content-Type: application/json
 
 {
   "investorName": "투자자2",
   "password": "password2",
-  "companyId": "cm8qqxxyd0001uu91w4fxy678", 
-  "amount": 80000000,
+  "companyId": "cm8qxqjvt0009uu2r5h8yfdu5",
+  "amount": 80,
+  "comment": "기술력이 탄탄합니다."
+}
+
+### 투자자3
+POST http://localhost:7777/api/investments
+Content-Type: application/json
+
+{
+  "investorName": "투자자3",
+  "password": "password2",
+  "companyId": "cm8qxqjvt000muu2r4r13p86b", 
+  "amount": 80,
   "comment": "기술력이 탄탄합니다."
 }
 
 ###
 
-### [3] 전체 가상 투자 내역 조회 (투자 현황)
+### [3] 전체 가상 투자 내역 조회 (개별 투자 리스트)
 GET http://localhost:7777/api/investments
 
 ###
 
-### [4] 투자자1의 투자 수정 (예: 금액 변경)
-PUT http://localhost:7777/api/investments/cm8qrsnwv0001uuryknwvyt27
+### [4] 기업별 누적 투자 현황 요약 조회
+GET http://localhost:7777/api/investments/status
+
+###
+
+### [5] 투자자1의 투자 수정 (예: 금액: 100 → 120)
+PUT http://localhost:7777/api/investments/cm8r1otbi0003uu4wam2hg7sh
 Content-Type: application/json
 
 {
   "password": "password1",
-  "amount": 120000000,
+  "amount": 120,
   "comment": "금액을 조금 더 올렸습니다!"
 }
 
 ###
 
-### [5] 투자자2의 투자 삭제
-DELETE http://localhost:7777/api/investments/cm8qrydoj0001uuun280sgd3x
+### [6] 투자자3의 투자 삭제
+DELETE http://localhost:7777/api/investments/cm8r1pbm10005uu4waghwhdg7
 Content-Type: application/json
 
 {
