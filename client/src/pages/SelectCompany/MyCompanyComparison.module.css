@@ -1,24 +1,18 @@
-.wrapper {
-  background-color: #131313;
-  min-height: 100vh;
-  padding: 100px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.title {
+  font-size: 18px;
 }
 
-.title {
-  color: white;
-  font-size: 20px;
-  margin-bottom: 40px;
+.addBoxWrapper {
+  display: flex;
+  justify-content: center;
+  background-color: #1e1e1e;
+  border: 1px solid #2e2e2e;
+  border-radius: 8px;
+  width: 100%;
+  height: 180px;
 }
 
 .addBox {
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  border: 1px solid #2e2e2e;
-  width: 600px;
-  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,27 +29,18 @@
   cursor: pointer;
 }
 
-.addButton:hover {
-  opacity: 0.8;
-}
-
 .plusIcon {
   width: 32px;
   height: 32px;
   margin-bottom: 8px;
 }
 
-.compareButton {
-  margin-top: 40px;
-  padding: 10px 30px;
-  border-radius: 20px;
-  background-color: #333;
-  color: #aaa;
-  border: none;
-  font-size: 14px;
-  cursor: not-allowed;
+.plusIcon:hover {
+  opacity: 0.8;
 }
 
-.compareButton:not(:disabled):hover {
-  background-color: #444;
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }

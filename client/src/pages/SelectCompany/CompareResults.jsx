@@ -7,11 +7,16 @@ import SortDropdown from "../../components/Dropdown";
 import BtnLarge from "../../components/BtnLarge";
 import TableHeader from "../../components/TableHeader";
 import InvestmentModal from "../../components/modal/InvestmentModal";
+import InputField from "../../components/InputField";
+import PopupOneButton from "../../components/modal/PopupOneButton";
 
 // url 주소 /select-company/compare-results
 function CompareResults() {
   const [mediaSize, setMediaSize] = useState("");
+  //Modal-investment 렌더링 여부부
   const [isModalOpen, setIsModalOpen] = useState(false);
+  //Modal-popupOne 렌더링 여부
+  const [isPopupModalAble, setIsPopupModalAble] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -19,6 +24,10 @@ function CompareResults() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openPopupModal = () => {
+    setIsPopupModalAble(true);
   };
 
   function updateMediaSize() {
@@ -50,7 +59,9 @@ function CompareResults() {
             내가 선택한 기업
             <CompareBtn />
           </div>
-          {/* input field 들어갈 예정 */}
+          <div className={styles.data1}>
+            <InputField />
+          </div>
 
           <div className={styles.content2}>
             비교 결과 확인하기
@@ -95,6 +106,7 @@ function CompareResults() {
               },
             ]}
           />
+          <div className={styles.data2}>{/* {비교 api 위치할 예정} */}</div>
 
           <div className={styles.content3}>
             기업 순위 확인하기
@@ -139,17 +151,26 @@ function CompareResults() {
               },
             ]}
           />
+          <div className={styles.data3}>
+            {/* {기업 순위 api 위치할 예정} */}
+          </div>
 
           <BtnLarge
             type={"orange"}
             size={mediaSize}
             label={"나의 기업에 투자하기"}
-            onClick={openModal}
+            onClick={() => openModal()}
           />
 
-          {/* <InvestmentModal onClose={closeModal} /> */}
+          {isModalOpen && (
+            <InvestmentModal
+              onClose={closeModal}
+              size={mediaSize}
+              openPopupModal={openPopupModal}
+            />
+          )}
         </div>
-        <div>{mediaSize}</div>
+        {isPopupModalAble && <PopupOneButton />}
       </Wrap>
     </>
   );

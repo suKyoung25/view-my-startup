@@ -74,6 +74,7 @@ const Inner = styled.div`
       ? "207px"
       : "147px"};
 
+
   background-color: ${black_300};
   border-radius: 4px;
 

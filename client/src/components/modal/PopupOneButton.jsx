@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
+import { black_400 } from "../../styles/colors";
 
-export default function PopupTwoButton({
+export default function PopupOneButton({
   onConfirm,
   onCancel,
   size = "big",
@@ -26,6 +27,8 @@ export default function PopupTwoButton({
     switch (type) {
       case "error":
         return "잘못된 비밀번호로 삭제에 실패하셨습니다.";
+      case "delete-cuccess":
+        return "삭제가 완료되었어요!";
       case "success":
         return "투자가 완료되었어요!";
       default:
@@ -76,8 +79,7 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 999;
+  background-color: ${black_400}80;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,7 +96,7 @@ const Wrapper = styled.div`
   padding: ${(props) => (props.$size === "small" ? "16px" : "24px")};
   background-color: #212121;
   border-radius: 16px;
-  color: #fff;
+  color: #ffff;
   display: flex;
   justify-content: center;
   align-items: center;

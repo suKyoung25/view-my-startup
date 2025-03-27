@@ -8,15 +8,15 @@ import { gray_200 } from "../styles/colors";
   /* 아래 props는 type=black/orange/""  size=big/small*/
 }
 
-function BtnLarge({ type, size, label, onClick }) {
+function BtnLarge({ type, size, label, onClick, disabled }) {
   return (
-    <Container $type={type} $size={size} onClick={onClick}>
+    <Container $type={type} $size={size} onClick={onClick} disabled={disabled}>
       <Text $size={size}>{label}</Text>
     </Container>
   );
 }
 
-const Container = styled.div`
+const Container = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,7 @@ const Container = styled.div`
   color: ${(props) => {
     if (props.$type === "black") return gray_200;
     if (props.$type === "orange") return "#FFFFFF";
-    return "#EB5230";
+    return brand_orange;
   }};
 
   width: ${(props) => {
