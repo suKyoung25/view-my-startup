@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
 import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
+import { black_400 } from "../../styles/colors";
 
 const InvestmentModal = ({ onClose, isOpen }) => {
   const company = {
@@ -23,8 +24,11 @@ const InvestmentModal = ({ onClose, isOpen }) => {
   if (!isOpen) return null;
 
   return (
-    <Overlay>
-      <ModalWrapper $size={isMobile ? "small" : "big"}>
+    <Overlay onClick={onClose}>
+      <ModalWrapper
+        $size={isMobile ? "small" : "big"}
+        onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
+      >
         <ModalHeader>
           <Title>기업에 투자하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
@@ -97,11 +101,10 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: ${black_400}80;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 998;
 `;
 
 const ModalWrapper = styled.div`

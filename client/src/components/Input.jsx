@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import eyeVisibleImg from "../assets/images/passwordEye/eye-visible.svg";
 import eyeInvisibleImg from "../assets/images/passwordEye/eye-invisible.svg";
+import { brand_orange, gray_200 } from "../styles/colors";
 
 // 유저 이름 입력칸
 export function TextInputField({ size, placeholder }) {
@@ -80,7 +81,7 @@ const StyledInput = styled.input`
   outline: none;
 
   &::placeholder {
-    color: #888;
+    color: ${gray_200};
   }
 `;
 
@@ -96,7 +97,7 @@ const Icon = styled.img`
 //   bottom: -33px;
 //   left: 5px;
 //   font-size: 13px;
-//   color: #eb5230;
+//   color: ${brand_orange};
 // `;
 
 const ErrorMessage = styled.p`
@@ -104,7 +105,7 @@ const ErrorMessage = styled.p`
   bottom: -33px;
   left: 5px;
   font-size: 13px;
-  color: #eb5230;
+  color: ${brand_orange};
   min-height: 0px;
   margin-top: 0px;
   opacity: ${(props) => (props.$visible ? 1 : 0)};

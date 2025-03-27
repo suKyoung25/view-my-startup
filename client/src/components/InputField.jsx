@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { black_300 } from "../styles/colors";
 
 function InputField({ variant = "default", children }) {
   return (
@@ -21,16 +22,16 @@ const Outer = styled.div`
   justify-content: center;
 
   background-color: ${(props) =>
-    props.$variant === "dashed" ? "transparent" : "#212121"};
+    props.$variant === "dashed" ? "transparent" : black_300};
 
   border: ${(props) =>
-    props.$variant === "dashed" ? "1px dashed #212121" : "none"};
+    props.$variant === "dashed" ? `1px dashed ${black_300}` : "none"};
 `;
 
 const Inner = styled.div`
   width: 1168px;
   height: 268px;
-  background-color: #212121;
+  background-color: ${black_300};
   border-radius: 4px;
 
   display: flex;

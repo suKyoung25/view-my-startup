@@ -144,12 +144,11 @@ function CompareResults() {
             type={"orange"}
             size={mediaSize}
             label={"나의 기업에 투자하기"}
-            onClick={openModal}
+            onClick={() => openModal()}
           />
 
-          {/* <InvestmentModal onClose={closeModal} /> */}
+          <InvestmentModal onClose={closeModal} isOpen={isModalOpen} />
         </div>
-        <div>{mediaSize}</div>
       </Wrap>
     </>
   );
