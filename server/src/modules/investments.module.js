@@ -12,8 +12,13 @@ investmentsRouter.post("/", async (req, res, next) => {
   try {
     const { investorName, password, companyId, amount, comment } = req.body;
 
-    if (!investorName || !password || !companyId || !amount) {
+    if (!investorName || !password || !companyId || amount === undefined) {
       throw new Exception(400, "필수 항목 누락");
+    }
+
+    const parsedAmount = Number(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      throw new Exception(400, "투자 금액이 올바르지 않습니다.");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,7 +28,7 @@ investmentsRouter.post("/", async (req, res, next) => {
         investorName,
         encryptedPassword: hashedPassword,
         companyId,
-        amount: parseFloat(amount),
+        amount: parsedAmount, // 억 단위 그대로 저장
         comment,
       },
     });
@@ -59,10 +64,15 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
     );
     if (!isMatch) throw new Exception(403, "비밀번호가 일치하지 않습니다.");
 
+    const parsedAmount = Number(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      throw new Exception(400, "수정할 투자 금액이 올바르지 않습니다.");
+    }
+
     const updated = await prisma.investment.update({
       where: { id: investmentId },
       data: {
-        amount: parseFloat(amount),
+        amount: parsedAmount,
         comment,
       },
     });
@@ -107,7 +117,7 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * [4] 전체 가상 투자 내역 조회 (투자 현황)
+ * [4] 개별 투자 내역 전체 조회 (투자 히스토리용)
  */
 investmentsRouter.get("/", async (req, res, next) => {
   try {
@@ -134,6 +144,43 @@ investmentsRouter.get("/", async (req, res, next) => {
       createdAt: i.createdAt,
       company: i.company,
     }));
+
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ * [5] 투자 현황 요약 조회 (기업별 누적 가상 투자 집계)
+ */
+investmentsRouter.get("/status", async (req, res, next) => {
+  try {
+    const virtualInvestments = await prisma.investment.groupBy({
+      by: ["companyId"],
+      _sum: {
+        amount: true,
+      },
+    });
+
+    const companies = await prisma.company.findMany();
+
+    const result = companies.map((company) => {
+      const investment = virtualInvestments.find(
+        (v) => v.companyId === company.id
+      );
+
+      return {
+        id: company.id,
+        name: company.name,
+        description: company.description,
+        category: company.category,
+        totalVirtualInvestmentAmount: investment?._sum.amount || 0,
+        realInvestmentAmount: company.realInvestmentAmount,
+        // revenue: company.revenue,
+        // numberOfEmployees: company.numberOfEmployees,
+      };
+    });
 
     res.json(result);
   } catch (e) {
