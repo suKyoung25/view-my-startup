@@ -7,25 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Startup {
-  id              Int           @id @default(autoincrement())
-  companyName     String
-  introduce       String
-  category        String
-  totalAmount     BigInt
-  salesRevenue    BigInt
-  numOfEmployees  Int
-  investments     Investment[]
-  createdAt       DateTime      @default(now())
+model Company {
+  id                    String       @id @default(cuid())
+  name                  String
+  description           String
+  category              String
+  realInvestmentAmount  Float
+  revenue               Float
+  numberOfEmployees     Int
+  pickAsMyStartupCount  Int          @default(0)
+  pickAsComparisonCount Int          @default(0)
+  virtualInvestments    Investment[]
 }
 
 model Investment {
-  id         Int       @id @default(autoincrement())
-  username   String
-  amount     BigInt
-  comment    String?
-  password   String
-  startupId  Int
-  startup    Startup    @relation(fields: [startupId], references: [id])
-  createdAt  DateTime   @default(now())
+  id                String   @id @default(cuid())
+  investorName      String
+  amount            Float
+  comment           String
+  encryptedPassword String
+  createdAt         DateTime @default(now())
+  company           Company  @relation(fields: [companyId], references: [id])
+  companyId         String
 }

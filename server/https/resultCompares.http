@@ -1,0 +1,30 @@
+### [1] 기업 비교 결과 조회 (가상 투자 총액 기준 내림차순)   (정렬 기준: totalInvestment | revenue | numberOfEmployees)
+POST http://localhost:7777/api/resultCompare
+Content-Type: application/json
+
+{
+  "myCompanyId": "cm8qqabc123...",     
+  "compareCompanyIds": [
+    "cm8qqdef456...",
+    "cm8qqghi789..."
+  ],
+  "sortBy": "totalInvestment",               
+
+  "order": "desc"                 
+}
+
+###
+
+### [2] 기업 비교 결과 조회 (직원 수 기준 오름차순)
+POST http://localhost:7777/api/resultCompare
+Content-Type: application/json
+
+{
+  "myCompanyId": "cm8qqabc123...",
+  "compareCompanyIds": [
+    "cm8qqdef456...",
+    "cm8qqghi789..."
+  ],
+  "sortBy": "numberOfEmployees",
+  "order": "asc"
+}
