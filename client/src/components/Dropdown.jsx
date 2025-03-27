@@ -3,6 +3,7 @@ import styled, { css, keyframes } from "styled-components";
 import arrowDown from "../assets/images/dropdownarrow/arrow.svg";
 import { black_400, gray_200 } from "../styles/colors";
 
+
 const SORT_OPTIONS = [
   "View My Startup 투자 금액 높은순",
   "누적 투자금액 높은순",
@@ -13,9 +14,11 @@ const SORT_OPTIONS = [
   "고용 인원 적은순",
 ];
 
-function SortDropdown({ size }) {
+
+function SortDropdown({ size, options = [] }) {
+
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(SORT_OPTIONS[0]);
+  const [selected, setSelected] = useState(options[0] || "");
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setOpen((prev) => !prev);
@@ -42,13 +45,15 @@ function SortDropdown({ size }) {
         <ArrowIcon src={arrowDown} alt="화살표" $isOpen={open} />
       </DropdownButton>
 
-      <DropdownList $isOpen={open}>
-        {SORT_OPTIONS.map((option) => (
-          <DropdownItem key={option} onClick={() => handleSelect(option)}>
-            {option}
-          </DropdownItem>
-        ))}
-      </DropdownList>
+      {open && (
+        <DropdownList $isOpen={open}>
+          {options.map((option) => (
+            <DropdownItem key={option} onClick={() => handleSelect(option)}>
+              {option}
+            </DropdownItem>
+          ))}
+        </DropdownList>
+      )}
     </Wrapper>
   );
 }
