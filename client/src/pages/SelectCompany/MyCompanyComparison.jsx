@@ -69,7 +69,6 @@ const Wrap = styled.div`
   color: #fff;
   max-width: 1200px;
   min-height: 100vh;
-  //   width: 100%;
   padding: 70px 0px 10% 10%;
   display: flex;
   flex-direction: column;
