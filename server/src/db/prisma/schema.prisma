@@ -7,28 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Startup {
-  id               Int          @id @default(autoincrement())
-  companyName      String
-  introduce        String
-  category         String
-  acc              Float        @default(0.0) // 누적 투자 금액 (기업별 임의 설정)
-  salesRevenue     Float // 매출 (float으로 변경)
-  numOfEmployees   Int
-  totalAmount      Float // VMS 총 투자금 (float으로 변경)     
-  mySelectionCount Int          @default(0) // 나의 기업 선택 횟수
-  comparisonCount  Int          @default(0) // 비교 기업 선택 횟수
-  investments      Investment[]
-  createdAt        DateTime     @default(now())
+model Company {
+  id                    String       @id @default(cuid())
+  name                  String
+  description           String
+  category              String
+  realInvestmentAmount  Float
+  revenue               Float
+  numberOfEmployees     Int
+  pickAsMyStartupCount  Int          @default(0)
+  pickAsComparisonCount Int          @default(0)
+  virtualInvestments    Investment[]
 }
 
 model Investment {
-  id        Int      @id @default(autoincrement())
-  username  String
-  password  String // 해싱 필요
-  amount    Float // amount는 BigInt보다 Float이 자연스러움
-  comment   String?
-  startupId Int
-  startup   Startup  @relation(fields: [startupId], references: [id])
-  createdAt DateTime @default(now())
+  id                String   @id @default(cuid())
+  investorName      String
+  amount            Float
+  comment           String
+  encryptedPassword String
+  createdAt         DateTime @default(now())
+  company           Company  @relation(fields: [companyId], references: [id])
+  companyId         String
 }

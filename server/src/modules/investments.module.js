@@ -6,24 +6,13 @@ const bcrypt = require("bcrypt");
 const investmentsRouter = express.Router();
 
 /**
- * BigInt 안전 변환 유틸
- */
-function serializeBigInts(obj) {
-  return JSON.parse(
-    JSON.stringify(obj, (_, value) =>
-      typeof value === "bigint" ? value.toString() : value
-    )
-  );
-}
-
-/**
- * 1. 가상 투자 등록
+ * [1] 가상 투자 등록
  */
 investmentsRouter.post("/", async (req, res, next) => {
   try {
-    const { username, password, startupId, amount, comment } = req.body;
+    const { investorName, password, companyId, amount, comment } = req.body;
 
-    if (!username || !password || !startupId || !amount) {
+    if (!investorName || !password || !companyId || !amount) {
       throw new Exception(400, "필수 항목 누락");
     }
 
@@ -31,10 +20,10 @@ investmentsRouter.post("/", async (req, res, next) => {
 
     const investment = await prisma.investment.create({
       data: {
-        username,
-        password: hashedPassword,
-        startupId: Number(startupId),
-        amount: BigInt(amount),
+        investorName,
+        encryptedPassword: hashedPassword,
+        companyId,
+        amount: parseFloat(amount),
         comment,
       },
     });
@@ -49,7 +38,7 @@ investmentsRouter.post("/", async (req, res, next) => {
 });
 
 /**
- * 2. 가상 투자 수정
+ * [2] 가상 투자 수정
  */
 investmentsRouter.put("/:investmentId", async (req, res, next) => {
   try {
@@ -57,25 +46,30 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
     const { password, amount, comment } = req.body;
 
     const investment = await prisma.investment.findUnique({
-      where: { id: Number(investmentId) },
+      where: { id: investmentId },
     });
 
     if (!investment) throw new Exception(404, "투자 내역이 존재하지 않습니다.");
+    if (!investment.encryptedPassword)
+      throw new Exception(500, "비밀번호 정보가 존재하지 않습니다.");
 
-    const isMatch = await bcrypt.compare(password, investment.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      investment.encryptedPassword
+    );
     if (!isMatch) throw new Exception(403, "비밀번호가 일치하지 않습니다.");
 
     const updated = await prisma.investment.update({
-      where: { id: Number(investmentId) },
+      where: { id: investmentId },
       data: {
-        amount: BigInt(amount),
+        amount: parseFloat(amount),
         comment,
       },
     });
 
     res.json({
       message: "투자 수정 완료",
-      updated: serializeBigInts(updated),
+      updated,
     });
   } catch (e) {
     next(e);
@@ -83,7 +77,7 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * 3. 가상 투자 삭제
+ * [3] 가상 투자 삭제
  */
 investmentsRouter.delete("/:investmentId", async (req, res, next) => {
   try {
@@ -91,15 +85,20 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
     const { password } = req.body;
 
     const investment = await prisma.investment.findUnique({
-      where: { id: Number(investmentId) },
+      where: { id: investmentId },
     });
 
     if (!investment) throw new Exception(404, "투자 내역이 존재하지 않습니다.");
+    if (!investment.encryptedPassword)
+      throw new Exception(500, "비밀번호 정보가 존재하지 않습니다.");
 
-    const isMatch = await bcrypt.compare(password, investment.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      investment.encryptedPassword
+    );
     if (!isMatch) throw new Exception(403, "비밀번호가 일치하지 않습니다.");
 
-    await prisma.investment.delete({ where: { id: Number(investmentId) } });
+    await prisma.investment.delete({ where: { id: investmentId } });
 
     res.json({ message: "투자 삭제 완료" });
   } catch (e) {
@@ -108,16 +107,17 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * 4. 전체 가상 투자 내역 조회
+ * [4] 전체 가상 투자 내역 조회 (투자 현황)
  */
 investmentsRouter.get("/", async (req, res, next) => {
   try {
     const investments = await prisma.investment.findMany({
       include: {
-        startup: {
+        company: {
           select: {
             id: true,
-            companyName: true,
+            name: true,
+            category: true,
           },
         },
       },
@@ -126,20 +126,19 @@ investmentsRouter.get("/", async (req, res, next) => {
       },
     });
 
-    const formatted = investments.map((inv) => ({
-      id: inv.id,
-      username: inv.username,
-      amount: inv.amount.toString(),
-      comment: inv.comment,
-      createdAt: inv.createdAt,
-      startup: inv.startup,
+    const result = investments.map((i) => ({
+      id: i.id,
+      investorName: i.investorName,
+      amount: i.amount,
+      comment: i.comment,
+      createdAt: i.createdAt,
+      company: i.company,
     }));
 
-    res.json(formatted);
+    res.json(result);
   } catch (e) {
     next(e);
   }
 });
-
 
 module.exports = investmentsRouter;

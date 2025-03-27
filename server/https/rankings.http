@@ -1,2 +1,5 @@
-### [View My Startup 가상 투자 현황 조회]
-GET http://localhost:7777/rankings/virtual
+### [1] View My Startup - 가상 투자 랭킹 조회 (총액 기준)
+GET http://localhost:7777/api/rankings/virtual
+
+### [2] View My Startup - 상위 3개 기업만 조회 (선택 사항)
+GET http://localhost:7777/api/rankings/virtual/top3

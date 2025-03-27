@@ -1,38 +1,38 @@
-### [1] 투자자1 - 코드잇(1번 기업)에 1억 투자
-POST http://localhost:7777/investments
+### [1] 투자자1 - 코드잇에 1억 투자
+POST http://localhost:7777/api/investments
 Content-Type: application/json
 
 {
-  "username": "투자자1",
+  "investorName": "투자자1",
   "password": "password1",
-  "startupId": 1,
+  "companyId": "cm8qqy23n0003uu91cmadz42f",
   "amount": 100000000,
   "comment": "기대되는 스타트업이에요!"
 }
 
 ###
 
-### [2] 투자자2 - 매스프레소(2번 기업)에 8천만 투자
-POST http://localhost:7777/investments
+### [2] 투자자2 - 매스프레소에 8천만 투자
+POST http://localhost:7777/api/investments
 Content-Type: application/json
 
 {
-  "username": "투자자2",
+  "investorName": "투자자2",
   "password": "password2",
-  "startupId": 2,
+  "companyId": "cm8qqxxyd0001uu91w4fxy678", 
   "amount": 80000000,
   "comment": "기술력이 탄탄합니다."
 }
 
 ###
 
-### [3] 전체 가상 투자 내역 조회
-GET http://localhost:7777/investments
+### [3] 전체 가상 투자 내역 조회 (투자 현황)
+GET http://localhost:7777/api/investments
 
 ###
 
 ### [4] 투자자1의 투자 수정 (예: 금액 변경)
-PUT http://localhost:7777/investments/1
+PUT http://localhost:7777/api/investments/cm8qrsnwv0001uuryknwvyt27
 Content-Type: application/json
 
 {
@@ -44,7 +44,7 @@ Content-Type: application/json
 ###
 
 ### [5] 투자자2의 투자 삭제
-DELETE http://localhost:7777/investments/2
+DELETE http://localhost:7777/api/investments/cm8qrydoj0001uuun280sgd3x
 Content-Type: application/json
 
 {
