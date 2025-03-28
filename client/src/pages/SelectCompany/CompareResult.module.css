@@ -3,6 +3,8 @@
   flex-direction: column;
   align-items: center;
   padding-bottom: 108px;
+  width: 1200px;
+  margin: 0 auto;
 }
 
 .content1 {
@@ -17,6 +19,12 @@
   justify-content: space-between;
   margin-bottom: 16px;
   width: 1200px;
+}
+
+.table1,
+.table2 {
+  border-collapse: collapse;
+  width: 100%;
 }
 
 .data1,
