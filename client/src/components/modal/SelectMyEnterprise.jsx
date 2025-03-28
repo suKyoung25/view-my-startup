@@ -7,11 +7,37 @@ import { black_400 } from "../../styles/colors";
 import { client } from "../../api/index.api";
 
 // 아래 props는 size=big/small
-function SelectMyEnterprise({ isOpen, onClose, size }) {
+function SelectMyEnterprise({ isOpen, onClose, size, onSelect }) {
   const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
   const [companies, setCompanies] = useState([]);
+  const [mediaSize, setMediaSize] = useState("");
+
+  const handleCompanySelect = (c) => {
+    if (onSelect) {
+      onSelect(c);
+    }
+  };
+
+  function updateMediaSize() {
+    const { innerWidth: width } = window;
+    if (width >= 744) {
+      setMediaSize("big");
+    } else {
+      setMediaSize("short");
+    }
+  }
+
+  useEffect(() => {
+    updateMediaSize();
+
+    window.addEventListener("resize", updateMediaSize);
+
+    return () => {
+      window.removeEventListener("resize", updateMediaSize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -45,7 +71,7 @@ function SelectMyEnterprise({ isOpen, onClose, size }) {
           <img onClick={onClose} src={closeIcon} alt="닫기" />
         </Title>
         <Search
-          size="big"
+          size={mediaSize}
           state="searching"
           value={keyword}
           onChange={(e) => {
@@ -62,7 +88,9 @@ function SelectMyEnterprise({ isOpen, onClose, size }) {
                 <div className="name">{c.name}</div>
                 <div className="tagline">{c.category}</div>
               </Info>
-              <SelectBtn>선택하기</SelectBtn>
+              <SelectBtn onClick={() => handleCompanySelect(c)}>
+                선택하기
+              </SelectBtn>
             </CompanyItem>
           ))}
         </CompanyList>
