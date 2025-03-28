@@ -4,23 +4,35 @@ import searchImg from "../assets/images/search/lenz.png";
 import xImg from "../assets/images/search/x.png";
 import { black_300, gray_200, gray_100 } from "../styles/colors";
 
-function Search({ size, state = "none" }) {
-  const [searchInput, setSearchInput] = useState("");
-
-  const innerText =
+function Search({ size, state = "none", value, onChange, onClear }) {
+  const [placeholder, setPlaceholder] = useState(
     state === "searching"
-      ? "입력하는 중입니다..|"
+      ? "기업 검색하기"
       : size === "small"
       ? "검색"
-      : "검색어를 입력해주세요";
+      : "검색어를 입력해주세요"
+  );
 
-  const handleInputChange = (e) => {
-    setSearchInput(e.target.value);
+  const handleFocus = () => {
+    if (state === "searching") {
+      setPlaceholder("");
+    }
+  };
+
+  const handleBlur = () => {
+    if (state === "searching") {
+      setPlaceholder("기업 검색하기");
+    }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      console.log(value);
     }
+  };
+
+  const handleClear = () => {
+    if (onClear) onClear();
   };
 
   return (
@@ -29,26 +41,28 @@ function Search({ size, state = "none" }) {
         <>
           <Input
             $size={size}
-            value={searchInput}
-            onChange={handleInputChange}
-            placeholder={innerText}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onKeyDown={handleKeyDown}
           />
-          <Img src={xImg} alt="Clear" />
+          {value && <Img src={xImg} alt="Clear" onClick={handleClear} />}
           <Img src={searchImg} alt="Search" />
         </>
       ) : (
         <>
           <Img src={searchImg} alt="Search" />
-          <Input placeholder={innerText} />
+          <Input
+            $size={size}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            onKeyDown={handleKeyDown}
+          />
         </>
       )}
-      {searchInput ? (
-        <div>
-          <div>검색 결과 (0)</div>
-          <div>검색 결과가 없습니다.</div>
-        </div>
-      ) : null}
     </Container>
   );
 }
