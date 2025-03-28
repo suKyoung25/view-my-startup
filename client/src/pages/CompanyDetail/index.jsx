@@ -5,7 +5,7 @@ import company from "../../assets/images/company/sample.png";
 import BtnLarge from "../../components/BtnLarge";
 import BtnPagination from "../../components/BtnPagination";
 import AmountCard from "./components/AmountCard";
-import UserTable from "./components/UserTable";
+import InvestmentTable from "./components/InvestmentTable";
 
 function CompanyDetail({
   size = "big",
@@ -55,7 +55,8 @@ function CompanyDetail({
         {/* 투자자 목록 */}
         <TableWrap>
           <TotalAmount>총 {acc}억 원</TotalAmount>
-          <UserTable data={investors} /> {/* UserTable에 투자자 데이터 전달 */}
+          <InvestmentTable data={investors} />{" "}
+          {/* UserTable에 투자자 데이터 전달 */}
         </TableWrap>
 
         {/* 페이지네이션 */}
