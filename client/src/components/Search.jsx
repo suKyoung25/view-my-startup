@@ -80,9 +80,9 @@ const Container = styled.div`
   padding: 5px;
   width: ${(props) =>
     props.$size === "big"
-      ? "448px"
+      ? "490px"
       : props.$size === "medium"
-      ? "448px"
+      ? "311px"
       : props.$size === "small"
       ? "83px"
       : null};
