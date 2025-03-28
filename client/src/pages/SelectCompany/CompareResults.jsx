@@ -13,7 +13,7 @@ import PopupOneButton from "../../components/modal/PopupOneButton";
 // url 주소 /select-company/compare-results
 function CompareResults() {
   const [mediaSize, setMediaSize] = useState("");
-  //Modal-investment 렌더링 여부부
+  //Modal-investment 렌더링 여부
   const [isModalOpen, setIsModalOpen] = useState(false);
   //Modal-popupOne 렌더링 여부
   const [isPopupModalOpen, setIsPopupModalAble] = useState(false);
@@ -36,7 +36,7 @@ function CompareResults() {
     setIsPopupModalAble(true);
   };
 
-  //화명 사이즈에 따라 mediaSize 변수 조절
+  //화면 사이즈에 따라 mediaSize 변수 조절
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 1200) {

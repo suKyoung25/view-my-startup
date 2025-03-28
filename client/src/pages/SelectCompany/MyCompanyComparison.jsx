@@ -60,12 +60,18 @@ function MyCompanyComparison() {
           <div className={styles.addBox}>
             {selectedCompany ? (
               <div className={styles.companyInfo}>
-                <div className={styles.infoText}>
-                  <div className={styles.name}>{selectedCompany.name}</div>
-                  <div className={styles.category}>
-                    {selectedCompany.category}
+                <CompanyInfoWrap>
+                  <Logo
+                    src={selectedCompany.imageUrl}
+                    alt={`${selectedCompany.name} 로고`}
+                  />
+                  <div className={styles.infoText}>
+                    <div className={styles.name}>{selectedCompany.name}</div>
+                    <div className={styles.category}>
+                      {selectedCompany.category}
+                    </div>
                   </div>
-                </div>
+                </CompanyInfoWrap>
               </div>
             ) : (
               <button className={styles.addButton}>
@@ -109,4 +115,19 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+`;
+
+
+
+const CompanyInfoWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const Logo = styled.img`
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
 `;
