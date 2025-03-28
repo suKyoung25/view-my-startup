@@ -94,13 +94,16 @@ const slideDown = keyframes`
 `;
 
 const DropdownList = styled.div`
+  margin-top: 8px;
+
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
 
   background-color: ${black_400};
-  border: 1px solid ${black_400};
+
+  border: 1px solid ${gray_200};
   border-radius: 14px;
   overflow: hidden;
   z-index: 1000;
