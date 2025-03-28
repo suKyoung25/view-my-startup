@@ -95,8 +95,8 @@ function HomePage() {
               <SortDropdown
                 size={"medium"}
                 options={sortOptions}
+                value={selectedSort}
                 onChange={handleSortChange}
-                defaultOption={selectedSort}
               />
             </div>
           </div>
