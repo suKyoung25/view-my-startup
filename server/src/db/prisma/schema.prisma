@@ -17,6 +17,7 @@ model Company {
   numberOfEmployees     Int
   pickAsMyStartupCount  Int          @default(0)
   pickAsComparisonCount Int          @default(0)
+  imageUrl              String?
   virtualInvestments    Investment[]
 }
 

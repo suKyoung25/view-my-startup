@@ -5,7 +5,6 @@ import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
 import { black_300, black_400 } from "../../styles/colors";
 import { media } from "../../styles/mixin";
-import PopupOneButton from "../modal/PopupOneButton";
 
 const InvestmentModal = ({ onClose, size, openPopupModal }) => {
   //각 input들의 value를 state로 저장해둠둠

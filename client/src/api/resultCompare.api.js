@@ -1,11 +1,8 @@
 import { client } from "./index.api";
 
-const getCompareStatus = async () => {
-  const response = await client.post("/api/result-comparisons", {
-    myCompanyId: "cuid1",
-    compareCompanyIds: ["cuid2", "cuid3"],
-    sortBy: "pickAsMyStartupCount",
-    order: "desc",
+const getCompareStatus = async ({ sortBy, order }) => {
+  const response = await client.get("/api/resultCompare", {
+    params: { sortBy, order },
   });
   return response.data;
 };
