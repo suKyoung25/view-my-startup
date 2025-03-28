@@ -4,6 +4,7 @@ import InputField from "../components/InputField";
 import BtnLarge from "../components/BtnLarge";
 import { gray_200 } from "../styles/colors";
 import SelectComparison from "../components/modal/SelectComparison";
+import minusIcon from "../assets/icon/ic_minus.svg";
 
 const CompareListSection = () => {
   const [selectedCompanies, setSelectedCompanies] = useState([]);
@@ -37,21 +38,39 @@ const CompareListSection = () => {
     setIsModalOpen(false);
   };
 
+  const handleDelete = (id) => {
+    const updated = selectedCompanies.filter((company) => company.id !== id);
+    setSelectedCompanies(updated);
+  };
+
   const renderSelectedCompanies = () => {
-    if (selectedCompanies.length === 0) {
-      return (
-        <InputField variant="default" mediaSize={mediaSize}>
+    return (
+      <InputField variant="default" mediaSize={mediaSize}>
+        {selectedCompanies.length === 0 ? (
           <EmptyText>
             아직 추가한 기업이 없어요. <br />
             버튼을 눌러 기업을 추가해보세요!
           </EmptyText>
-        </InputField>
-      );
-    }
-
-    return selectedCompanies.map((company, index) => (
-      <CompanyCard key={index}>{company.name}</CompanyCard>
-    ));
+        ) : (
+          <CardGrid>
+            {selectedCompanies.map((company, index) => (
+              <CompanyCard key={index} $mediaSize={mediaSize}>
+                <DeleteButton onClick={() => handleDelete(company.id)}>
+                  <img src={minusIcon} alt="삭제" />
+                </DeleteButton>
+                <Logo
+                  src={company.imageUrl || ""}
+                  alt={`${company.name} 로고`}
+                  $mediaSize={mediaSize}
+                />
+                <CompanyName>{company.name}</CompanyName>
+                <CompanyCategory>{company.category}</CompanyCategory>
+              </CompanyCard>
+            ))}
+          </CardGrid>
+        )}
+      </InputField>
+    );
   };
 
   return (
@@ -68,20 +87,12 @@ const CompareListSection = () => {
 
       <CardContainer>{renderSelectedCompanies()}</CardContainer>
 
-      {/* <ButtonWrapper>
-        <BtnLarge
-          label="기업 비교하기"
-          type={selectedCompanies.length === 0 ? "black" : "orange"}
-          size="big"
-          disabled={selectedCompanies.length === 0}
-        />
-      </ButtonWrapper> */}
-
       {isModalOpen && (
         <SelectComparison
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           setSelectedCompanies={setSelectedCompanies}
+          selectedCompanies={selectedCompanies}
           size={mediaSize === "small" ? "small" : "big"}
         />
       )}
@@ -128,13 +139,53 @@ const EmptyText = styled.p`
   text-align: center;
 `;
 
-const CompanyCard = styled.div`
-  padding: 12px;
-  border-radius: 8px;
+const CardGrid = styled.div`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 `;
 
-// const ButtonWrapper = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin-top: 24px;
-// `;
+const CompanyCard = styled.div`
+  position: relative;
+  width: ${({ $mediaSize }) => ($mediaSize === "small" ? "104px" : "126px")};
+  height: ${({ $mediaSize }) => ($mediaSize === "small" ? "163px" : "187px")};
+  background: #2c2c2c;
+  border-radius: 8px;
+  text-align: center;
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  margin: 8px;
+  top: 6px;
+  right: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const Logo = styled.img`
+  width: ${({ $mediaSize }) => ($mediaSize === "small" ? "65px" : "80px")};
+  height: ${({ $mediaSize }) => ($mediaSize === "small" ? "65px" : "80px")};
+  object-fit: cover;
+  border-radius: 50%;
+  margin-top: 32px;
+  margin-bottom: 10px;
+`;
+
+const CompanyName = styled.div`
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-weight: bold;
+`;
+
+const CompanyCategory = styled.div`
+  font-size: 14px;
+  color: ${gray_200};
+`;
