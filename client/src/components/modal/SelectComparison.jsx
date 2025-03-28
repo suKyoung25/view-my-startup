@@ -6,12 +6,13 @@ import BtnPagination from "../BtnPagination";
 import BtnOutline from "../BtnOutline";
 import { black_300, black_400, gray_200 } from "../../styles/colors";
 
-function SelectComparison({ isOpen, onClose, size }) {
+function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
   const [companies, setCompanies] = useState([]);
   const [selected, setSelected] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [buttonSize, setButtonSize] = useState("big");
+  const [searchSize, setSearchSize] = useState("big");
   const itemsPerPage = 5;
 
   const isSearching = searchTerm.trim() !== "";
@@ -23,11 +24,10 @@ function SelectComparison({ isOpen, onClose, size }) {
 
   useEffect(() => {
     const updateSize = () => {
-      if (window.innerWidth < 744) {
-        setButtonSize("small");
-      } else {
-        setButtonSize("big");
-      }
+      const isMobile = window.innerWidth <= 744;
+
+      setButtonSize(isMobile ? "small" : "big");
+      setSearchSize(isMobile ? "medium" : "big");
     };
 
     updateSize();
@@ -53,12 +53,16 @@ function SelectComparison({ isOpen, onClose, size }) {
 
     if (selected.some((c) => c.id === company.id)) return;
 
+    const newSelected = [...selected, company];
     setSelected((prev) => [...prev, company]);
+    setSelectedCompanies(newSelected);
   };
 
   // 기업 해제
   const handleRemove = (id) => {
     setSelected((prev) => prev.filter((company) => company.id !== id));
+    setSelected(updated);
+    setSelectedCompanies(updated);
   };
 
   const filteredCompanies = companies.filter((company) =>
@@ -84,7 +88,7 @@ function SelectComparison({ isOpen, onClose, size }) {
         </ModalHeader>
 
         <Search
-          size={size}
+          size={searchSize}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

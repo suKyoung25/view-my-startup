@@ -100,11 +100,17 @@ function InvestState() {
             <thead>
               <TableHeader columns={columns} />
             </thead>
+
             <tbody>
               {paginatedData.map((item, index) => (
                 <tr key={item.id}>
                   <TD>{startIndex + index + 1}위</TD>
-                  <TD>{item.name}</TD>
+                  <TD>
+                    <CompanyCell>
+                      <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
+                      {item.name}
+                    </CompanyCell>
+                  </TD>
                   <TD>{item.description}</TD>
                   <TD>{item.category}</TD>
                   <TD>
@@ -193,4 +199,17 @@ const PaginationWrap = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 20px;
+`;
+
+const CompanyCell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const Logo = styled.img`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 `;

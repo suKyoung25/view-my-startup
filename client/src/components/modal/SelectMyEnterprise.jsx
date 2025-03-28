@@ -7,7 +7,13 @@ import { black_400 } from "../../styles/colors";
 import { client } from "../../api/index.api";
 
 // 아래 props는 size=big/small
-function SelectMyEnterprise({ isOpen, onClose, size, onSelect }) {
+function SelectMyEnterprise({
+  isOpen,
+  onClose,
+  size,
+  onSelect,
+  recentCompanies,
+}) {
   const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
@@ -80,31 +86,61 @@ function SelectMyEnterprise({ isOpen, onClose, size, onSelect }) {
           }}
           onClear={() => setKeyword("")}
         />
-        <SectionTitle>검색결과 ({companies.length})</SectionTitle>
-        <CompanyList>
-          {currentData.map((c) => (
-            <CompanyItem key={c.id}>
-              <Info>
-                <div className="name">{c.name}</div>
-                <div className="tagline">{c.category}</div>
-              </Info>
-              <SelectBtn onClick={() => handleCompanySelect(c)}>
-                선택하기
-              </SelectBtn>
-            </CompanyItem>
-          ))}
-        </CompanyList>
-        <Pagination>
-          {[...Array(totalPages)].map((_, i) => (
-            <PageBtn
-              key={i + 1}
-              onClick={() => setCurrentPage(i + 1)}
-              $active={currentPage === i + 1}
-            >
-              {i + 1}
-            </PageBtn>
-          ))}
-        </Pagination>
+
+        {/* 최근 비교한 기업 영역 */}
+        {recentCompanies?.length > 0 && (
+          <>
+            <SectionTitle>
+              최근 비교한 기업 ({recentCompanies.length})
+            </SectionTitle>
+            <CompanyList>
+              {recentCompanies.map((company) => (
+                <CompanyItem key={company.id}>
+                  <Info>
+                    <div className="name">{company.name}</div>
+                    <div className="tagline">{company.category}</div>
+                  </Info>
+                  <SelectBtn onClick={() => handleCompanySelect(company)}>
+                    선택하기
+                  </SelectBtn>
+                </CompanyItem>
+              ))}
+            </CompanyList>
+          </>
+        )}
+
+        {/* 검색 결과 영역 */}
+        {keyword.trim() !== "" && (
+          <>
+            <SectionTitle>검색결과 ({companies.length})</SectionTitle>
+            <CompanyList>
+              {currentData.map((c) => (
+                <CompanyItem key={c.id}>
+                  <Info>
+                    <div className="name">{c.name}</div>
+                    <div className="tagline">{c.category}</div>
+                  </Info>
+                  <SelectBtn onClick={() => handleCompanySelect(c)}>
+                    선택하기
+                  </SelectBtn>
+                </CompanyItem>
+              ))}
+            </CompanyList>
+
+            {/* 페이지네이션 */}
+            <Pagination>
+              {[...Array(totalPages)].map((_, i) => (
+                <PageBtn
+                  key={i + 1}
+                  onClick={() => setCurrentPage(i + 1)}
+                  $active={currentPage === i + 1}
+                >
+                  {i + 1}
+                </PageBtn>
+              ))}
+            </Pagination>
+          </>
+        )}
       </Container>
     </Overlay>
   );
@@ -145,7 +181,7 @@ const Title = styled.div`
 const SectionTitle = styled.div`
   font-size: 14px;
   color: #aaa;
-  margin-bottom: 12px;
+  margin: 20px 0 12px;
 `;
 
 const CompanyList = styled.div`
