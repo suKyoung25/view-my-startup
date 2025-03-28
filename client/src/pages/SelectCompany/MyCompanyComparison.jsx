@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./MyCompanyComparison.module.css";
 import plusIcon from "../../assets/icon/btn_plus.svg";
@@ -11,6 +12,7 @@ function MyCompanyComparison() {
   const [mediaSize, setMediaSize] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [recentCompanies, setRecentCompanies] = useState([]);
+  const navigate = useNavigate(); 
 
   const handleSelect = (c) => {
     setSelectedCompany(c);
@@ -25,6 +27,10 @@ function MyCompanyComparison() {
 
   const handleCancel = () => {
     setSelectedCompany(null);
+  };
+
+  const handleCompareClick = () => {
+    navigate("/select-company/compare-results"); // 이동
   };
 
   function updateMediaSize() {
@@ -89,9 +95,13 @@ function MyCompanyComparison() {
         <CompareListSection />
 
         <div className={styles.buttonWrapper}>
-          <BtnLarge type={"black"} size={"big"} label={"기업 비교하기"} />
+          <BtnLarge
+            type={"orange"}
+            size={"big"}
+            label={"기업 비교하기"}
+            onClick={handleCompareClick} //  클릭 시 이동
+          />
         </div>
-
         <SelectMyEnterprise
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
