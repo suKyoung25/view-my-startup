@@ -59,14 +59,14 @@ const InvestmentRow = ({ investment, index }) => {
   };
 
   const handleDeleteClick = () => {
-    setIsPasswordModalOpen(true);
+    setIsPasswordModalOpen(true); // Open password modal to confirm deletion
   };
 
   const handlePasswordSubmit = (password) => {
-    if (password === "1234") {
-      setPopupType("delete-success");
+    if (password === investment.encryptedPassword) {
+      setPopupType("delete-success"); // Show success popup if passwords match
     } else {
-      setPopupType("error");
+      setPopupType("error"); // Show error popup if passwords do not match
     }
     setIsPopupOpen(true);
     setIsPasswordModalOpen(false);
@@ -81,7 +81,8 @@ const InvestmentRow = ({ investment, index }) => {
       <Tr>
         <Td>{investment.investorName}</Td>
         <Td>{index + 1}위</Td>
-        <Td>{investment.amount}억</Td>
+        <Td>{investment.amount.toFixed(1)}억</Td>{" "}
+        {/* Format the amount as a number */}
         <Td>{investment.comment}</Td>
         <Td>
           <Dropdown>

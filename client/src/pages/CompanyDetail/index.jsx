@@ -59,7 +59,7 @@ function CompanyDetail({ size = "big" }) {
           <AmountCard
             char="누적 투자 금액"
             type="price"
-            number={companyData.totalVirtualInvestmentAmount}
+            number={companyData.realInvestmentAmount}
           />
           <AmountCard char="매출액" type="price" number={companyData.revenue} />
           <AmountCard
@@ -87,9 +87,7 @@ function CompanyDetail({ size = "big" }) {
         <Hr />
 
         <TableWrap>
-          <TotalAmount>
-            총 {companyData.totalVirtualInvestmentAmount}억 원
-          </TotalAmount>
+          <TotalAmount>총 {companyData.virtualInvestments}억 원</TotalAmount>
           <InvestmentTable data={investors} />
         </TableWrap>
 
