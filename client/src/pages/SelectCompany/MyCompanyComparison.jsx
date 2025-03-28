@@ -10,10 +10,17 @@ function MyCompanyComparison() {
   const [modalOpen, setModalOpen] = useState(false);
   const [mediaSize, setMediaSize] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [recentCompanies, setRecentCompanies] = useState([]);
 
   const handleSelect = (c) => {
     setSelectedCompany(c);
     setModalOpen(false);
+
+    setRecentCompanies((prev) => {
+      const exists = prev.find((company) => company.id === c.id);
+      if (exists) return prev;
+      return [c, ...prev].slice(0, 5);
+    });
   };
 
   const handleCancel = () => {
@@ -84,6 +91,7 @@ function MyCompanyComparison() {
           onClose={() => setModalOpen(false)}
           onSelect={handleSelect}
           size={mediaSize}
+          recentCompanies={recentCompanies}
         />
       </Wrap>
     </>
