@@ -9,6 +9,7 @@ const companies = [
     realInvestmentAmount: 52.0,
     revenue: 76.0,
     numberOfEmployees: 53,
+    imageUrl: "http://",
   },
   {
     name: "스마트에듀",
