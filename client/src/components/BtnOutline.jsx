@@ -8,7 +8,7 @@ import { black_100, brand_orange, gray_100, gray_200 } from "../styles/colors";
   /* 아래 props는 text=choice/complete/cancel type=black/orange/none size=big/small src=exixtBig/existSmall/"" */
 }
 
-function BtnOutline({ text, type, size, src }) {
+function BtnOutline({ text, type, size, src, onClick }) {
   const imageSrc =
     src === "existBig" ? bigCheck : src === "existSmall" ? smallCheck : null;
 
@@ -22,7 +22,7 @@ function BtnOutline({ text, type, size, src }) {
       : null;
 
   return (
-    <Container $type={type} $size={size}>
+    <Container $type={type} $size={size} onClick={onClick}>
       <Img src={imageSrc}></Img>
       <Text $size={size}>{innerText}</Text>
     </Container>
@@ -32,6 +32,7 @@ function BtnOutline({ text, type, size, src }) {
 const Container = styled.div`
   flex-shrink: 0;
 
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
