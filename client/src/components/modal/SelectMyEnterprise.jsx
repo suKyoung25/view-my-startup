@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Search from "../Search";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import { black_300 } from "../../styles/colors";
 import { black_400 } from "../../styles/colors";
+import { client } from "../../api/index.api";
 
 // 아래 props는 size=big/small
 function SelectMyEnterprise({ isOpen, onClose, size }) {
+  const [keyword, setKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const perPage = 5;
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const res = await client.get("/api/companies", {
+          params: { keyword },
+        });
+        setCompanies(res.data);
+      } catch (e) {
+        console.error("기업 불러오기 실패:", e);
+      }
+    };
+
+    fetchCompanies();
+  }, [keyword]);
+
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(companies.length / perPage);
+  const currentData = companies.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
+
   if (!isOpen) return null;
 
   return (
@@ -16,7 +44,39 @@ function SelectMyEnterprise({ isOpen, onClose, size }) {
           <div>나의 기업 선택하기</div>
           <img onClick={onClose} src={closeIcon} alt="닫기" />
         </Title>
-        <Search $size={size} />
+        <Search
+          size="big"
+          state="searching"
+          value={keyword}
+          onChange={(e) => {
+            setKeyword(e.target.value);
+            setCurrentPage(1);
+          }}
+          onClear={() => setKeyword("")}
+        />
+        <SectionTitle>검색결과 ({companies.length})</SectionTitle>
+        <CompanyList>
+          {currentData.map((c) => (
+            <CompanyItem key={c.id}>
+              <Info>
+                <div className="name">{c.name}</div>
+                <div className="tagline">{c.category}</div>
+              </Info>
+              <SelectBtn>선택하기</SelectBtn>
+            </CompanyItem>
+          ))}
+        </CompanyList>
+        <Pagination>
+          {[...Array(totalPages)].map((_, i) => (
+            <PageBtn
+              key={i + 1}
+              onClick={() => setCurrentPage(i + 1)}
+              $active={currentPage === i + 1}
+            >
+              {i + 1}
+            </PageBtn>
+          ))}
+        </Pagination>
       </Container>
     </Overlay>
   );
@@ -52,6 +112,69 @@ const Title = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 24px;
+`;
+
+const SectionTitle = styled.div`
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 12px;
+`;
+
+const CompanyList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+`;
+
+const CompanyItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #222;
+  padding: 10px 12px;
+  border-radius: 8px;
+
+  .name {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .tagline {
+    font-size: 12px;
+    color: #888;
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SelectBtn = styled.button`
+  background-color: transparent;
+  border: 1px solid #ff6b00;
+  color: #ff6b00;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+`;
+
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+`;
+
+const PageBtn = styled.button`
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background-color: ${(props) => (props.$active ? "#ff6b00" : "#333")};
+  color: ${(props) => (props.$active ? "white" : "#aaa")};
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
 `;
 
 export default SelectMyEnterprise;

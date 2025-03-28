@@ -1,13 +1,12 @@
 {
   "name": "fs",
   "version": "1.0.0",
-  "description": "",
+  "description": "https://fs-d0af.onrender.com",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/app.js",
     "start": "node ./src/app.js"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/6th-ViewMyStartup-5team-FS/FS.git"
