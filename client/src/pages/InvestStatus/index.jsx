@@ -87,11 +87,12 @@ function InvestState() {
       <Content>
         <TopBar>
           <Title>투자 현황</Title>
+
           <Dropdown
             size={mediaSize}
             options={sortOptions}
-            onChange={handleSortChange}
-            defaultOption={selectedSort}
+            value={selectedSort} // selectedSort를 value로 넘기고
+            onChange={handleSortChange} // 정렬 기준 변경 시 상태 갱신
           />
         </TopBar>
 
