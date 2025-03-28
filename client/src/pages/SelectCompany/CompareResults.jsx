@@ -1,4 +1,3 @@
-// CompareResults.jsx
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -19,6 +18,8 @@ function CompareResults() {
   const [mediaSize, setMediaSize] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPopupModalOpen, setIsPopupModalAble] = useState(false);
+  const [sortTop, setSortTop] = useState("누적 투자금액 높은순");
+  const [sortBottom, setSortBottom] = useState("누적 투자금액 높은순");
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -56,6 +57,11 @@ function CompareResults() {
     { label: "고용 인원", name: "employees", flex: 1.5 },
   ];
 
+  const rankColumns = [
+    { label: "순위", name: "ranking", flex: 1 },
+    ...columns,
+  ];
+
   const companyList = [selectedCompany, ...(compareCompanies || [])];
 
   return (
@@ -65,6 +71,9 @@ function CompareResults() {
           <div className={styles.content1}>
             내가 선택한 기업
             <CompareBtn />
+          </div>
+
+          <InputField>
             {selectedCompany && (
               <SelectedCompanyBox>
                 <img src={selectedCompany.imageUrl} alt="로고" />
@@ -74,11 +83,18 @@ function CompareResults() {
                 </div>
               </SelectedCompanyBox>
             )}
-          </div>
+          </InputField>
+
+          <SpacerSmall />
 
           <div className={styles.content2}>
             비교 결과 확인하기
-            <SortDropdown size={mediaSize} options={sortOptions} />
+            <SortDropdown
+              size={mediaSize}
+              options={sortOptions}
+              value={sortTop}
+              onChange={setSortTop}
+            />
           </div>
 
           <StyledTable className={styles.table1}>
@@ -100,15 +116,20 @@ function CompareResults() {
           </StyledTable>
 
           <SpacerSmall />
-          <SpacerSmall />
+
           <div className={styles.content3}>
             기업 순위 확인하기
-            <SortDropdown size={mediaSize} options={sortOptions} />
+            <SortDropdown
+              size={mediaSize}
+              options={sortOptions}
+              value={sortBottom}
+              onChange={setSortBottom}
+            />
           </div>
 
           <StyledTable className={styles.table2}>
             <thead>
-              <TableHeader columns={columns} />
+              <TableHeader columns={rankColumns} />
             </thead>
             <tbody>
               {[...companyList]
@@ -164,12 +185,12 @@ const Wrap = styled.div`
 `;
 
 const SelectedCompanyBox = styled.div`
-  background: #1e1e1e;
-  padding: 20px;
-  border-radius: 12px;
   display: flex;
-  gap: 16px;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
 
   img {
     width: 60px;
@@ -179,9 +200,9 @@ const SelectedCompanyBox = styled.div`
   }
 
   div {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
   }
 `;
 
@@ -209,5 +230,5 @@ const Spacer = styled.div`
 `;
 
 const SpacerSmall = styled.div`
-  margin-top: 40px;
+  margin-top: 50px;
 `;
