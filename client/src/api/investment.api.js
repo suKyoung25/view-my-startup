@@ -1,17 +1,20 @@
 import { client } from "./index.api";
 
-//투자 리스트 가져오기 (아직 완성 안됨)
-const getAllInvestment = async (options) => {
-  const {} = options;
-
+// 전체 개별 투자 내역
+const getAllInvestment = async () => {
   const response = await client.get(`/api/investments`);
-  const result = response.data;
+  return response.data;
+};
 
-  return result;
+// 기업별 누적 투자 요약
+const getInvestmentStatus = async () => {
+  const response = await client.get(`/api/investments/status`);
+  return response.data;
 };
 
 const investmentAPI = {
   getAllInvestment,
+  getInvestmentStatus,
 };
 
 export default investmentAPI;

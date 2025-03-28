@@ -19,6 +19,21 @@
   width: 1200px;
 }
 
+.data1,
+.data2,
+.data3 {
+  margin-top: 16px;
+}
+
+.data2 {
+  margin-bottom: 56px;
+}
+
+.data1,
+.data3 {
+  margin-bottom: 40px;
+}
+
 /*1200px 이상일 때 (PC) */
 @media (min-width: 1200px) {
 }

@@ -14,9 +14,11 @@ const SORT_OPTIONS = [
   "고용 인원 적은순",
 ];
 
-function SortDropdown({ size }) {
+
+function SortDropdown({ size, options = [] }) {
+
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(SORT_OPTIONS[0]);
+  const [selected, setSelected] = useState(options[0] || "");
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setOpen((prev) => !prev);
@@ -43,13 +45,15 @@ function SortDropdown({ size }) {
         <ArrowIcon src={arrowDown} alt="화살표" $isOpen={open} />
       </DropdownButton>
 
-      <DropdownList $isOpen={open}>
-        {SORT_OPTIONS.map((option) => (
-          <DropdownItem key={option} onClick={() => handleSelect(option)}>
-            {option}
-          </DropdownItem>
-        ))}
-      </DropdownList>
+      {open && (
+        <DropdownList $isOpen={open}>
+          {options.map((option) => (
+            <DropdownItem key={option} onClick={() => handleSelect(option)}>
+              {option}
+            </DropdownItem>
+          ))}
+        </DropdownList>
+      )}
     </Wrapper>
   );
 }

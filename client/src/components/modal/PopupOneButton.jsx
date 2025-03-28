@@ -4,7 +4,7 @@ import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 import { black_400 } from "../../styles/colors";
 
-export default function PopupTwoButton({
+export default function PopupOneButton({
   onConfirm,
   onCancel,
   size = "big",
@@ -27,6 +27,8 @@ export default function PopupTwoButton({
     switch (type) {
       case "error":
         return "잘못된 비밀번호로 삭제에 실패하셨습니다.";
+      case "delete-cuccess":
+        return "삭제가 완료되었어요!";
       case "success":
         return "투자가 완료되었어요!";
       default:
