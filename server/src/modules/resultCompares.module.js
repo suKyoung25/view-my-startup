@@ -4,69 +4,37 @@ const Exception = require("../exceptions");
 
 const resultCompareRouter = express.Router();
 
-/**
- * 기업 비교 조회
- * body: {
- *   myCompanyId: "cuid",
- *   compareCompanyIds: ["cuid", "cuid"],
- *   sortBy: "totalInvestment" | "revenue" | "numberOfEmployees",
- *   order: "asc" | "desc"
- * }
- */
-resultCompareRouter.post("/", async (req, res, next) => {
+resultCompareRouter.get("/", async (req, res, next) => {
   try {
-    const { myCompanyId, compareCompanyIds, sortBy, order } = req.body;
+    const { sortBy = "pickAsMyStartupCount", order = "desc" } = req.query;
 
-    if (!myCompanyId || !compareCompanyIds || compareCompanyIds.length === 0) {
-      throw new Exception(400, "비교할 기업 정보를 제공해주세요.");
-    }
-
-    const idsToFetch = [myCompanyId, ...compareCompanyIds];
-
-    const companies = await prisma.company.findMany({
-      where: {
-        id: {
-          in: idsToFetch,
-        },
-      },
-    });
-
-    const companiesWithInvestment = await Promise.all(
-      companies.map(async (company) => {
-        const total = await prisma.investment.aggregate({
-          where: { companyId: company.id },
-          _sum: { amount: true },
-        });
-
-        return {
-          id: company.id,
-          name: company.name,
-          description: company.description,
-          category: company.category,
-          realInvestmentAmount: company.realInvestmentAmount,
-          revenue: company.revenue,
-          numberOfEmployees: company.numberOfEmployees,
-          totalInvestment: total._sum.amount ?? 0,
-          createdAt: company.createdAt,
-        };
-      })
-    );
+    const companies = await prisma.company.findMany();
 
     const validSortFields = {
-      totalInvestment: "totalInvestment",
-      revenue: "revenue",
-      numberOfEmployees: "numberOfEmployees",
+      pickAsMyStartupCount: "pickAsMyStartupCount",
+      pickAsComparisonCount: "pickAsComparisonCount",
     };
 
-    if (sortBy && validSortFields[sortBy]) {
-      companiesWithInvestment.sort((a, b) => {
+    let sortedCompanies = [...companies];
+
+    if (validSortFields[sortBy]) {
+      sortedCompanies.sort((a, b) => {
         const valA = a[validSortFields[sortBy]];
         const valB = b[validSortFields[sortBy]];
         return order === "asc" ? valA - valB : valB - valA;
       });
     }
 
-    res.json(companiesWithInvestment);
+    const result = sortedCompanies.map((company) => ({
+      id: company.id,
+      name: company.name,
+      description: company.description,
+      category: company.category,
+      pickAsMyStartupCount: company.pickAsMyStartupCount,
+      pickAsComparisonCount: company.pickAsComparisonCount,
+    }));
+
+    res.json(result);
   } catch (e) {
     next(e);
   }
