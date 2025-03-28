@@ -55,7 +55,7 @@ const CompareListSection = () => {
   };
 
   return (
-    <Wrapper mediaSize={mediaSize}>
+    <Wrapper $mediaSize={mediaSize}>
       <Header $mediaSize={mediaSize}>
         <Title>어떤 기업이 궁금하세요?</Title>
         <BtnLarge
@@ -68,19 +68,21 @@ const CompareListSection = () => {
 
       <CardContainer>{renderSelectedCompanies()}</CardContainer>
 
-      <ButtonWrapper>
+      {/* <ButtonWrapper>
         <BtnLarge
           label="기업 비교하기"
           type={selectedCompanies.length === 0 ? "black" : "orange"}
           size="big"
           disabled={selectedCompanies.length === 0}
         />
-      </ButtonWrapper>
+      </ButtonWrapper> */}
 
       {isModalOpen && (
         <SelectComparison
+          isOpen={isModalOpen}
           onClose={handleCloseModal}
           setSelectedCompanies={setSelectedCompanies}
+          size={mediaSize === "small" ? "small" : "big"}
         />
       )}
     </Wrapper>
@@ -131,8 +133,8 @@ const CompanyCard = styled.div`
   border-radius: 8px;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-`;
+// const ButtonWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   margin-top: 24px;
+// `;
