@@ -4,13 +4,9 @@ import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 import { black_400 } from "../../styles/colors";
 
-export default function PopupOneButton({
-  onConfirm,
-  onCancel,
-  size = "big",
-  type,
-}) {
+export default function PopupOneButton({ onClose, size = "big", type }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isMobile = windowWidth <= 768;
 
   useEffect(() => {
@@ -36,13 +32,18 @@ export default function PopupOneButton({
     }
   };
 
+  const onConfirm = () => {
+    console.log("닫힘");
+    onClose();
+  };
+
   return (
-    <Overlay onClick={onCancel}>
+    <Overlay onClick={onClose}>
       <Wrapper
         $size={isMobile ? "small" : size}
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
       >
-        <CloseButton onClick={onCancel}>
+        <CloseButton onClick={onClose}>
           <img src={closeIcon} alt="닫기" />
         </CloseButton>
 
@@ -62,17 +63,6 @@ export default function PopupOneButton({
   );
 }
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -86,7 +76,6 @@ const Overlay = styled.div`
 `;
 
 const Wrapper = styled.div`
-  animation: ${fadeIn} 0.3s ease-out;
   position: fixed;
   top: 50%;
   left: 50%;
