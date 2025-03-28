@@ -172,6 +172,7 @@ investmentsRouter.get("/status", async (req, res, next) => {
 
       return {
         id: company.id,
+        imageUrl: company.imageUrl,
         name: company.name,
         description: company.description,
         category: company.category,
