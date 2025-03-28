@@ -6,8 +6,15 @@ const getAllCompanies = async () => {
   return response.data;
 };
 
+// 특정 기업 상세 조회 추가
+const getCompanyById = async (companyId) => {
+  const response = await client.get(`/api/companies/${companyId}`);
+  return response.data;
+};
+
 const companyAPI = {
   getAllCompanies,
+  getCompanyById, // 추가된 함수
 };
 
 export default companyAPI;

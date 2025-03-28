@@ -101,28 +101,34 @@ function HomePage() {
             </div>
           </div>
 
-          <table className={styles.table}>
+          <StyledTable>
             <thead>
-              <TableHeader columns={columns} />
+              <HeaderRow>
+                {columns.map(({ label, name, width }, i) => (
+                  <Th key={name || i} style={{ width }}>
+                    {label}
+                  </Th>
+                ))}
+              </HeaderRow>
             </thead>
             <tbody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((item, index) => (
                   <tr key={item.id || index}>
-                    <td>{startIndex + index + 1}위</td>
-                    <td>{item.name}</td>
-                    <td>{item.description}</td>
-                    <td>{item.category}</td>
-                    <td>
+                    <TD>{startIndex + index + 1}위</TD>
+                    <TD>{item.name}</TD>
+                    <TD>{item.description}</TD>
+                    <TD>{item.category}</TD>
+                    <TD>
                       {item.totalVirtualInvestmentAmount?.toLocaleString()}억 원
-                    </td>
-                    <td>{item.revenue?.toLocaleString()}억 원</td>
-                    <td>{item.numberOfEmployees?.toLocaleString()}명</td>
+                    </TD>
+                    <TD>{item.revenue?.toLocaleString()}억 원</TD>
+                    <TD>{item.numberOfEmployees?.toLocaleString()}명</TD>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td
+                  <TD
                     colSpan={columns.length}
                     style={{
                       textAlign: "center",
@@ -131,13 +137,13 @@ function HomePage() {
                     }}
                   >
                     표시할 스타트업 데이터가 없습니다.
-                  </td>
+                  </TD>
                 </tr>
               )}
             </tbody>
-          </table>
+          </StyledTable>
 
-          <div className={styles.pagination}>
+          <PaginationWrap>
             <BtnPagination
               size={"big"}
               currentPage={currentPage}
@@ -145,7 +151,7 @@ function HomePage() {
               totalItems={sortedData.length}
               onPageChange={(page) => setCurrentPage(page)}
             />
-          </div>
+          </PaginationWrap>
         </div>
       </div>
     </Wrap>
@@ -154,8 +160,44 @@ function HomePage() {
 
 export default HomePage;
 
+// styled-components
 const Wrap = styled.div`
   background-color: #131313;
   min-height: 100vh;
   width: 100%;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+const HeaderRow = styled.tr`
+  border-bottom: 16px solid #131313; // 헤더 아래 여백
+`;
+
+const Th = styled.th`
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background-color: #2e2e2e;
+  white-space: nowrap;
+  text-align: center;
+`;
+
+const TD = styled.td`
+  padding: 20px 16px;
+  font-size: 14px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+  background-color: #212121; // 셀 배경
+  color: #d8d8d8; // 텍스트
+  font-family: "Pretendard", sans-serif;
+`;
+
+const PaginationWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 48px; // 테이블과 페이지네이션 사이 간격 추가
 `;
