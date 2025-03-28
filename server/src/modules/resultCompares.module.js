@@ -27,6 +27,7 @@ resultCompareRouter.get("/", async (req, res, next) => {
 
     const result = sortedCompanies.map((company) => ({
       id: company.id,
+      imageUrl: company.imageUrl,
       name: company.name,
       description: company.description,
       category: company.category,
