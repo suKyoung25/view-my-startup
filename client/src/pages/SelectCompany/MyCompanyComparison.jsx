@@ -4,6 +4,7 @@ import plusIcon from "../../assets/icon/btn_plus.svg";
 import styled from "styled-components";
 import BtnLarge from "../../components/BtnLarge";
 import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
+import CompareListSection from "../../components/CompareListSection";
 
 function MyCompanyComparison() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,6 +48,7 @@ function MyCompanyComparison() {
             </button>
           </div>
         </div>
+        <CompareListSection />
 
         <div className={styles.buttonWrapper}>
           <BtnLarge type={"black"} size={"big"} label={"기업 비교하기"} />
