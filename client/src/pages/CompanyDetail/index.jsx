@@ -11,7 +11,7 @@ function CompanyDetail({
   size = "big",
   src = company,
   companyName = "코드잇",
-  discription = "에듀테크",
+  category = "에듀테크",
   introduce = "~~~~~",
   totalAmount = 140,
   salesRevenue = 44.3,
@@ -27,7 +27,7 @@ function CompanyDetail({
           <Img $size={size} src={src} alt="Company" />
           <TitleWrap>
             <Title $size={size}>{companyName}</Title>
-            <Discription $size={size}>{discription}</Discription>
+            <Discription $size={size}>{category}</Discription>
           </TitleWrap>
         </CompanyContainer>
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import dropdown from "../../../assets/icon/btn_dropdown.png";
 import ModalPassword from "../../../components/modal/Password";
-import PopupTwoButton from "../../../components/modal/PopupTwoButton";
+import PopupOneButton from "../../../components/modal/PopupOneButton";
 
 import {
   black_100,
@@ -28,8 +28,6 @@ function InvestmentTable({ data = [] }) {
     (a, b) => b.amount - a.amount
   );
 
-  // const sortedData = data.sort((a, b) => b.amount - a.amount);
-
   return (
     <Table>
       <thead>
@@ -51,7 +49,7 @@ function InvestmentTable({ data = [] }) {
         ) : (
           sortedData.map((investment, index) => (
             <InvestmentRow
-              key={investment.id}
+              key={investment.username} // investment.id 대신 username을 key로 사용
               investment={investment}
               index={index}
             />
@@ -125,7 +123,7 @@ const InvestmentRow = ({ investment, index }) => {
       )}
 
       {isPopupOpen && (
-        <PopupTwoButton
+        <PopupOneButton
           onConfirm={handlePopupClose}
           onCancel={handlePopupClose}
           type={popupType} // Pass the popupType here
