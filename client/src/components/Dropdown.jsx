@@ -120,6 +120,8 @@ const DropdownList = styled.div`
 `;
 
 const DropdownItem = styled.button`
+  display: flex;
+  justify-content: center;
   width: 100%;
   text-align: left;
   padding: 10px 16px;
