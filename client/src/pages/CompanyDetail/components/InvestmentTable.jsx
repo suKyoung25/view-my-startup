@@ -14,19 +14,7 @@ import {
 } from "../../../styles/colors";
 
 function InvestmentTable({ data = [] }) {
-  const sampleData = [
-    { username: "김철수", amount: 50, comment: "미래가 기대됩니다!" },
-    { username: "이영희", amount: 30, comment: "성장 가능성이 높아요!" },
-    {
-      username: "박지훈",
-      amount: 20,
-      comment: "장기적인 투자를 고려 중입니다.",
-    },
-  ];
-
-  const sortedData = (data.length > 0 ? data : sampleData).sort(
-    (a, b) => b.amount - a.amount
-  );
+  const sortedData = data.sort((a, b) => b.amount - a.amount);
 
   return (
     <Table>
@@ -49,7 +37,7 @@ function InvestmentTable({ data = [] }) {
         ) : (
           sortedData.map((investment, index) => (
             <InvestmentRow
-              key={investment.username} // investment.id 대신 username을 key로 사용
+              key={investment.id} // Use `id` for key to ensure uniqueness
               investment={investment}
               index={index}
             />
@@ -64,7 +52,7 @@ const InvestmentRow = ({ investment, index }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupType, setPopupType] = useState(""); // Added state for popup type
+  const [popupType, setPopupType] = useState("");
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -75,13 +63,10 @@ const InvestmentRow = ({ investment, index }) => {
   };
 
   const handlePasswordSubmit = (password) => {
-    // 비밀번호 확인 로직 (예시로 "1234"라는 비밀번호를 사용)
     if (password === "1234") {
-      // 삭제 성공
-      setPopupType("delete-success"); // 성공 메시지를 팝업에 전달
+      setPopupType("delete-success");
     } else {
-      // 비밀번호 실패
-      setPopupType("error"); // 실패 메시지를 팝업에 전달
+      setPopupType("error");
     }
     setIsPopupOpen(true);
     setIsPasswordModalOpen(false);
@@ -94,7 +79,7 @@ const InvestmentRow = ({ investment, index }) => {
   return (
     <>
       <Tr>
-        <Td>{investment.username}</Td>
+        <Td>{investment.investorName}</Td>
         <Td>{index + 1}위</Td>
         <Td>{investment.amount}억</Td>
         <Td>{investment.comment}</Td>
@@ -126,7 +111,7 @@ const InvestmentRow = ({ investment, index }) => {
         <PopupOneButton
           onConfirm={handlePopupClose}
           onCancel={handlePopupClose}
-          type={popupType} // Pass the popupType here
+          type={popupType}
         />
       )}
     </>
