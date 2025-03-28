@@ -29,10 +29,25 @@ function MyCompanyComparison() {
     setSelectedCompany(null);
   };
 
+  // const handleCompareClick = () => {
+  //   navigate("/select-company/compare-results"); // 이동
+  // };
   const handleCompareClick = () => {
-    navigate("/select-company/compare-results"); // 이동
+    if (!selectedCompany || recentCompanies.length === 0) {
+      alert("기업을 선택해주세요!");
+      return;
+    }
+  
+    navigate("/select-company/compare-results", {
+      state: {
+        selectedCompany,
+        compareCompanies: recentCompanies.filter(
+          (c) => c.id !== selectedCompany.id
+        ),
+      },
+    });
   };
-
+  
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 744) {
