@@ -42,7 +42,7 @@ function InvestState() {
 
   const handleSortChange = (option) => {
     setSelectedSort(option);
-    setCurrentPage(1); // 정렬 변경 시 페이지 초기화
+    setCurrentPage(1);
   };
 
   const updateMediaSize = () => {
@@ -87,12 +87,11 @@ function InvestState() {
       <Content>
         <TopBar>
           <Title>투자 현황</Title>
-
           <Dropdown
             size={mediaSize}
             options={sortOptions}
-            value={selectedSort} // selectedSort를 value로 넘기고
-            onChange={handleSortChange} // 정렬 기준 변경 시 상태 갱신
+            value={selectedSort}
+            onChange={handleSortChange}
           />
         </TopBar>
 
@@ -101,11 +100,17 @@ function InvestState() {
             <thead>
               <TableHeader columns={columns} />
             </thead>
+
             <tbody>
               {paginatedData.map((item, index) => (
                 <tr key={item.id}>
                   <TD>{startIndex + index + 1}위</TD>
-                  <TD>{item.name}</TD>
+                  <TD>
+                    <CompanyCell>
+                      <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
+                      {item.name}
+                    </CompanyCell>
+                  </TD>
                   <TD>{item.description}</TD>
                   <TD>{item.category}</TD>
                   <TD>
@@ -133,6 +138,8 @@ function InvestState() {
 }
 
 export default InvestState;
+
+// Styled Components
 
 const Wrap = styled.div`
   background-color: ${black_400};
@@ -169,20 +176,40 @@ const TableWrap = styled.div`
   margin-bottom: 32px;
 `;
 
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+
+  thead tr {
+    border-bottom: 16px solid #131313; // 헤더 아래 간격
+  }
+`;
+
+const TD = styled.td`
+  padding: 20px 16px;
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+  text-align: center;
+  background-color: #212121;
+  color: #d8d8d8;
+  font-family: "Pretendard", sans-serif;
+`;
+
 const PaginationWrap = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 20px;
 `;
 
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
+const CompanyCell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
-const TD = styled.td`
-  padding: 12px 16px;
-  border-bottom: 1px solid #333;
-  font-size: 14px;
-  text-align: center;
+const Logo = styled.img`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
