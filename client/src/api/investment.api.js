@@ -6,9 +6,11 @@ const getAllInvestment = async () => {
   return response.data;
 };
 
-// 기업별 누적 투자 요약
-const getInvestmentStatus = async () => {
-  const response = await client.get(`/api/investments/status`);
+// 기업별 누적 투자 요약 - 정렬 기준 포함
+const getInvestmentStatus = async (sortBy, order) => {
+  const response = await client.get(`/api/investments/status`, {
+    params: { sortBy, order },
+  });
   return response.data;
 };
 
