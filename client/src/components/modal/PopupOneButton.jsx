@@ -23,7 +23,7 @@ export default function PopupOneButton({ onClose, size = "big", type }) {
     switch (type) {
       case "error":
         return "잘못된 비밀번호로 삭제에 실패하셨습니다.";
-      case "delete-cuccess":
+      case "delete-success":
         return "삭제가 완료되었어요!";
       case "success":
         return "투자가 완료되었어요!";
@@ -69,7 +69,7 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${black_400}80;
+  background-color: ${black_400};
   display: flex;
   justify-content: center;
   align-items: center;
