@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import dropdown from "../../../assets/icon/btn_dropdown.png";
-import ModalPassword from "../../../components/modal/ModalPassword";
+import ModalPassword from "../../../components/modal/Password";
 import PopupTwoButton from "../../../components/modal/PopupTwoButton";
 
 import {
