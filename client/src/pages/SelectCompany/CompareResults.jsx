@@ -10,16 +10,18 @@ import TableHeader from "../../components/TableHeader";
 import InvestmentModal from "../../components/modal/InvestmentModal";
 import InputField from "../../components/InputField";
 import PopupOneButton from "../../components/modal/PopupOneButton";
+import { fetchComparedCompanies } from "../../api/myCompany";
 
 function CompareResults() {
   const location = useLocation();
-  const { selectedCompany, compareCompanies } = location.state || {};
+  const { selectedCompanyId, compareCompanyIds } = location.state || {};
 
   const [mediaSize, setMediaSize] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPopupModalOpen, setIsPopupModalAble] = useState(false);
   const [sortTop, setSortTop] = useState("누적 투자금액 높은순");
   const [sortBottom, setSortBottom] = useState("누적 투자금액 높은순");
+  const [companies, setCompanies] = useState([]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -39,6 +41,22 @@ function CompareResults() {
     return () => window.removeEventListener("resize", updateMediaSize);
   }, []);
 
+  useEffect(() => {
+    if (!selectedCompanyId) return;
+    const loadData = async () => {
+      try {
+        const data = await fetchComparedCompanies({
+          selectedCompanyId,
+          compareCompanyIds,
+        });
+        setCompanies(data);
+      } catch (err) {
+        console.error("기업 비교 데이터 불러오기 실패:", err);
+      }
+    };
+    loadData();
+  }, [selectedCompanyId, compareCompanyIds]);
+
   const sortOptions = [
     "누적 투자금액 높은순",
     "누적 투자금액 낮은순",
@@ -47,6 +65,33 @@ function CompareResults() {
     "고용 인원 많은순",
     "고용 인원 적은순",
   ];
+
+  const sortCompanies = (list, criteria) => {
+    const [field, order] = (() => {
+      switch (criteria) {
+        case "누적 투자금액 높은순":
+          return ["investmentAmount", "desc"];
+        case "누적 투자금액 낮은순":
+          return ["investmentAmount", "asc"];
+        case "매출액 높은순":
+          return ["revenue", "desc"];
+        case "매출액 낮은순":
+          return ["revenue", "asc"];
+        case "고용 인원 많은순":
+          return ["employees", "desc"];
+        case "고용 인원 적은순":
+          return ["employees", "asc"];
+        default:
+          return ["investmentAmount", "desc"];
+      }
+    })();
+
+    return [...list].sort((a, b) => {
+      const aVal = a[field] ?? 0;
+      const bVal = b[field] ?? 0;
+      return order === "asc" ? aVal - bVal : bVal - aVal;
+    });
+  };
 
   const columns = [
     { label: "기업명", name: "name", flex: 1.5 },
@@ -57,12 +102,7 @@ function CompareResults() {
     { label: "고용 인원", name: "employees", flex: 1.5 },
   ];
 
-  const rankColumns = [
-    { label: "순위", name: "ranking", flex: 1 },
-    ...columns,
-  ];
-
-  const companyList = [selectedCompany, ...(compareCompanies || [])];
+  const rankColumns = [{ label: "순위", name: "ranking", flex: 1 }, ...columns];
 
   return (
     <>
@@ -74,12 +114,12 @@ function CompareResults() {
           </div>
 
           <InputField>
-            {selectedCompany && (
+            {companies.length > 0 && (
               <SelectedCompanyBox>
-                <img src={selectedCompany.imageUrl} alt="로고" />
+                <img src={companies[0].imageUrl} alt="로고" />
                 <div>
-                  <div>{selectedCompany.name}</div>
-                  <div>{selectedCompany.category}</div>
+                  <div>{companies[0].name}</div>
+                  <div>{companies[0].category}</div>
                 </div>
               </SelectedCompanyBox>
             )}
@@ -102,10 +142,13 @@ function CompareResults() {
               <TableHeader columns={columns} />
             </thead>
             <tbody>
-              {companyList.map((company) => (
+              {sortCompanies(companies, sortTop).map((company) => (
                 <tr key={company.id}>
-                  <TD>{company.name}</TD>
-                  <TD>{company.description}</TD>
+                  <CompanyCell>
+                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
+                    <span>{company.name}</span>
+                  </CompanyCell>
+                  <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
                   <TD>{company.investmentAmount}</TD>
                   <TD>{company.revenue}</TD>
@@ -132,19 +175,20 @@ function CompareResults() {
               <TableHeader columns={rankColumns} />
             </thead>
             <tbody>
-              {[...companyList]
-                .sort((a, b) => b.revenue - a.revenue)
-                .map((company, idx) => (
-                  <tr key={company.id}>
-                    <TD>{idx + 1}위</TD>
-                    <TD>{company.name}</TD>
-                    <TD>{company.description}</TD>
-                    <TD>{company.category}</TD>
-                    <TD>{company.investmentAmount}</TD>
-                    <TD>{company.revenue}</TD>
-                    <TD>{company.employees}</TD>
-                  </tr>
-                ))}
+              {sortCompanies(companies, sortBottom).map((company, idx) => (
+                <tr key={company.id}>
+                  <TD>{idx + 1}위</TD>
+                  <CompanyCell>
+                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
+                    <span>{company.name}</span>
+                  </CompanyCell>
+                  <LeftAlignTD>{company.description}</LeftAlignTD>
+                  <TD>{company.category}</TD>
+                  <TD>{company.investmentAmount}</TD>
+                  <TD>{company.revenue}</TD>
+                  <TD>{company.employees}</TD>
+                </tr>
+              ))}
             </tbody>
           </StyledTable>
 
@@ -225,10 +269,42 @@ const TD = styled.td`
   text-align: center;
 `;
 
+const LeftAlignTD = styled.td`
+  padding: 20px 16px;
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+  background-color: #212121;
+  color: #d8d8d8;
+  text-align: left; // 왼쪽 정렬
+  vertical-align: middle;
+`;
+
 const Spacer = styled.div`
   margin-top: 32px;
 `;
 
 const SpacerSmall = styled.div`
   margin-top: 50px;
+`;
+
+const CompanyCell = styled.td`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 1px solid #333;
+  background-color: #212121;
+  color: #d8d8d8;
+  font-size: 14px;
+
+  img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  span {
+    white-space: nowrap;
+  }
 `;
