@@ -11,43 +11,56 @@ function MyCompanyComparison() {
   const [modalOpen, setModalOpen] = useState(false);
   const [mediaSize, setMediaSize] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
-  const [recentCompanies, setRecentCompanies] = useState([]);
-  const navigate = useNavigate(); 
+  const [compareCompanies, setCompareCompanies] = useState([]);
+  const [selectionMode, setSelectionMode] = useState("my");
+  const navigate = useNavigate();
 
-  const handleSelect = (c) => {
-    setSelectedCompany(c);
+  // 나의 기업 / 비교 기업 선택 핸들러
+  const handleSelect = (company, mode) => {
+    if (mode === "my") {
+      setSelectedCompany(company);
+    } else if (mode === "compare") {
+      setCompareCompanies((prev) => {
+        const exists = prev.find((c) => c.id === company.id);
+        if (exists) return prev;
+        return [company, ...prev].slice(0, 5);
+      });
+    }
     setModalOpen(false);
-
-    setRecentCompanies((prev) => {
-      const exists = prev.find((company) => company.id === c.id);
-      if (exists) return prev;
-      return [c, ...prev].slice(0, 5);
-    });
   };
 
   const handleCancel = () => {
     setSelectedCompany(null);
   };
 
-  // const handleCompareClick = () => {
-  //   navigate("/select-company/compare-results"); // 이동
-  // };
   const handleCompareClick = () => {
-    if (!selectedCompany || recentCompanies.length === 0) {
+    if (!selectedCompany || compareCompanies.length === 0) {
       alert("기업을 선택해주세요!");
       return;
     }
-  
+
+    const selectedCompanyId = selectedCompany.id;
+    const compareCompanyIds = compareCompanies
+      .filter((c) => c.id !== selectedCompanyId)
+      .map((c) => c.id);
+
+    if (compareCompanyIds.length === 0) {
+      alert("비교할 기업을 1개 이상 선택해주세요!");
+      return;
+    }
+
+    // 디버깅
+    console.log("선택 기업 ID:", selectedCompanyId);
+    console.log("비교 기업 IDs:", compareCompanyIds);
+
     navigate("/select-company/compare-results", {
       state: {
-        selectedCompany,
-        compareCompanies: recentCompanies.filter(
-          (c) => c.id !== selectedCompany.id
-        ),
+        selectedCompanyId,
+        compareCompanyIds,
       },
     });
   };
-  
+
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 744) {
@@ -59,17 +72,13 @@ function MyCompanyComparison() {
 
   useEffect(() => {
     updateMediaSize();
-
     window.addEventListener("resize", updateMediaSize);
-
-    return () => {
-      window.removeEventListener("resize", updateMediaSize);
-    };
+    return () => window.removeEventListener("resize", updateMediaSize);
   }, []);
 
   return (
-    <>
-      <Wrap>
+    <Wrap>
+      <Inner>
         <h2 className={styles.title}>나의 기업을 선택해 주세요!</h2>
 
         <div className={styles.addBoxWrapper}>
@@ -95,37 +104,48 @@ function MyCompanyComparison() {
                 </CompanyInfoWrap>
               </div>
             ) : (
-              <button className={styles.addButton}>
-                <img
-                  src={plusIcon}
-                  alt="추가"
-                  className={styles.plusIcon}
-                  onClick={() => setModalOpen(true)}
-                />
+              <button
+                className={styles.addButton}
+                onClick={() => {
+                  setSelectionMode("my");
+                  setModalOpen(true);
+                }}
+              >
+                <img src={plusIcon} alt="추가" className={styles.plusIcon} />
                 기업 추가
               </button>
             )}
           </div>
         </div>
-        <CompareListSection />
+
+        {/* 비교 기업 리스트 및 버튼 포함 */}
+        <CompareListSection
+          companies={compareCompanies}
+          onAddClick={() => {
+            setSelectionMode("compare");
+            setModalOpen(true);
+          }}
+        />
 
         <div className={styles.buttonWrapper}>
           <BtnLarge
             type={"orange"}
-            size={"big"}
+            size={mediaSize}
             label={"기업 비교하기"}
-            onClick={handleCompareClick} //  클릭 시 이동
+            onClick={handleCompareClick}
           />
         </div>
+
+        {/* 모달 - 기업 선택 */}
         <SelectMyEnterprise
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          onSelect={handleSelect}
+          onSelect={(company) => handleSelect(company, selectionMode)}
           size={mediaSize}
-          recentCompanies={recentCompanies}
+          recentCompanies={compareCompanies}
         />
-      </Wrap>
-    </>
+      </Inner>
+    </Wrap>
   );
 }
 
@@ -134,15 +154,21 @@ export default MyCompanyComparison;
 const Wrap = styled.div`
   background-color: #131313;
   color: #fff;
-  max-width: 1200px;
   min-height: 100vh;
-  padding: 70px 0px 10% 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 70px 16px;
+  box-sizing: border-box;
+`;
+
+const Inner = styled.div`
+  width: 100%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
-
-
 
 const CompanyInfoWrap = styled.div`
   display: flex;

@@ -6,3 +6,13 @@ GET http://localhost:7777/api/resultCompare?sortBy=pickAsMyStartupCount&order=de
 
 ### [2] 전체 기업 비교 현황 조회 (비교 기업 선택 횟수 기준 오름차순)
 GET http://localhost:7777/api/resultCompare?sortBy=pickAsComparisonCount&order=asc
+
+
+### [3] 선택 기업 비교 기업 생성 (예시로 작성함.)
+POST http://localhost:7777/api/resultCompare/selected
+Content-Type: application/json
+
+{
+  "selectedCompanyId": 12,
+  "compareCompanyIds": [3, 4, 5]
+}
