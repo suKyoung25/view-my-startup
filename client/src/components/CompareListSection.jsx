@@ -1,61 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import InputField from "../components/InputField";
 import BtnLarge from "../components/BtnLarge";
 import { gray_200 } from "../styles/colors";
-import SelectComparison from "../components/modal/SelectComparison";
 import minusIcon from "../assets/icon/ic_minus.svg";
 
-const CompareListSection = () => {
-  const [selectedCompanies, setSelectedCompanies] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mediaSize, setMediaSize] = useState("");
-
-  function updateMediaSize() {
-    const { innerWidth: width } = window;
-    if (width >= 1200) {
-      setMediaSize("big");
-    } else if (width > 744) {
-      setMediaSize("medium");
-    } else {
-      setMediaSize("small");
-    }
-  }
-
-  useEffect(() => {
-    updateMediaSize();
-    window.addEventListener("resize", updateMediaSize);
-    return () => {
-      window.removeEventListener("resize", updateMediaSize);
-    };
-  }, []);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleDelete = (id) => {
-    const updated = selectedCompanies.filter((company) => company.id !== id);
-    setSelectedCompanies(updated);
-  };
+const CompareListSection = ({ companies = [], onAddClick, onDelete }) => {
+  const mediaSize =
+    typeof window !== "undefined"
+      ? window.innerWidth >= 1200
+        ? "big"
+        : window.innerWidth > 744
+        ? "medium"
+        : "small"
+      : "medium";
 
   const renderSelectedCompanies = () => {
     return (
       <InputField variant="default" mediaSize={mediaSize}>
-        {selectedCompanies.length === 0 ? (
+        {companies.length === 0 ? (
           <EmptyText>
             아직 추가한 기업이 없어요. <br />
             버튼을 눌러 기업을 추가해보세요!
           </EmptyText>
         ) : (
           <CardGrid>
-            {selectedCompanies.map((company, index) => (
-              <CompanyCard key={index} $mediaSize={mediaSize}>
-                <DeleteButton onClick={() => handleDelete(company.id)}>
+            {companies.map((company) => (
+              <CompanyCard key={company.id} $mediaSize={mediaSize}>
+                <DeleteButton onClick={() => onDelete(company.id)}>
                   <img src={minusIcon} alt="삭제" />
                 </DeleteButton>
                 <Logo
@@ -76,26 +48,16 @@ const CompareListSection = () => {
   return (
     <Wrapper $mediaSize={mediaSize}>
       <Header $mediaSize={mediaSize}>
-        <Title>어떤 기업이 궁금하세요?</Title>
+        <Title>비교할 기업 선택 (최대 5개)</Title>
         <BtnLarge
           label="기업 추가하기"
           type="orange"
           size="small"
-          onClick={handleOpenModal}
+          onClick={onAddClick}
         />
       </Header>
 
       <CardContainer>{renderSelectedCompanies()}</CardContainer>
-
-      {isModalOpen && (
-        <SelectComparison
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          setSelectedCompanies={setSelectedCompanies}
-          selectedCompanies={selectedCompanies}
-          size={mediaSize === "small" ? "small" : "big"}
-        />
-      )}
     </Wrapper>
   );
 };
