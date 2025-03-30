@@ -3,28 +3,17 @@ import styled, { css, keyframes } from "styled-components";
 import arrowDown from "../assets/images/dropdownarrow/arrow.svg";
 import { black_400, gray_200 } from "../styles/colors";
 
-const SORT_OPTIONS = [
-  "View My Startup 투자 금액 높은순",
-  "누적 투자금액 높은순",
-  "누적 투자금액 낮은순",
-  "매출액 높은순",
-  "매출액 낮은순",
-  "고용 인원 많은순",
-  "고용 인원 적은순",
-];
-
-function SortDropdown({ size, options = [] }) {
+function SortDropdown({ size, options = [], value, onChange }) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(options[0] || "");
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setOpen((prev) => !prev);
   const handleSelect = (option) => {
-    setSelected(option);
+    onChange(option); // 부모 컴포넌트로 선택 값 전달
     setOpen(false);
   };
 
-  // 칸 밖에서 클릭할 때에도 list가 닫히게
+  // 드롭다운 외부 클릭 시 닫히게
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -38,14 +27,18 @@ function SortDropdown({ size, options = [] }) {
   return (
     <Wrapper ref={dropdownRef}>
       <DropdownButton $size={size} onClick={toggleDropdown}>
-        <SelectedText>{selected}</SelectedText>
+        <SelectedText>{value}</SelectedText>
         <ArrowIcon src={arrowDown} alt="화살표" $isOpen={open} />
       </DropdownButton>
 
       {open && (
         <DropdownList $isOpen={open}>
           {options.map((option) => (
-            <DropdownItem key={option} onClick={() => handleSelect(option)}>
+            <DropdownItem
+              key={option}
+              onClick={() => handleSelect(option)}
+              $isSelected={option === value}
+            >
               {option}
             </DropdownItem>
           ))}
@@ -101,13 +94,16 @@ const slideDown = keyframes`
 `;
 
 const DropdownList = styled.div`
+  margin-top: 8px;
+
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
 
   background-color: ${black_400};
-  border: 1px solid ${black_400};
+
+  border: 1px solid ${gray_200};
   border-radius: 14px;
   overflow: hidden;
   z-index: 1000;
@@ -124,15 +120,16 @@ const DropdownList = styled.div`
 `;
 
 const DropdownItem = styled.button`
+  display: flex;
+  justify-content: center;
   width: 100%;
   text-align: left;
   padding: 10px 16px;
   color: #fff;
-  background-color: ${black_400};
+  background-color: ${(props) => (props.$isSelected ? "#212121" : black_400)};
   border: none;
   font-size: 12px;
   cursor: pointer;
-
   border-bottom: 1px solid ${gray_200};
 
   &:last-child {
