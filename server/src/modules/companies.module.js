@@ -8,12 +8,14 @@ const companiesRouter = express.Router();
  */
 companiesRouter.get("/", async (req, res, next) => {
   try {
+    const { keyword = "" } = req.query;
     const companies = await prisma.$queryRaw`
       SELECT
         c.*,
         COALESCE(SUM(i.amount), 0) AS "totalVirtualInvestmentAmount"
       FROM "Company" c
       LEFT JOIN "Investment" i ON c.id = i."companyId"
+      WHERE LOWER(c.name) LIKE ${`%${keyword.toLocaleLowerCase()}%`}
       GROUP BY c.id
     `;
     res.json(companies);
