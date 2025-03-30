@@ -12,7 +12,7 @@ function MyCompanyComparison() {
   const [mediaSize, setMediaSize] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [recentCompanies, setRecentCompanies] = useState([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSelect = (c) => {
     setSelectedCompany(c);
@@ -37,7 +37,7 @@ function MyCompanyComparison() {
       alert("기업을 선택해주세요!");
       return;
     }
-  
+
     navigate("/select-company/compare-results", {
       state: {
         selectedCompany,
@@ -47,7 +47,7 @@ function MyCompanyComparison() {
       },
     });
   };
-  
+
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 744) {
@@ -70,60 +70,62 @@ function MyCompanyComparison() {
   return (
     <>
       <Wrap>
-        <h2 className={styles.title}>나의 기업을 선택해 주세요!</h2>
+        <Inner>
+          <h2 className={styles.title}>나의 기업을 선택해 주세요!</h2>
 
-        <div className={styles.addBoxWrapper}>
-          {selectedCompany && (
-            <button className={styles.cancelBtn} onClick={handleCancel}>
-              선택 취소
-            </button>
-          )}
-          <div className={styles.addBox}>
-            {selectedCompany ? (
-              <div className={styles.companyInfo}>
-                <CompanyInfoWrap>
-                  <Logo
-                    src={selectedCompany.imageUrl}
-                    alt={`${selectedCompany.name} 로고`}
-                  />
-                  <div className={styles.infoText}>
-                    <div className={styles.name}>{selectedCompany.name}</div>
-                    <div className={styles.category}>
-                      {selectedCompany.category}
-                    </div>
-                  </div>
-                </CompanyInfoWrap>
-              </div>
-            ) : (
-              <button className={styles.addButton}>
-                <img
-                  src={plusIcon}
-                  alt="추가"
-                  className={styles.plusIcon}
-                  onClick={() => setModalOpen(true)}
-                />
-                기업 추가
+          <div className={styles.addBoxWrapper}>
+            {selectedCompany && (
+              <button className={styles.cancelBtn} onClick={handleCancel}>
+                선택 취소
               </button>
             )}
+            <div className={styles.addBox}>
+              {selectedCompany ? (
+                <div className={styles.companyInfo}>
+                  <CompanyInfoWrap>
+                    <Logo
+                      src={selectedCompany.imageUrl}
+                      alt={`${selectedCompany.name} 로고`}
+                    />
+                    <div className={styles.infoText}>
+                      <div className={styles.name}>{selectedCompany.name}</div>
+                      <div className={styles.category}>
+                        {selectedCompany.category}
+                      </div>
+                    </div>
+                  </CompanyInfoWrap>
+                </div>
+              ) : (
+                <button className={styles.addButton}>
+                  <img
+                    src={plusIcon}
+                    alt="추가"
+                    className={styles.plusIcon}
+                    onClick={() => setModalOpen(true)}
+                  />
+                  기업 추가
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-        <CompareListSection />
+          <CompareListSection />
 
-        <div className={styles.buttonWrapper}>
-          <BtnLarge
-            type={"orange"}
-            size={"big"}
-            label={"기업 비교하기"}
-            onClick={handleCompareClick} //  클릭 시 이동
+          <div className={styles.buttonWrapper}>
+            <BtnLarge
+              type={"orange"}
+              size={"big"}
+              label={"기업 비교하기"}
+              onClick={handleCompareClick} //  클릭 시 이동
+            />
+          </div>
+          <SelectMyEnterprise
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            onSelect={handleSelect}
+            size={mediaSize}
+            recentCompanies={recentCompanies}
           />
-        </div>
-        <SelectMyEnterprise
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          onSelect={handleSelect}
-          size={mediaSize}
-          recentCompanies={recentCompanies}
-        />
+        </Inner>
       </Wrap>
     </>
   );
@@ -134,15 +136,23 @@ export default MyCompanyComparison;
 const Wrap = styled.div`
   background-color: #131313;
   color: #fff;
-  max-width: 1200px;
   min-height: 100vh;
-  padding: 70px 0px 10% 10%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 70px 16px;
+  box-sizing: border-box;
+`;
+
+const Inner = styled.div`
+  width: 100%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
-
-
 
 const CompanyInfoWrap = styled.div`
   display: flex;
