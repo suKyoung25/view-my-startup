@@ -27,7 +27,7 @@ function Search({ size, state = "none", value, onChange, onClear }) {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      console.log(value);
+      console.log(value); // 필요시 검색 API 호출 등 추가 가능
     }
   };
 

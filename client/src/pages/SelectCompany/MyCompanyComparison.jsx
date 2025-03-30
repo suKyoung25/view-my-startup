@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./MyCompanyComparison.module.css";
 import plusIcon from "../../assets/icon/btn_plus.svg";
@@ -11,6 +12,7 @@ function MyCompanyComparison() {
   const [mediaSize, setMediaSize] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [recentCompanies, setRecentCompanies] = useState([]);
+  const navigate = useNavigate(); 
 
   const handleSelect = (c) => {
     setSelectedCompany(c);
@@ -27,6 +29,25 @@ function MyCompanyComparison() {
     setSelectedCompany(null);
   };
 
+  // const handleCompareClick = () => {
+  //   navigate("/select-company/compare-results"); // 이동
+  // };
+  const handleCompareClick = () => {
+    if (!selectedCompany || recentCompanies.length === 0) {
+      alert("기업을 선택해주세요!");
+      return;
+    }
+  
+    navigate("/select-company/compare-results", {
+      state: {
+        selectedCompany,
+        compareCompanies: recentCompanies.filter(
+          (c) => c.id !== selectedCompany.id
+        ),
+      },
+    });
+  };
+  
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 744) {
@@ -60,12 +81,18 @@ function MyCompanyComparison() {
           <div className={styles.addBox}>
             {selectedCompany ? (
               <div className={styles.companyInfo}>
-                <div className={styles.infoText}>
-                  <div className={styles.name}>{selectedCompany.name}</div>
-                  <div className={styles.category}>
-                    {selectedCompany.category}
+                <CompanyInfoWrap>
+                  <Logo
+                    src={selectedCompany.imageUrl}
+                    alt={`${selectedCompany.name} 로고`}
+                  />
+                  <div className={styles.infoText}>
+                    <div className={styles.name}>{selectedCompany.name}</div>
+                    <div className={styles.category}>
+                      {selectedCompany.category}
+                    </div>
                   </div>
-                </div>
+                </CompanyInfoWrap>
               </div>
             ) : (
               <button className={styles.addButton}>
@@ -83,9 +110,13 @@ function MyCompanyComparison() {
         <CompareListSection />
 
         <div className={styles.buttonWrapper}>
-          <BtnLarge type={"black"} size={"big"} label={"기업 비교하기"} />
+          <BtnLarge
+            type={"orange"}
+            size={"big"}
+            label={"기업 비교하기"}
+            onClick={handleCompareClick} //  클릭 시 이동
+          />
         </div>
-
         <SelectMyEnterprise
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
@@ -109,4 +140,19 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+`;
+
+
+
+const CompanyInfoWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const Logo = styled.img`
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
 `;

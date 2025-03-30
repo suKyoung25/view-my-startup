@@ -30,6 +30,7 @@ function HomePage() {
   const [mediaSize, setMediaSize] = useState("");
   const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
   const [companyData, setCompanyData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -60,7 +61,23 @@ function HomePage() {
     setCurrentPage(1);
   };
 
-  const sortedData = [...companyData].sort((a, b) => {
+  const handleSearchChange = (e) => {
+    setSearchKeyword(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSearchClear = () => {
+    setSearchKeyword("");
+    setCurrentPage(1);
+  };
+
+  const filteredData = companyData.filter(
+    (company) =>
+      company.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      company.description.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
+
+  const sortedData = [...filteredData].sort((a, b) => {
     switch (selectedSort) {
       case "누적 투자금액 높은순":
         return b.totalVirtualInvestmentAmount - a.totalVirtualInvestmentAmount;
@@ -91,7 +108,13 @@ function HomePage() {
             <div className={styles.title}>전체 스타트업 목록</div>
 
             <div className={styles.controls}>
-              <Search size={mediaSize} state={"none"} />
+              <Search
+                size={mediaSize}
+                state={"searching"}
+                value={searchKeyword}
+                onChange={handleSearchChange}
+                onClear={handleSearchClear}
+              />
               <SortDropdown
                 size={"medium"}
                 options={sortOptions}
@@ -178,7 +201,7 @@ const StyledTable = styled.table`
 `;
 
 const HeaderRow = styled.tr`
-  border-bottom: 16px solid #131313; // 헤더 아래 여백
+  border-bottom: 16px solid #131313;
 `;
 
 const Th = styled.th`
@@ -196,15 +219,15 @@ const TD = styled.td`
   font-size: 14px;
   text-align: center;
   border-bottom: 1px solid #333;
-  background-color: #212121; // 셀 배경
-  color: #d8d8d8; // 텍스트
+  background-color: #212121;
+  color: #d8d8d8;
   font-family: "Pretendard", sans-serif;
 `;
 
 const PaginationWrap = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 48px; // 테이블과 페이지네이션 사이 간격 추가
+  margin-top: 48px;
 `;
 
 const CompanyCell = styled.div`
