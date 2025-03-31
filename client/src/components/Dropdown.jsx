@@ -13,7 +13,6 @@ function SortDropdown({ size, options = [], value, onChange }) {
     setOpen(false);
   };
 
-  // 드롭다운 외부 클릭 시 닫히게
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {

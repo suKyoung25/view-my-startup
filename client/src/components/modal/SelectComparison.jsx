@@ -6,9 +6,14 @@ import BtnPagination from "../BtnPagination";
 import BtnOutline from "../BtnOutline";
 import { black_300, black_400, gray_200 } from "../../styles/colors";
 
-function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
+function SelectComparison({
+  isOpen,
+  onClose,
+  size,
+  selectedCompanies,
+  setSelectedCompanies,
+}) {
   const [companies, setCompanies] = useState([]);
-  const [selected, setSelected] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [buttonSize, setButtonSize] = useState("big");
@@ -16,11 +21,13 @@ function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
   const itemsPerPage = 5;
 
   const isSearching = searchTerm.trim() !== "";
-  const modalHeight = isSearching
-    ? "858px"
-    : size === "small"
-    ? "112px"
-    : "152px";
+
+  const modalHeight =
+    isSearching || selectedCompanies.length > 0
+      ? "858px"
+      : size === "small"
+      ? "112px"
+      : "152px";
 
   useEffect(() => {
     const updateSize = () => {
@@ -44,25 +51,19 @@ function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
     }
   }, [isOpen]);
 
-  //기업선택
   const handleSelect = (company) => {
-    if (selected.length >= 5) {
+    if (selectedCompanies.length >= 5) {
       alert("비교할 기업은 최대 5개까지 선택 가능합니다.");
       return;
     }
 
-    if (selected.some((c) => c.id === company.id)) return;
+    if (selectedCompanies.some((c) => c.id === company.id)) return;
 
-    const newSelected = [...selected, company];
-    setSelected((prev) => [...prev, company]);
-    setSelectedCompanies(newSelected);
+    setSelectedCompanies((prev) => [...prev, company]);
   };
 
-  // 기업 해제
   const handleRemove = (id) => {
-    setSelected((prev) => prev.filter((company) => company.id !== id));
-    setSelected(updated);
-    setSelectedCompanies(updated);
+    setSelectedCompanies((prev) => prev.filter((company) => company.id !== id));
   };
 
   const filteredCompanies = companies.filter((company) =>
@@ -93,13 +94,19 @@ function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        {selected.length > 0 && (
+        {selectedCompanies.length > 0 && (
           <>
-            <SectionTitle>선택한 기업 ({selected.length})</SectionTitle>
-            {selected.map((company) => (
+            <SectionTitle>
+              선택한 기업 ({selectedCompanies.length})
+            </SectionTitle>
+            {selectedCompanies.map((company) => (
               <CompanyCard key={company.id}>
                 <CompanyInfo>
-                  <LogoPlaceholder />
+                  {company.imageUrl ? (
+                    <Logo src={company.imageUrl} alt={`${company.name} 로고`} />
+                  ) : (
+                    <LogoPlaceholder />
+                  )}
                   <CompanyText>
                     <div>{company.name}</div>
                     <div>{company.category}</div>
@@ -108,8 +115,7 @@ function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
                 <BtnOutline
                   text="cancel"
                   type="black"
-                  size={buttonSize}
-                  src=""
+                  size="small"
                   onClick={() => handleRemove(company.id)}
                 />
               </CompanyCard>
@@ -122,12 +128,21 @@ function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
           <>
             <SectionTitle>검색 결과 ({filteredCompanies.length})</SectionTitle>
             {currentCompanies.map((company) => {
-              const isSelected = selected.some((c) => c.id === company.id);
+              const isSelected = selectedCompanies.some(
+                (c) => c.id === company.id
+              );
 
               return (
                 <CompanyCard key={company.id}>
                   <CompanyInfo>
-                    <LogoPlaceholder />
+                    {company.imageUrl ? (
+                      <Logo
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                    ) : (
+                      <LogoPlaceholder />
+                    )}
                     <CompanyText>
                       <div>{company.name}</div>
                       <div>{company.category}</div>
@@ -145,7 +160,6 @@ function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
                       text="choice"
                       type="orange"
                       size={buttonSize}
-                      src=""
                       onClick={() => handleSelect(company)}
                     />
                   )}
@@ -163,7 +177,7 @@ function SelectComparison({ isOpen, onClose, setSelectedCompanies, size }) {
               />
             </PaginationWrapper>
 
-            {selected.length >= 5 && (
+            {selectedCompanies.length >= 5 && (
               <Warning>*비교할 기업은 최대 5개까지 선택 가능합니다.</Warning>
             )}
           </>
@@ -193,8 +207,9 @@ const ModalWrapper = styled.div`
   padding: 24px;
   border-radius: 16px;
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
-  height: ${(props) => props.$height};
+  max-height: 90vh;
   overflow-y: auto;
+  height: fit-content;
   z-index: 999;
 `;
 
@@ -214,19 +229,27 @@ const SectionTitle = styled.div`
 `;
 
 const CompanyCard = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #1e1e1e;
   padding: 12px;
   margin-bottom: 8px;
   border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const CompanyInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
+`;
+
+const Logo = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 const LogoPlaceholder = styled.div`
@@ -237,15 +260,19 @@ const LogoPlaceholder = styled.div`
 `;
 
 const CompanyText = styled.div`
+  margin-left: 16px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 16px;
+  flex-direction: row;
+  align-items: baseline;
+
   div:first-child {
+    font-size: 16px;
     font-weight: bold;
   }
+
   div:last-child {
     font-size: 14px;
+    margin: 8px;
     color: ${gray_200};
   }
 `;

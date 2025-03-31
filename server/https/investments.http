@@ -1,11 +1,11 @@
-### [1] 투자금 입력 // 뱅크샐러드, 무신사, 센드버드
+### [1] 투자금 입력 (핀캐시, 뱅크샐러드, 야놀자)
 POST http://localhost:7777/api/investments
 Content-Type: application/json
 
 {
   "investorName": "투자자1",
   "password": "password1",
-  "companyId": "cm8qxqjvt000quu2rtydqmkqc",  
+  "companyId": "cm8shxv5j0002uuolqm9ekje7",  
   "amount": 100,
   "comment": "기대되는 스타트업이에요!"
 }
@@ -19,7 +19,7 @@ Content-Type: application/json
 {
   "investorName": "투자자2",
   "password": "password2",
-  "companyId": "cm8qxqjvt0009uu2r5h8yfdu5",
+  "companyId": "cm8shxv5k000quuols40utrif",
   "amount": 80,
   "comment": "기술력이 탄탄합니다."
 }
@@ -31,7 +31,7 @@ Content-Type: application/json
 {
   "investorName": "투자자3",
   "password": "password2",
-  "companyId": "cm8qxqjvt000muu2r4r13p86b", 
+  "companyId": "cm8shxv5k0008uuolvlxmuybt", 
   "amount": 80,
   "comment": "기술력이 탄탄합니다."
 }
