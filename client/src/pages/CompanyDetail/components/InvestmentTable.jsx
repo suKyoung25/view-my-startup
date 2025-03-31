@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import dropdown from "../../../assets/icon/btn_dropdown.png";
 import ModalPassword from "../../../components/modal/Password";
@@ -14,37 +14,39 @@ import {
 } from "../../../styles/colors";
 
 function InvestmentTable({ data = [] }) {
-  const sortedData = data.sort((a, b) => b.amount - a.amount);
+  const sortedData = [...data].sort((a, b) => b.amount - a.amount);
 
   return (
-    <Table>
-      <thead>
-        <tr>
-          <Th>투자자 이름</Th>
-          <Th>순위</Th>
-          <Th>투자 금액</Th>
-          <Th>투자 코멘트</Th>
-          <Th></Th>
-        </tr>
-      </thead>
-      <tbody>
-        {sortedData.length === 0 ? (
-          <Tr>
-            <Td colSpan="5" className="no-investment-message">
-              아직 투자한 기업이 없어요, 버튼을 눌러 기업에 투자해보세요
-            </Td>
-          </Tr>
-        ) : (
-          sortedData.map((investment, index) => (
-            <InvestmentRow
-              key={investment.id} // Use `id` for key to ensure uniqueness
-              investment={investment}
-              index={index}
-            />
-          ))
-        )}
-      </tbody>
-    </Table>
+    <>
+      <Table>
+        <thead>
+          <tr>
+            <Th>투자자 이름</Th>
+            <Th>순위</Th>
+            <Th>투자 금액</Th>
+            <Th>투자 코멘트</Th>
+            <Th></Th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedData.length === 0 ? (
+            <Tr>
+              <Td colSpan="5" className="no-investment-message">
+                아직 투자한 기업이 없어요, 버튼을 눌러 기업에 투자해보세요
+              </Td>
+            </Tr>
+          ) : (
+            sortedData.map((investment, index) => (
+              <InvestmentRow
+                key={investment.id}
+                investment={investment}
+                index={index}
+              />
+            ))
+          )}
+        </tbody>
+      </Table>
+    </>
   );
 }
 
@@ -59,14 +61,14 @@ const InvestmentRow = ({ investment, index }) => {
   };
 
   const handleDeleteClick = () => {
-    setIsPasswordModalOpen(true); // Open password modal to confirm deletion
+    setIsPasswordModalOpen(true); // 비밀번호 입력 모달 열기
   };
 
   const handlePasswordSubmit = (password) => {
     if (password === investment.encryptedPassword) {
-      setPopupType("delete-success"); // Show success popup if passwords match
+      setPopupType("delete-success"); // 삭제 성공 메시지
     } else {
-      setPopupType("error"); // Show error popup if passwords do not match
+      setPopupType("error"); // 비밀번호 불일치 메시지
     }
     setIsPopupOpen(true);
     setIsPasswordModalOpen(false);
@@ -76,13 +78,19 @@ const InvestmentRow = ({ investment, index }) => {
     setIsPopupOpen(false);
   };
 
+  // ✅ 모달이 열리면 드롭다운 닫기
+  useEffect(() => {
+    if (isPasswordModalOpen || isPopupOpen) {
+      setIsDropdownOpen(false);
+    }
+  }, [isPasswordModalOpen, isPopupOpen]);
+
   return (
     <>
       <Tr>
         <Td>{investment.investorName}</Td>
         <Td>{index + 1}위</Td>
-        <Td>{investment.amount.toFixed(1)}억</Td>{" "}
-        {/* Format the amount as a number */}
+        <Td>{investment.amount.toFixed(1)}억</Td>
         <Td>{investment.comment}</Td>
         <Td>
           <Dropdown>
@@ -101,6 +109,7 @@ const InvestmentRow = ({ investment, index }) => {
         </Td>
       </Tr>
 
+      {/* 모달과 팝업을 tbody 바깥에 위치 */}
       {isPasswordModalOpen && (
         <ModalPassword
           onClose={() => setIsPasswordModalOpen(false)}
@@ -109,11 +118,7 @@ const InvestmentRow = ({ investment, index }) => {
       )}
 
       {isPopupOpen && (
-        <PopupOneButton
-          onConfirm={handlePopupClose}
-          onCancel={handlePopupClose}
-          type={popupType}
-        />
+        <PopupOneButton onClose={handlePopupClose} type={popupType} />
       )}
     </>
   );
