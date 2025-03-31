@@ -14,7 +14,7 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
   const [inputValuePassword, setInputValuePassword] = useState("");
   const [inputValueCheckPassword, setInputValueCheckPassword] = useState("");
 
-  //useEffect를 사용하지 않아도 됨
+  //useEffect를 사용하지 않고 투자하기 버튼 활성화 여부 확인
   const isInvestButtonAvailable =
     inputValueName.trim().length > 0 &&
     inputValueComment.trim().length > 0 &&
