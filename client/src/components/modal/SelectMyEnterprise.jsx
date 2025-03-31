@@ -20,10 +20,42 @@ function SelectMyEnterprise({
   const [companies, setCompanies] = useState([]);
   const [mediaSize, setMediaSize] = useState("");
 
-  const handleCompanySelect = (c) => {
-    if (onSelect) {
-      onSelect(c);
-    }
+  // 한글 초성 배열
+  const CHO_LIST = [
+    "ㄱ",
+    "ㄲ",
+    "ㄴ",
+    "ㄷ",
+    "ㄸ",
+    "ㄹ",
+    "ㅁ",
+    "ㅂ",
+    "ㅃ",
+    "ㅅ",
+    "ㅆ",
+    "ㅇ",
+    "ㅈ",
+    "ㅉ",
+    "ㅊ",
+    "ㅋ",
+    "ㅌ",
+    "ㅍ",
+    "ㅎ",
+  ];
+
+  // 초성 추출 함수
+  const Chosung = (t) => {
+    return t
+      .split("")
+      .map((char) => {
+        const code = char.charCodeAt(0);
+        if (code >= 44032 && code <= 55203) {
+          const cho = Math.floor((code - 44032) / 588);
+          return CHO_LIST[cho];
+        }
+        return "";
+      })
+      .join("");
   };
 
   function updateMediaSize() {
@@ -48,9 +80,7 @@ function SelectMyEnterprise({
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await client.get("/api/companies", {
-          params: { keyword },
-        });
+        const res = await client.get("/api/companies");
         setCompanies(res.data);
       } catch (e) {
         console.error("기업 불러오기 실패:", e);
@@ -58,14 +88,34 @@ function SelectMyEnterprise({
     };
 
     fetchCompanies();
-  }, [keyword]);
+  }, []);
+
+  // 초성추출함수로 기업명 조회하기
+  const filteredCompanies = useMemo(() => {
+    const query = keyword.trim().toLowerCase();
+    if (!query) return [];
+
+    return companies.filter((company) => {
+      const chosungName = Chosung(company.name.toLowerCase());
+      return (
+        company.name.toLowerCase().includes(query) || // -> keyword
+        chosungName.startsWith(query)
+      ); // 아니면 초성
+    });
+  }, [keyword, companies]);
 
   // 페이지네이션 계산
-  const totalPages = Math.ceil(companies.length / perPage);
-  const currentData = companies.slice(
+  const totalPages = Math.ceil(filteredCompanies.length / perPage);
+  const currentData = filteredCompanies.slice(
     (currentPage - 1) * perPage,
     currentPage * perPage
   );
+
+  const handleCompanySelect = (c) => {
+    if (onSelect) {
+      onSelect(c);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -112,7 +162,7 @@ function SelectMyEnterprise({
         {/* 검색 결과 영역 */}
         {keyword.trim() !== "" && (
           <>
-            <SectionTitle>검색결과 ({companies.length})</SectionTitle>
+            <SectionTitle>검색결과 ({filteredCompanies.length})</SectionTitle>
             <CompanyList>
               {currentData.map((c) => (
                 <CompanyItem key={c.id}>
@@ -156,10 +206,10 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 `;
 
 const Container = styled.div`
-  position: relative;
   background-color: ${black_300};
   border-radius: 16px;
   padding: 24px;
@@ -173,9 +223,15 @@ const Container = styled.div`
 
 const Title = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 24px;
+  align-items: center;
+  margin-bottom: 16px;
+
+  img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
 `;
 
 const SectionTitle = styled.div`
@@ -222,6 +278,7 @@ const SelectBtn = styled.button`
   border-radius: 6px;
   padding: 4px 10px;
   font-size: 12px;
+  cursor: pointer;
 `;
 
 const Pagination = styled.div`
