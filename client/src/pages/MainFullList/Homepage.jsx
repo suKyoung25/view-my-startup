@@ -5,8 +5,17 @@ import React, { useEffect, useState } from "react";
 import SortDropdown from "../../components/Dropdown";
 import styled from "styled-components";
 import companyAPI from "../../api/company.api";
+import { Link } from "react-router-dom";
 
 function HomePage() {
+  const [mediaSize, setMediaSize] = useState("");
+  const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
+  const [companyData, setCompanyData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  //table row 항목
   const columns = [
     { label: "순위", name: "ranking", width: "6%" },
     { label: "기업명", name: "name", width: "12%" },
@@ -17,6 +26,7 @@ function HomePage() {
     { label: "고용 인원", name: "employees", width: "10%" },
   ];
 
+  //dropdown 항목
   const sortOptions = [
     "누적 투자금액 높은순",
     "누적 투자금액 낮은순",
@@ -26,13 +36,7 @@ function HomePage() {
     "고용 인원 적은순",
   ];
 
-  const [mediaSize, setMediaSize] = useState("");
-  const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
-  const [companyData, setCompanyData] = useState([]);
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
+  //반응형 디자인
   useEffect(() => {
     const updateMediaSize = () => {
       const { innerWidth: width } = window;
@@ -43,6 +47,7 @@ function HomePage() {
     return () => window.removeEventListener("resize", updateMediaSize);
   }, []);
 
+  //초기 렌더링될 데이터 가져오기
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -115,7 +120,7 @@ function HomePage() {
                 onClear={handleSearchClear}
               />
               <SortDropdown
-                size={"medium"}
+                size={mediaSize}
                 options={sortOptions}
                 value={selectedSort}
                 onChange={handleSortChange}
@@ -141,10 +146,16 @@ function HomePage() {
                     <TD>
                       <CompanyCell>
                         <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
-                        {item.name}
+                        <Link to={`/company-detail/${item.id}`}>
+                          {item.name}
+                        </Link>
                       </CompanyCell>
                     </TD>
-                    <TD>{item.description}</TD>
+                    <TD>
+                      <Link to={`/company-detail/${item.id}`}>
+                        {item.description}
+                      </Link>
+                    </TD>
                     <TD>{item.category}</TD>
                     <TD>
                       {item.totalVirtualInvestmentAmount?.toLocaleString()}억 원
