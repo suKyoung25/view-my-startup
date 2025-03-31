@@ -65,8 +65,6 @@ const CompareListSection = ({ companies = [], onAddClick, onDelete }) => {
 export default CompareListSection;
 
 const Wrapper = styled.section`
-  padding: ${({ $mediaSize }) =>
-    $mediaSize === "big" ? "32px" : $mediaSize === "medium" ? "24px" : "16px"};
   color: white;
 `;
 
@@ -83,12 +81,10 @@ const Header = styled.div`
 
 const Title = styled.h2`
   font-size: 20px;
-  margin-bottom: 16px;
 `;
 
 const CardContainer = styled.div`
   min-height: 150px;
-  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
