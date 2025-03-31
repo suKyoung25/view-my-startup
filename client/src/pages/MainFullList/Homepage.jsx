@@ -1,5 +1,4 @@
 import styles from "./Homepage.module.css";
-import TableHeader from "../../components/TableHeader";
 import Search from "../../components/Search";
 import BtnPagination from "../../components/BtnPagination";
 import React, { useEffect, useState } from "react";
@@ -30,6 +29,7 @@ function HomePage() {
   const [mediaSize, setMediaSize] = useState("");
   const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
   const [companyData, setCompanyData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -60,7 +60,23 @@ function HomePage() {
     setCurrentPage(1);
   };
 
-  const sortedData = [...companyData].sort((a, b) => {
+  const handleSearchChange = (e) => {
+    setSearchKeyword(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSearchClear = () => {
+    setSearchKeyword("");
+    setCurrentPage(1);
+  };
+
+  const filteredData = companyData.filter(
+    (company) =>
+      company.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      company.description.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
+
+  const sortedData = [...filteredData].sort((a, b) => {
     switch (selectedSort) {
       case "누적 투자금액 높은순":
         return b.totalVirtualInvestmentAmount - a.totalVirtualInvestmentAmount;
@@ -91,38 +107,55 @@ function HomePage() {
             <div className={styles.title}>전체 스타트업 목록</div>
 
             <div className={styles.controls}>
-              <Search size={mediaSize} state={"none"} />
+              <Search
+                size={mediaSize}
+                state={"searching"}
+                value={searchKeyword}
+                onChange={handleSearchChange}
+                onClear={handleSearchClear}
+              />
               <SortDropdown
                 size={"medium"}
                 options={sortOptions}
+                value={selectedSort}
                 onChange={handleSortChange}
-                defaultOption={selectedSort}
               />
             </div>
           </div>
 
-          <table className={styles.table}>
+          <StyledTable>
             <thead>
-              <TableHeader columns={columns} />
+              <HeaderRow>
+                {columns.map(({ label, name, width }, i) => (
+                  <Th key={name || i} style={{ width }}>
+                    {label}
+                  </Th>
+                ))}
+              </HeaderRow>
             </thead>
             <tbody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((item, index) => (
                   <tr key={item.id || index}>
-                    <td>{startIndex + index + 1}위</td>
-                    <td>{item.name}</td>
-                    <td>{item.description}</td>
-                    <td>{item.category}</td>
-                    <td>
+                    <TD>{startIndex + index + 1}위</TD>
+                    <TD>
+                      <CompanyCell>
+                        <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
+                        {item.name}
+                      </CompanyCell>
+                    </TD>
+                    <TD>{item.description}</TD>
+                    <TD>{item.category}</TD>
+                    <TD>
                       {item.totalVirtualInvestmentAmount?.toLocaleString()}억 원
-                    </td>
-                    <td>{item.revenue?.toLocaleString()}억 원</td>
-                    <td>{item.numberOfEmployees?.toLocaleString()}명</td>
+                    </TD>
+                    <TD>{item.revenue?.toLocaleString()}억 원</TD>
+                    <TD>{item.numberOfEmployees?.toLocaleString()}명</TD>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td
+                  <TD
                     colSpan={columns.length}
                     style={{
                       textAlign: "center",
@@ -131,13 +164,13 @@ function HomePage() {
                     }}
                   >
                     표시할 스타트업 데이터가 없습니다.
-                  </td>
+                  </TD>
                 </tr>
               )}
             </tbody>
-          </table>
+          </StyledTable>
 
-          <div className={styles.pagination}>
+          <PaginationWrap>
             <BtnPagination
               size={"big"}
               currentPage={currentPage}
@@ -145,7 +178,7 @@ function HomePage() {
               totalItems={sortedData.length}
               onPageChange={(page) => setCurrentPage(page)}
             />
-          </div>
+          </PaginationWrap>
         </div>
       </div>
     </Wrap>
@@ -154,8 +187,57 @@ function HomePage() {
 
 export default HomePage;
 
+// styled-components
 const Wrap = styled.div`
   background-color: #131313;
   min-height: 100vh;
   width: 100%;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+const HeaderRow = styled.tr`
+  border-bottom: 16px solid #131313;
+`;
+
+const Th = styled.th`
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background-color: #2e2e2e;
+  white-space: nowrap;
+  text-align: center;
+`;
+
+const TD = styled.td`
+  padding: 20px 16px;
+  font-size: 14px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+  background-color: #212121;
+  color: #d8d8d8;
+  font-family: "Pretendard", sans-serif;
+`;
+
+const PaginationWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+`;
+
+const CompanyCell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const Logo = styled.img`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 `;

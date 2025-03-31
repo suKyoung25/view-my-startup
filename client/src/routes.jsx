@@ -16,7 +16,10 @@ const routes = () => {
           <Route path="/select-company" element={<MyCompanyComparison />} />
           <Route path="/invest-status" element={<InvestStatus />} />
           <Route path="/compare-status" element={<CompareStatus />} />
-          <Route path="/company-detail" element={<CompanyDetail />} />
+          <Route
+            path="/company-detail/:companyId"
+            element={<CompanyDetail />}
+          />
           <Route
             path="/select-company/compare-results"
             element={<CompareResults />}

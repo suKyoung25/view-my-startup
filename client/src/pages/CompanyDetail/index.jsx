@@ -1,69 +1,104 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { black_400, black_200, gray_100, gray_200 } from "../../styles/colors";
-import company from "../../assets/images/company/sample.png";
+import companyAPI from "../../api/company.api";
+import investmentAPI from "../../api/investment.api";
 import BtnLarge from "../../components/BtnLarge";
 import BtnPagination from "../../components/BtnPagination";
 import AmountCard from "./components/AmountCard";
 import InvestmentTable from "./components/InvestmentTable";
+import InvestmentModal from "../../components/modal/InvestmentModal";
+import { useParams } from "react-router-dom";
+import sampleImg from "../../assets/images/company/sample.png";
 
-function CompanyDetail({
-  size = "big",
-  src = company,
-  companyName = "코드잇",
-  category = "에듀테크",
-  introduce = "~~~~~",
-  totalAmount = 140,
-  salesRevenue = 44.3,
-  numOfEmployees = 95,
-  acc = 200,
-  investors = [], // 투자자 데이터 추가
-}) {
+function CompanyDetail({ size = "big" }) {
+  const { companyId } = useParams();
+  console.log("companyId:", companyId);
+  console.log("Received props:", size);
+
+  const [companyData, setCompanyData] = useState(null);
+  const [investors, setInvestors] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!companyId) {
+      console.error("companyId is undefined");
+      return;
+    }
+    const fetchData = async () => {
+      try {
+        const company = await companyAPI.getCompanyById(companyId);
+        const investments = await investmentAPI.getAllInvestment();
+        setCompanyData(company);
+        setInvestors(investments.filter((inv) => inv.company.id === companyId));
+      } catch (error) {
+        console.error("Error fetching company data:", error);
+      }
+    };
+    fetchData();
+  }, [companyId]);
+
+  if (!companyData) return <p>Loading...</p>;
+
   return (
     <Wrap>
       <CompanyDetailWrap>
-        {/* 회사 정보 */}
         <CompanyContainer $size={size}>
-          <Img $size={size} src={src} alt="Company" />
+          <Img
+            $size={size}
+            src={companyData?.imageUrl || sampleImg} // imageUrl이 없을 경우 기본 이미지 경로 지정
+            alt="Company"
+          />
           <TitleWrap>
-            <Title $size={size}>{companyName}</Title>
-            <Discription $size={size}>{category}</Discription>
+            <Title $size={size}>{companyData.name}</Title>
+            <Discription $size={size}>{companyData.category}</Discription>
           </TitleWrap>
         </CompanyContainer>
 
-        {/* 주요 지표 */}
         <AmountCardContainer>
-          <AmountCard char="누적 투자 금액" type="price" number={totalAmount} />
-          <AmountCard char="매출액" type="price" number={salesRevenue} />
-          <AmountCard char="고용 인원" type="people" number={numOfEmployees} />
+          <AmountCard
+            char="누적 투자 금액"
+            type="price"
+            number={companyData.realInvestmentAmount}
+          />
+          <AmountCard char="매출액" type="price" number={companyData.revenue} />
+          <AmountCard
+            char="고용 인원"
+            type="people"
+            number={companyData.numberOfEmployees}
+          />
         </AmountCardContainer>
 
-        {/* 기업 소개 */}
         <IntroContainer>
           <IntroTitle>기업 소개</IntroTitle>
-          <IntroText>{introduce}</IntroText>
+          <IntroText>{companyData.description}</IntroText>
         </IntroContainer>
 
-        {/* 투자 정보 및 버튼 */}
         <InvestContainer>
           <InvestTitle>View My Startup에서 받은 투자</InvestTitle>
-          <BtnLarge type={"orange"} size={"big"} label="기업 투자하기" />
+          <BtnLarge
+            type="orange"
+            size={size}
+            label="기업 투자하기"
+            onClick={() => setIsModalOpen(true)}
+          />
         </InvestContainer>
 
         <Hr />
 
-        {/* 투자자 목록 */}
         <TableWrap>
-          <TotalAmount>총 {acc}억 원</TotalAmount>
-          <InvestmentTable data={investors} />{" "}
-          {/* UserTable에 투자자 데이터 전달 */}
+          <TotalAmount>총 {companyData.virtualInvestments}억 원</TotalAmount>
+          <InvestmentTable data={investors} />
         </TableWrap>
 
-        {/* 페이지네이션 */}
         <PaginationWrap>
-          <BtnPagination size={"big"} />
+          <BtnPagination size="big" />
         </PaginationWrap>
       </CompanyDetailWrap>
+
+      {isModalOpen && (
+        <InvestmentModal onClose={() => setIsModalOpen(false)} size={size} />
+      )}
     </Wrap>
   );
 }

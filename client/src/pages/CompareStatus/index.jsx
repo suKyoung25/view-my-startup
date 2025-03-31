@@ -96,11 +96,12 @@ function CompareStatus() {
       <Content>
         <TopBar>
           <Title>비교 현황</Title>
+
           <Dropdown
             size={mediaSize}
             options={sortOptions}
-            onChange={handleSortChange}
-            defaultOption={selectedSort}
+            value={selectedSort} // 현재 선택된 정렬 기준
+            onChange={handleSortChange} // 선택 바뀔 때 실행할 함수
           />
         </TopBar>
 
@@ -113,7 +114,12 @@ function CompareStatus() {
               {paginatedData.map((item, index) => (
                 <tr key={item.id}>
                   <TD>{startIndex + index + 1}위</TD>
-                  <TD>{item.name}</TD>
+                  <TD>
+                    <CompanyCell>
+                      <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
+                      {item.name}
+                    </CompanyCell>
+                  </TD>
                   <TD>{item.description}</TD>
                   <TD>{item.category}</TD>
                   <TD>{item.pickAsMyStartupCount.toLocaleString()}회</TD>
@@ -184,11 +190,30 @@ const PaginationWrap = styled.div`
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+
+  thead tr {
+    border-bottom: 16px solid #131313; // 헤더 아래 간격
+  }
 `;
 
 const TD = styled.td`
-  padding: 12px 16px;
+  padding: 20px 16px;
   border-bottom: 1px solid #333;
   font-size: 14px;
+  background-color: #212121; // 셀 배경색 적용
+  color: #d8d8d8; // 텍스트 색상 적용
   text-align: center;
+`;
+
+const CompanyCell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const Logo = styled.img`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 `;

@@ -1,88 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import InputField from "../components/InputField";
 import BtnLarge from "../components/BtnLarge";
 import { gray_200 } from "../styles/colors";
-import SelectComparison from "../components/modal/SelectComparison";
+import minusIcon from "../assets/icon/ic_minus.svg";
 
-const CompareListSection = () => {
-  const [selectedCompanies, setSelectedCompanies] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mediaSize, setMediaSize] = useState("");
-
-  function updateMediaSize() {
-    const { innerWidth: width } = window;
-    if (width >= 1200) {
-      setMediaSize("big");
-    } else if (width > 744) {
-      setMediaSize("medium");
-    } else {
-      setMediaSize("small");
-    }
-  }
-
-  useEffect(() => {
-    updateMediaSize();
-    window.addEventListener("resize", updateMediaSize);
-    return () => {
-      window.removeEventListener("resize", updateMediaSize);
-    };
-  }, []);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+const CompareListSection = ({ companies = [], onAddClick, onDelete }) => {
+  const mediaSize =
+    typeof window !== "undefined"
+      ? window.innerWidth >= 1200
+        ? "big"
+        : window.innerWidth > 744
+        ? "medium"
+        : "small"
+      : "medium";
 
   const renderSelectedCompanies = () => {
-    if (selectedCompanies.length === 0) {
-      return (
-        <InputField variant="default" mediaSize={mediaSize}>
+    return (
+      <InputField variant="default" mediaSize={mediaSize}>
+        {companies.length === 0 ? (
           <EmptyText>
             아직 추가한 기업이 없어요. <br />
             버튼을 눌러 기업을 추가해보세요!
           </EmptyText>
-        </InputField>
-      );
-    }
-
-    return selectedCompanies.map((company, index) => (
-      <CompanyCard key={index}>{company.name}</CompanyCard>
-    ));
+        ) : (
+          <CardGrid>
+            {companies.map((company) => (
+              <CompanyCard key={company.id} $mediaSize={mediaSize}>
+                <DeleteButton onClick={() => onDelete(company.id)}>
+                  <img src={minusIcon} alt="삭제" />
+                </DeleteButton>
+                <Logo
+                  src={company.imageUrl || ""}
+                  alt={`${company.name} 로고`}
+                  $mediaSize={mediaSize}
+                />
+                <CompanyName>{company.name}</CompanyName>
+                <CompanyCategory>{company.category}</CompanyCategory>
+              </CompanyCard>
+            ))}
+          </CardGrid>
+        )}
+      </InputField>
+    );
   };
 
   return (
-    <Wrapper mediaSize={mediaSize}>
+    <Wrapper $mediaSize={mediaSize}>
       <Header $mediaSize={mediaSize}>
-        <Title>어떤 기업이 궁금하세요?</Title>
+        <Title>비교할 기업 선택 (최대 5개)</Title>
         <BtnLarge
           label="기업 추가하기"
           type="orange"
           size="small"
-          onClick={handleOpenModal}
+          onClick={onAddClick}
         />
       </Header>
 
       <CardContainer>{renderSelectedCompanies()}</CardContainer>
-
-      <ButtonWrapper>
-        <BtnLarge
-          label="기업 비교하기"
-          type={selectedCompanies.length === 0 ? "black" : "orange"}
-          size="big"
-          disabled={selectedCompanies.length === 0}
-        />
-      </ButtonWrapper>
-
-      {isModalOpen && (
-        <SelectComparison
-          onClose={handleCloseModal}
-          setSelectedCompanies={setSelectedCompanies}
-        />
-      )}
     </Wrapper>
   );
 };
@@ -126,13 +101,53 @@ const EmptyText = styled.p`
   text-align: center;
 `;
 
-const CompanyCard = styled.div`
-  padding: 12px;
-  border-radius: 8px;
+const CardGrid = styled.div`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
+const CompanyCard = styled.div`
+  position: relative;
+  width: ${({ $mediaSize }) => ($mediaSize === "small" ? "104px" : "126px")};
+  height: ${({ $mediaSize }) => ($mediaSize === "small" ? "163px" : "187px")};
+  background: #2c2c2c;
+  border-radius: 8px;
+  text-align: center;
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  margin: 8px;
+  top: 6px;
+  right: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const Logo = styled.img`
+  width: ${({ $mediaSize }) => ($mediaSize === "small" ? "65px" : "80px")};
+  height: ${({ $mediaSize }) => ($mediaSize === "small" ? "65px" : "80px")};
+  object-fit: cover;
+  border-radius: 50%;
+  margin-top: 32px;
+  margin-bottom: 10px;
+`;
+
+const CompanyName = styled.div`
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-weight: bold;
+`;
+
+const CompanyCategory = styled.div`
+  font-size: 14px;
+  color: ${gray_200};
 `;
