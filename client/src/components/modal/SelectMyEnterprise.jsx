@@ -110,10 +110,13 @@ function SelectMyEnterprise({
             <CompanyList>
               {recentCompanies.map((company) => (
                 <CompanyItem key={company.id}>
-                  <Info>
-                    <div className="name">{company.name}</div>
-                    <div className="tagline">{company.category}</div>
-                  </Info>
+                  <CompanyCell>
+                    <Logo src={company.imageUrl || "/default-image.png"} alt={`${company.name} 로고`} />
+                    <Info>
+                      <div className="name">{company.name}</div>
+                      <div className="tagline">{company.category}</div>
+                    </Info>
+                  </CompanyCell>
                   <SelectBtn onClick={() => handleCompanySelect(company)}>
                     선택하기
                   </SelectBtn>
@@ -133,10 +136,13 @@ function SelectMyEnterprise({
               <CompanyList>
                 {currentData.map((c) => (
                   <CompanyItem key={c.id}>
-                    <Info>
-                      <div className="name">{c.name}</div>
-                      <div className="tagline">{c.category}</div>
-                    </Info>        
+                    <CompanyCell>
+                      <Logo src={c.imageUrl || "/default-image.png"} alt={`${c.name} 로고`} />
+                      <Info>
+                        <div className="name">{c.name}</div>
+                        <div className="tagline">{c.category}</div>
+                      </Info>
+                    </CompanyCell>     
                     <SelectBtn onClick={() => handleCompanySelect(c)}>
                       선택하기
                     </SelectBtn>
