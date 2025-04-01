@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Search from "../Search";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnPagination from "../BtnPagination";
 import BtnOutline from "../BtnOutline";
 import { black_300, black_400, gray_200 } from "../../styles/colors";
+import Hangul from "hangul-js";
 
 function SelectComparison({
   isOpen,
@@ -14,13 +15,18 @@ function SelectComparison({
   setSelectedCompanies,
 }) {
   const [companies, setCompanies] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [searchTokens, setSearchTokens] = useState({
+    raw: "",
+    disassembled: "",
+    cho: "",
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [buttonSize, setButtonSize] = useState("big");
   const [searchSize, setSearchSize] = useState("big");
   const itemsPerPage = 5;
 
-  const isSearching = searchTerm.trim() !== "";
+  const isSearching = keyword.trim() !== "";
 
   const modalHeight =
     isSearching || selectedCompanies.length > 0
@@ -66,9 +72,21 @@ function SelectComparison({
     setSelectedCompanies((prev) => prev.filter((company) => company.id !== id));
   };
 
-  const filteredCompanies = companies.filter((company) =>
-    company.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCompanies = useMemo(() => {
+    const input = searchTokens.raw;
+    if (!input || companies.length === 0) return [];
+
+    return companies.filter((company) => {
+      const name = company.name.toLowerCase();
+      if (Hangul.isConsonant(input[0])) {
+        const firstChar = name[0];
+        const firstCho = Hangul.disassemble(firstChar)[0];
+        return firstCho === input[0];
+      } else {
+        return name.startsWith(input);
+      }
+    });
+  }, [searchTokens, companies]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -90,8 +108,17 @@ function SelectComparison({
 
         <Search
           size={searchSize}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          state="searching"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onClear={() => {
+            setKeyword("");
+            setSearchTokens({ raw: "", disassembled: "", cho: "" });
+          }}
+          onSearch={(tokens) => {
+            setSearchTokens(tokens);
+            setCurrentPage(1);
+          }}
         />
 
         {selectedCompanies.length > 0 && (
@@ -126,7 +153,7 @@ function SelectComparison({
 
         {isSearching && (
           <>
-            <SectionTitle>검색 결과 ({filteredCompanies.length})</SectionTitle>
+            <SectionTitle> ({filteredCompanies.length})</SectionTitle>
             {currentCompanies.map((company) => {
               const isSelected = selectedCompanies.some(
                 (c) => c.id === company.id
