@@ -4,7 +4,12 @@ import Search from "../Search";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnPagination from "../BtnPagination";
 import BtnOutline from "../BtnOutline";
-import { black_300, black_400, gray_200 } from "../../styles/colors";
+import {
+  black_300,
+  black_400,
+  brand_orange,
+  gray_200,
+} from "../../styles/colors";
 import Hangul from "hangul-js";
 
 function SelectComparison({
@@ -201,7 +206,7 @@ function SelectComparison({
 
             <PaginationWrapper>
               <BtnPagination
-                size="small"
+                size={buttonSize}
                 currentPage={currentPage}
                 itemsPerPage={itemsPerPage}
                 totalItems={filteredCompanies.length}
@@ -322,7 +327,7 @@ const PaginationWrapper = styled.div`
 `;
 
 const Warning = styled.p`
-  color: #ff5f5f;
+  color: ${brand_orange}
   font-size: 13px;
   text-align: right;
   margin-top: 12px;

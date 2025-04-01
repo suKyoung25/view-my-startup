@@ -8,6 +8,7 @@ import BtnLarge from "../../components/BtnLarge";
 import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
 import SelectComparison from "../../components/modal/SelectComparison";
 import CompareListSection from "../../components/CompareListSection";
+import resultCompareAPI from "../../api/resultCompare.api";
 
 function MyCompanyComparison() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,6 +67,15 @@ function MyCompanyComparison() {
         compareCompanyIds,
       },
     });
+
+    //기업 비교 버튼 클릭 시 기업 선택 횟수 증가
+    const increaseCount = async () => {
+      try {
+        const data = await resultCompareAPI.getCompareStatus({ sortBy, order });
+      } catch (e) {
+        console.error("기업 선택 횟수를 증가시킬 수 없음.", e);
+      }
+    };
   };
 
   function updateMediaSize() {
