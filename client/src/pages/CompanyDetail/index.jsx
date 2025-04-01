@@ -15,7 +15,6 @@ function CompanyDetail() {
   const { companyId } = useParams();
   console.log("companyId:", companyId);
 
-  const [mediaSize, setMediaSize] = useState("");
   const [companyData, setCompanyData] = useState(null);
   const [investors, setInvestors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
