@@ -12,7 +12,7 @@ const getLinkStyle = ({ isActive }) => {
 };
 
 // 아래 props는 length=big/medium/small
-function Gnb({ length, color }) {
+function Gnb({ length }) {
   const image =
     length === "big"
       ? bigLogo
