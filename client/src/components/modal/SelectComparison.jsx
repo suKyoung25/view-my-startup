@@ -153,7 +153,7 @@ function SelectComparison({
 
         {isSearching && (
           <>
-            <SectionTitle> ({filteredCompanies.length})</SectionTitle>
+            <SectionTitle> 검색 결과 ({filteredCompanies.length})</SectionTitle>
             {currentCompanies.map((company) => {
               const isSelected = selectedCompanies.some(
                 (c) => c.id === company.id
