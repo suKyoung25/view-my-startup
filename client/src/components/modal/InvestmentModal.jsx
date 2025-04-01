@@ -71,10 +71,13 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
         comment: inputValueComment,
         password: inputValuePassword,
         // 🔧 company가 있으면 그 id를, 아니면 useParams로 받은 id
-        companyId: company.id, // 여기서 company.id로 고정
+        companyId: company?.id || companyId, // 수정된 부분 // 여기서 company.id로 고정
       });
 
-      console.log(InvestmentData);
+      console.log("투자 성공:", InvestmentData);
+      alert("투자 등록이 완료되었습니다!"); // 피드백 추가
+
+    // 입력 초기화
       setInputValueName("");
       setInputValueAmount("");
       setInputValueComment("");
@@ -85,6 +88,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
       onClose();   // 모달 닫기
     } catch (e) {
       console.error("투자 등록 중 에러 발생...", e);
+      alert(e?.response?.data?.message || "투자 등록 중 오류가 발생했습니다."); // 수정된 부분
     }
   };
 

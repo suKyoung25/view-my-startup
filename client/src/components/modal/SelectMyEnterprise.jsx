@@ -132,7 +132,7 @@ function SelectMyEnterprise({
         ) : (
           keyword.trim() !== "" && (
             <>
-              <SectionTitle>검색결과 ({filteredCompanies.length})</SectionTitle>
+              <SectionTitle>최근 선택된 기업 ({filteredCompanies.length})</SectionTitle>
               <CompanyList>
                 {currentData.map((c) => (
                   <CompanyItem key={c.id}>
