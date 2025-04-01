@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
-import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
 import { black_300, black_400, gray_200 } from "../../styles/colors";
-import { media } from "../../styles/mixin";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
 
 const UpdateInvestmentModal = ({ onClose, size }) => {
