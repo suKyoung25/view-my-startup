@@ -5,7 +5,12 @@ import BtnLarge from "../components/BtnLarge";
 import { gray_200 } from "../styles/colors";
 import minusIcon from "../assets/icon/ic_minus.svg";
 
-const CompareListSection = ({ companies = [], onAddClick, onDelete }) => {
+const CompareListSection = ({
+  companies = [],
+  onAddClick,
+  onDelete,
+  isActive,
+}) => {
   const mediaSize =
     typeof window !== "undefined"
       ? window.innerWidth >= 1200
@@ -16,6 +21,7 @@ const CompareListSection = ({ companies = [], onAddClick, onDelete }) => {
       : "medium";
 
   const renderSelectedCompanies = () => {
+    if (!companies) return null;
     return (
       <InputField variant="default" mediaSize={mediaSize}>
         {companies.length === 0 ? (
@@ -47,15 +53,20 @@ const CompareListSection = ({ companies = [], onAddClick, onDelete }) => {
 
   return (
     <Wrapper $mediaSize={mediaSize}>
-      <Header $mediaSize={mediaSize}>
-        <Title>어떤 기업이 궁금하세요?</Title>
-        <BtnLarge
-          label="기업 추가하기"
-          type="orange"
-          size="small"
-          onClick={onAddClick}
-        />
-      </Header>
+      {isActive && (
+        <Header $mediaSize={mediaSize}>
+          <Title>
+            어떤 기업이 궁금하세요? {companies.length > 0 && " (최대 5개)"}
+          </Title>
+          <BtnLarge
+            label="기업 추가하기"
+            type="orange"
+            size="small"
+            onClick={onAddClick}
+          />
+        </Header>
+      )}
+
 
       <CardContainer>{renderSelectedCompanies()}</CardContainer>
     </Wrapper>
