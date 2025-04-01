@@ -1,11 +1,12 @@
 import styles from "./Homepage.module.css";
 import Search from "../../components/Search";
 import BtnPagination from "../../components/BtnPagination";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import SortDropdown from "../../components/Dropdown";
 import styled from "styled-components";
 import companyAPI from "../../api/company.api";
 import { Link } from "react-router-dom";
+import Hangul from "hangul-js";
 
 function HomePage() {
   const [mediaSize, setMediaSize] = useState("");
@@ -14,6 +15,11 @@ function HomePage() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [searchTokens, setSearchTokens] = useState({
+    raw: "",
+    disassembled: "",
+    cho: "",
+  });
 
   //table row 항목
   const columns = [
@@ -72,14 +78,27 @@ function HomePage() {
 
   const handleSearchClear = () => {
     setSearchKeyword("");
+    setSearchTokens({ raw: "", disassembled: "", cho: "" });
     setCurrentPage(1);
   };
 
-  const filteredData = companyData.filter(
-    (company) =>
-      company.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      company.description.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
+  const filteredData = useMemo(() => {
+    const input = searchTokens.raw;
+    if (!input) return companyData;
+
+    return companyData.filter((company) => {
+      const name = company.name.toLowerCase();
+      const description = company.description.toLowerCase();
+
+      if (Hangul.isConsonant(input[0])) {
+        const firstChar = name[0];
+        const firstCho = Hangul.disassemble(firstChar)[0];
+        return firstCho === input[0];
+      } else {
+        return name.startsWith(input) || description.includes(input);
+      }
+    });
+  }, [searchTokens, companyData]);
 
   const sortedData = [...filteredData].sort((a, b) => {
     switch (selectedSort) {
@@ -118,6 +137,7 @@ function HomePage() {
                 value={searchKeyword}
                 onChange={handleSearchChange}
                 onClear={handleSearchClear}
+                onSearch={(tokens) => setSearchTokens(tokens)}
               />
               <SortDropdown
                 size={mediaSize}
