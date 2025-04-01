@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
-import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
 import { black_300, black_400, gray_200, gray_300 } from "../../styles/colors";
-import { media } from "../../styles/mixin";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
 import investmentAPI from "../../api/investment.api";
 
@@ -69,12 +67,12 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
         amount: inputValueAmount,
         comment: inputValueComment,
         password: inputValuePassword,
-        // 🔧 company가 있으면 그 id를, 아니면 useParams로 받은 id
+        // company가 있으면 그 id를, 아니면 useParams로 받은 id
         companyId: company?.id || companyId, // 수정된 부분 // 여기서 company.id로 고정
       });
 
       console.log("투자 성공:", InvestmentData);
-      alert("투자 등록이 완료되었습니다!"); // 피드백 추가
+      // alert("투자 등록이 완료되었습니다!"); // 피드백 추가
 
       // 입력 초기화
       setInputValueName("");
