@@ -108,6 +108,32 @@ resultCompareRouter.post("/selected", async (req, res, next) => {
       },
     });
 
+    //나의 기업으로 선택된 횟수 증가시키기
+    await prisma.company.update({
+      where: {
+        id: selectedCompanyId,
+      },
+      data: {
+        pickAsMyStartupCount: {
+          increment: 1,
+        },
+      },
+    });
+
+    //비교 기업으로 선택된 횟수 증가시키기
+    await prisma.company.updateMany({
+      where: {
+        id: {
+          in: compareCompanyIds,
+        },
+      },
+      data: {
+        pickAsComparisonCount: {
+          increment: 1,
+        },
+      },
+    });
+
     if (!companies || companies.length === 0) {
       throw new Exception.BadRequest("기업 정보를 찾을 수 없습니다.");
     }
