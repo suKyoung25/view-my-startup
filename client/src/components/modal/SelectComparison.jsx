@@ -115,7 +115,7 @@ function SelectComparison({
                 <BtnOutline
                   text="cancel"
                   type="black"
-                  size="small"
+                  size={buttonSize}
                   onClick={() => handleRemove(company.id)}
                 />
               </CompanyCard>
@@ -204,6 +204,7 @@ const Overlay = styled.div`
 
 const ModalWrapper = styled.div`
   background: ${black_300};
+  font-size: 20px;
   padding: 24px;
   border-radius: 16px;
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
@@ -232,7 +233,6 @@ const CompanyCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1e1e1e;
   padding: 12px;
   margin-bottom: 8px;
   border-radius: 8px;

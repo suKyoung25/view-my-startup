@@ -5,6 +5,7 @@ import plusIcon from "../../assets/icon/btn_plus.svg";
 import styled from "styled-components";
 import BtnLarge from "../../components/BtnLarge";
 import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
+import SelectComparison from "../../components/modal/SelectComparison";
 import CompareListSection from "../../components/CompareListSection";
 
 function MyCompanyComparison() {
@@ -119,17 +120,23 @@ function MyCompanyComparison() {
         </div>
 
         {/* 비교 기업 리스트 및 버튼 포함 */}
-        <CompareListSection
-          companies={compareCompanies}
-          onAddClick={() => {
-            setSelectionMode("compare");
-            setModalOpen(true);
-          }}
-        />
+        {selectedCompany && (
+          <CompareListSection
+            companies={compareCompanies}
+            onAddClick={() => {
+              setSelectionMode("compare");
+              setModalOpen(true);
+            }}
+            onDelete={(id) => {
+              setCompareCompanies((prev) => prev.filter((c) => c.id !== id));
+            }}
+            isActive={true}
+          />
+        )}
 
         <div className={styles.buttonWrapper}>
           <BtnLarge
-            type={"orange"}
+            type={compareCompanies.length > 0 ? "orange" : "black"}
             size={mediaSize}
             label={"기업 비교하기"}
             onClick={handleCompareClick}
@@ -137,13 +144,23 @@ function MyCompanyComparison() {
         </div>
 
         {/* 모달 - 기업 선택 */}
-        <SelectMyEnterprise
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          onSelect={(company) => handleSelect(company, selectionMode)}
-          size={mediaSize}
-          recentCompanies={compareCompanies}
-        />
+        {selectionMode === "compare" ? (
+          <SelectComparison
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            size={mediaSize}
+            selectedCompanies={compareCompanies}
+            setSelectedCompanies={setCompareCompanies}
+          />
+        ) : (
+          <SelectMyEnterprise
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            onSelect={(company) => handleSelect(company, "my")}
+            size={mediaSize}
+            recentCompanies={compareCompanies}
+          />
+        )}
       </Inner>
     </Wrap>
   );
@@ -157,7 +174,7 @@ const Wrap = styled.div`
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 70px 16px;
   box-sizing: border-box;
 `;

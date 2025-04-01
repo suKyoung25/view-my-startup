@@ -46,6 +46,7 @@ const Outer = styled.div`
       ? "239px"
       : "179px"};
 
+  /* height: auto; */
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -73,7 +74,6 @@ const Inner = styled.div`
       : $mediaSize === "medium"
       ? "207px"
       : "147px"};
-
 
   background-color: ${black_300};
   border-radius: 4px;
