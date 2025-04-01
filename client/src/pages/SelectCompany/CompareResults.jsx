@@ -25,21 +25,9 @@ function CompareResults() {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const openPopupModal = () => setIsPopupModalAble(true);
   const closePopupModal = () => setIsPopupModalAble(false);
-  
-  const handleSuccess = () => {
-    closeModal();
-    openPopupModal();
-    if (selectedCompanyId) {
-      fetchComparedCompanies({ selectedCompanyId, compareCompanyIds })
-        .then(setCompanies)
-        .catch((err) => console.error("데이터 리로드 실패:", err));
-    }
-  };
-  
+  const openPopupModal = () => setIsPopupModalAble(true);
 
-  //브라우저 사이즈에 따라 반응형 웹 디자인 구현
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 1200) setMediaSize("big");
@@ -47,7 +35,6 @@ function CompareResults() {
     else setMediaSize("small");
   }
 
-  //브라우저 사이즈에 따라 반응형 웹 디자인 구현
   useEffect(() => {
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
@@ -83,9 +70,9 @@ function CompareResults() {
     const [field, order] = (() => {
       switch (criteria) {
         case "누적 투자금액 높은순":
-          return ["investmentAmount", "desc"];
+          return ["realInvestmentAmount", "desc"];
         case "누적 투자금액 낮은순":
-          return ["investmentAmount", "asc"];
+          return ["realInvestmentAmount", "asc"];
         case "매출액 높은순":
           return ["revenue", "desc"];
         case "매출액 낮은순":
@@ -95,7 +82,7 @@ function CompareResults() {
         case "고용 인원 적은순":
           return ["employees", "asc"];
         default:
-          return ["investmentAmount", "desc"];
+          return ["realInvestmentAmount", "desc"];
       }
     })();
 
@@ -110,7 +97,7 @@ function CompareResults() {
     { label: "기업명", name: "name", flex: 1.5 },
     { label: "기업 소개", name: "description", flex: 4 },
     { label: "카테고리", name: "category", flex: 2 },
-    { label: "누적 투자 금액", name: "investmentAmount", flex: 1 },
+    { label: "누적 투자 금액", name: "realInvestmentAmount", flex: 1 },
     { label: "매출액", name: "revenue", flex: 2 },
     { label: "고용 인원", name: "employees", flex: 1.5 },
   ];
@@ -163,9 +150,9 @@ function CompareResults() {
                   </CompanyCell>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>{company.investmentAmount}</TD>
-                  <TD>{company.revenue}</TD>
-                  <TD>{company.employees}</TD>
+                  <TD>{company.realInvestmentAmount}억 원</TD>
+                  <TD>{company.revenue}억 원</TD>
+                  <TD>{company.employees}명</TD>
                 </tr>
               ))}
             </tbody>
@@ -197,8 +184,8 @@ function CompareResults() {
                   </CompanyCell>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>{company.investmentAmount}</TD>
-                  <TD>{company.revenue}</TD>
+                  <TD>{company.realInvestmentAmount}억</TD>
+                  <TD>{company.revenue}억</TD>
                   <TD>{company.employees}</TD>
                 </tr>
               ))}
@@ -216,10 +203,8 @@ function CompareResults() {
           {isModalOpen && (
             <InvestmentModal
               onClose={closeModal}
-              onSuccess={handleSuccess} // 추가!
               size={mediaSize}
               openPopupModal={openPopupModal}
-              company={companies[0]} // "내가 선택한 기업" 정보 넘기기
             />
           )}
         </div>
@@ -290,7 +275,7 @@ const LeftAlignTD = styled.td`
   font-size: 14px;
   background-color: #212121;
   color: #d8d8d8;
-  text-align: left; // 왼쪽 정렬
+  text-align: left;
   vertical-align: middle;
 `;
 
