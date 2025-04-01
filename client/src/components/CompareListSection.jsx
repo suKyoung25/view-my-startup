@@ -48,7 +48,7 @@ const CompareListSection = ({ companies = [], onAddClick, onDelete }) => {
   return (
     <Wrapper $mediaSize={mediaSize}>
       <Header $mediaSize={mediaSize}>
-        <Title>비교할 기업 선택 (최대 5개)</Title>
+        <Title>어떤 기업이 궁금하세요?</Title>
         <BtnLarge
           label="기업 추가하기"
           type="orange"
