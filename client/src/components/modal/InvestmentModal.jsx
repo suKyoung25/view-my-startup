@@ -7,8 +7,9 @@ import { black_300, black_400 } from "../../styles/colors";
 import { media } from "../../styles/mixin";
 import { useLocation, useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
+import investmentAPI from "../../api/investment.api";
 
-const InvestmentModal = ({ onClose, size, openPopupModal }) => {
+const InvestmentModal = ({ onClose, size, onSuccess }) => {
   //각 input들의 value를 state로 저장해둠
   const [inputValueName, setInputValueName] = useState("");
   const [inputValueAmount, setInputValueAmount] = useState("");
@@ -59,15 +60,27 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
   };
 
   //투자하기 버튼이 눌렸을 시 이벤트 핸들러
-  const handleClickInvestmentButton = (e) => {
-    e.preventDefault();
+  const handleClickInvestmentButton = async () => {
+    try {
+      const InvestmentData = await investmentAPI.postInvestment({
+        investorName: inputValueName,
+        amount: inputValueAmount,
+        comment: inputValueComment,
+        password: inputValuePassword,
+        companyId: companyId,
+      });
+      console.log(InvestmentData);
+      setInputValueName("");
+      setInputValueAmount("");
+      setInputValueComment("");
+      setInputValuePassword("");
+      setInputValueCheckPassword("");
 
-    //각 인풋의 유효성 확인
-    if (!isInvestButtonAvailable)
-      return alert("입력값을 올바르게 입력해주세요.");
-
-    openPopupModal();
-    onClose();
+      onSuccess(); //투자 성공 시 투자완료 팝업 띄우기
+      onClose(); //투자 성공 시 해당 팝업 지우기
+    } catch (e) {
+      console.error("투자 등록 중 에러 발생...", e);
+    }
   };
 
   if (companyInformation === null) return null; //렌더링 안됨

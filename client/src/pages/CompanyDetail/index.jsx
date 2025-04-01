@@ -10,6 +10,7 @@ import InvestmentTable from "./components/InvestmentTable";
 import InvestmentModal from "../../components/modal/InvestmentModal";
 import { useParams } from "react-router-dom";
 import sampleImg from "../../assets/images/company/sample.png";
+import PopupOneButton from "../../components/modal/PopupOneButton";
 
 function CompanyDetail({ size = "big" }) {
   const { companyId } = useParams();
@@ -20,6 +21,7 @@ function CompanyDetail({ size = "big" }) {
   const [companyData, setCompanyData] = useState(null);
   const [investors, setInvestors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ispopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     if (!companyId) {
@@ -111,7 +113,21 @@ function CompanyDetail({ size = "big" }) {
       </CompanyDetailWrap>
 
       {isModalOpen && (
-        <InvestmentModal onClose={() => setIsModalOpen(false)} size={size} />
+        <InvestmentModal
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsPopupOpen(true);
+          }}
+          size={mediaSize}
+        />
+      )}
+
+      {ispopupOpen && (
+        <PopupOneButton
+          onClose={() => setIsPopupOpen(false)}
+          size={mediaSize}
+          type={"success"}
+        />
       )}
     </Wrap>
   );
