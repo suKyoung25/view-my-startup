@@ -138,4 +138,26 @@ resultCompareRouter.post("/selected", async (req, res, next) => {
   }
 });
 
+//선택 기업 + 비교 기업 계산 API (작업중임)
+resultCompareRouter.post("/", async (req, res, next) => {
+  const { id } = req.body;
+
+  try {
+    const increasedMy = await prisma.company.update({
+      where: {
+        id,
+      },
+      data: {
+        pickAsMyStartupCount: {
+          increment: 1,
+        },
+      },
+    });
+
+    res.json(increasedMy);
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = resultCompareRouter;

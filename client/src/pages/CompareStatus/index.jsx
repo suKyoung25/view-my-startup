@@ -91,6 +91,7 @@ function CompareStatus() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = compareData.slice(startIndex, endIndex);
+  console.log(paginatedData);
 
   return (
     <Wrap>

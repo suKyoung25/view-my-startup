@@ -16,3 +16,11 @@ Content-Type: application/json
   "selectedCompanyId": 12,
   "compareCompanyIds": [3, 4, 5]
 }
+
+### [4] 나의 기업/ 비교 기업 선택 횟수 (작업중임)
+POST http://localhost:7777/api/resultCompare
+Content-Type: application/json
+
+{
+  "id":
+}
