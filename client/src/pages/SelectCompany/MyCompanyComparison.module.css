@@ -3,6 +3,13 @@
   text-align: left;
 }
 
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 8px; */
+}
+
 .addBoxWrapper {
   position: relative;
   display: flex;
