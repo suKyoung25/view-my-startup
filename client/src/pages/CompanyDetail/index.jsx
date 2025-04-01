@@ -16,6 +16,7 @@ function CompanyDetail({ size = "big" }) {
   console.log("companyId:", companyId);
   console.log("Received props:", size);
 
+  const [mediaSize, setMediaSize] = useState("");
   const [companyData, setCompanyData] = useState(null);
   const [investors, setInvestors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,6 +38,19 @@ function CompanyDetail({ size = "big" }) {
     };
     fetchData();
   }, [companyId]);
+
+  function updateMediaSize() {
+    const { innerWidth: width } = window;
+    if (width >= 1200) setMediaSize("big");
+    else if (width > 744) setMediaSize("medium");
+    else setMediaSize("small");
+  }
+
+  useEffect(() => {
+    updateMediaSize();
+    window.addEventListener("resize", updateMediaSize);
+    return () => window.removeEventListener("resize", updateMediaSize);
+  }, []);
 
   if (!companyData) return <p>Loading...</p>;
 
