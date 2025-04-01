@@ -112,7 +112,9 @@ function CompanyDetail() {
         <Hr />
 
         <TableWrap>
-          <TotalAmount>총 {companyData.virtualInvestments}억 원</TotalAmount>
+          <TotalAmount>
+            총 {companyData.totalVirtualInvestmentAmount?.toLocaleString()}억 원
+          </TotalAmount>
           <InvestmentTable data={investors} />
         </TableWrap>
 
@@ -179,7 +181,7 @@ const Img = styled.img`
   height: ${({ $mediaSize }) => ($mediaSize === "small" ? "49px" : "80px")};
   border-radius: 100%;
   object-fit: cover;
-  padding-right: 20px;
+  margin-right: 20px;
 `;
 
 const Title = styled.h1`
