@@ -19,27 +19,6 @@ function CompanyDetail() {
   const [companyData, setCompanyData] = useState(null);
   const [investors, setInvestors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mediaSize, setMediaSize] = useState(getMediaSize());
-
-  function getMediaSize() {
-    if (typeof window !== "undefined") {
-      return window.innerWidth >= 1200
-        ? "big"
-        : window.innerWidth > 744
-        ? "medium"
-        : "small";
-    }
-    return "big";
-  }
-
-  useEffect(() => {
-    function handleResize() {
-      setMediaSize(getMediaSize());
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     if (!companyId) {
