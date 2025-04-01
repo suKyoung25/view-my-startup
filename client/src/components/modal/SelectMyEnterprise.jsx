@@ -136,7 +136,7 @@ function SelectMyEnterprise({
                     <Info>
                       <div className="name">{c.name}</div>
                       <div className="tagline">{c.category}</div>
-                    </Info>
+                    </Info>        
                     <SelectBtn onClick={() => handleCompanySelect(c)}>
                       선택하기
                     </SelectBtn>
@@ -264,6 +264,19 @@ const PageBtn = styled.button`
   border: none;
   cursor: pointer;
   font-size: 14px;
+`;
+
+const CompanyCell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const Logo = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 export default SelectMyEnterprise;
