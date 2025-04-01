@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./MyCompanyComparison.module.css";
 import plusIcon from "../../assets/icon/btn_plus.svg";
+import restart from "../../assets/icon/ic_restart.svg";
 import styled from "styled-components";
 import BtnLarge from "../../components/BtnLarge";
 import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
@@ -32,6 +33,11 @@ function MyCompanyComparison() {
 
   const handleCancel = () => {
     setSelectedCompany(null);
+  };
+
+  const handleResetClick = () => {
+    setSelectedCompany(null);
+    setCompareCompanies([]);
   };
 
   const handleCompareClick = () => {
@@ -80,7 +86,18 @@ function MyCompanyComparison() {
   return (
     <Wrap>
       <Inner>
-        <h2 className={styles.title}>나의 기업을 선택해 주세요!</h2>
+        <div className={styles.titleRow}>
+          <h2 className={styles.title}>나의 기업을 선택해 주세요!</h2>
+          {selectedCompany && (
+            <BtnLarge
+              label="전체 초기화"
+              type="orange"
+              size="medium"
+              icon={restart}
+              onClick={handleResetClick}
+            />
+          )}
+        </div>
 
         <div className={styles.addBoxWrapper}>
           {selectedCompany && (
@@ -151,6 +168,7 @@ function MyCompanyComparison() {
             size={mediaSize}
             selectedCompanies={compareCompanies}
             setSelectedCompanies={setCompareCompanies}
+            selectedCompany={selectedCompany}
           />
         ) : (
           <SelectMyEnterprise

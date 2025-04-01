@@ -8,9 +8,10 @@ import { gray_200 } from "../styles/colors";
   /* 아래 props는 type=black/orange/""  size=big/small*/
 }
 
-function BtnLarge({ type, size, label, onClick, disabled }) {
+function BtnLarge({ type, size, label, onClick, disabled, icon }) {
   return (
     <Container $type={type} $size={size} onClick={onClick} disabled={disabled}>
+      {icon && <img src={icon} alt="icon" />}
       <Text $size={size}>{label}</Text>
     </Container>
   );
@@ -43,12 +44,12 @@ const Container = styled.button`
 
   width: ${(props) => {
     if (props.$size === "big") return "183px";
-    if (props.$size === "medium") return "183px";
+    if (props.$size === "medium") return "149px";
     if (props.$size === "small") return "135px";
   }};
   height: ${(props) => {
     if (props.$size === "big") return "48px";
-    if (props.$size === "medium") return "48px";
+    if (props.$size === "medium") return "43px";
     if (props.$size === "small") return "40px";
   }};
 `;
@@ -60,7 +61,7 @@ const Text = styled.div`
   }};
   font-size: ${(props) => {
     if (props.$size === "big") return "16px";
-    if (props.$size === "medium") return "16px";
+    if (props.$size === "medium") return "15px";
     if (props.$size === "small") return "14px";
   }};
 `;

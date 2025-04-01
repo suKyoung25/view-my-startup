@@ -9,7 +9,10 @@ export default function BtnDelete({
   type = "delete",
   style,
 }) {
-  const buttonText = type === "confirm" ? "확인" : "삭제하기";
+  let buttonText = "삭제하기"; // 기본값
+
+  if (type === "confirm") buttonText = "확인";
+  else if (type === "update") buttonText = "수정하기";
 
   return (
     <ButtonWrapper onClick={onClick} $size={size} style={style}>

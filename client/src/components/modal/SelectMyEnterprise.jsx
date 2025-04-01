@@ -111,7 +111,10 @@ function SelectMyEnterprise({
               {recentCompanies.map((company) => (
                 <CompanyItem key={company.id}>
                   <CompanyCell>
-                    <Logo src={company.imageUrl || "/default-image.png"} alt={`${company.name} 로고`} />
+                    <Logo
+                      src={company.imageUrl || "/default-image.png"}
+                      alt={`${company.name} 로고`}
+                    />
                     <Info>
                       <div className="name">{company.name}</div>
                       <div className="tagline">{company.category}</div>
@@ -127,41 +130,42 @@ function SelectMyEnterprise({
         )}
 
         {/* 기업 검색결과 */}
-        {loading ? (
-          <div>기업 정보를 불러오는 중입니다...</div>
-        ) : (
-          keyword.trim() !== "" && (
-            <>
-              <SectionTitle>최근 선택된 기업 ({filteredCompanies.length})</SectionTitle>
-              <CompanyList>
-                {currentData.map((c) => (
-                  <CompanyItem key={c.id}>
-                    <CompanyCell>
-                      <Logo src={c.imageUrl || "/default-image.png"} alt={`${c.name} 로고`} />
-                      <Info>
-                        <div className="name">{c.name}</div>
-                        <div className="tagline">{c.category}</div>
-                      </Info>
-                    </CompanyCell>     
-                    <SelectBtn onClick={() => handleCompanySelect(c)}>
-                      선택하기
-                    </SelectBtn>
-                  </CompanyItem>
-                ))}
-              </CompanyList>
-              <Pagination>
-                {[...Array(totalPages)].map((_, i) => (
-                  <PageBtn
-                    key={i + 1}
-                    onClick={() => setCurrentPage(i + 1)}
-                    $active={currentPage === i + 1}
-                  >
-                    {i + 1}
-                  </PageBtn>
-                ))}
-              </Pagination>
-            </>
-          )
+        {keyword.trim() !== "" && (
+          <>
+            <SectionTitle>
+              최근 선택된 기업 ({filteredCompanies.length})
+            </SectionTitle>
+            <CompanyList>
+              {currentData.map((c) => (
+                <CompanyItem key={c.id}>
+                  <CompanyCell>
+                    <Logo
+                      src={c.imageUrl || "/default-image.png"}
+                      alt={`${c.name} 로고`}
+                    />
+                    <Info>
+                      <div className="name">{c.name}</div>
+                      <div className="tagline">{c.category}</div>
+                    </Info>
+                  </CompanyCell>
+                  <SelectBtn onClick={() => handleCompanySelect(c)}>
+                    선택하기
+                  </SelectBtn>
+                </CompanyItem>
+              ))}
+            </CompanyList>
+            <Pagination>
+              {[...Array(totalPages)].map((_, i) => (
+                <PageBtn
+                  key={i + 1}
+                  onClick={() => setCurrentPage(i + 1)}
+                  $active={currentPage === i + 1}
+                >
+                  {i + 1}
+                </PageBtn>
+              ))}
+            </Pagination>
+          </>
         )}
       </Container>
     </Overlay>
