@@ -108,6 +108,32 @@ resultCompareRouter.post("/selected", async (req, res, next) => {
       },
     });
 
+    //나의 기업으로 선택된 횟수 증가시키기
+    await prisma.company.update({
+      where: {
+        id: selectedCompanyId,
+      },
+      data: {
+        pickAsMyStartupCount: {
+          increment: 1,
+        },
+      },
+    });
+
+    //비교 기업으로 선택된 횟수 증가시키기
+    await prisma.company.updateMany({
+      where: {
+        id: {
+          in: compareCompanyIds,
+        },
+      },
+      data: {
+        pickAsComparisonCount: {
+          increment: 1,
+        },
+      },
+    });
+
     if (!companies || companies.length === 0) {
       throw new Exception.BadRequest("기업 정보를 찾을 수 없습니다.");
     }
@@ -135,28 +161,6 @@ resultCompareRouter.post("/selected", async (req, res, next) => {
     res.status(500).json({
       message: err.message || "서버 내부 오류 발생",
     });
-  }
-});
-
-//선택 기업 + 비교 기업 계산 API (작업중임)
-resultCompareRouter.post("/", async (req, res, next) => {
-  const { id } = req.body;
-
-  try {
-    const increasedMy = await prisma.company.update({
-      where: {
-        id,
-      },
-      data: {
-        pickAsMyStartupCount: {
-          increment: 1,
-        },
-      },
-    });
-
-    res.json(increasedMy);
-  } catch (e) {
-    next(e);
   }
 });
 

@@ -8,19 +8,11 @@ GET http://localhost:7777/api/resultCompare?sortBy=pickAsMyStartupCount&order=de
 GET http://localhost:7777/api/resultCompare?sortBy=pickAsComparisonCount&order=asc
 
 
-### [3] 선택 기업 비교 기업 생성 (예시로 작성함.)
+### [3] 선택 기업 비교 기업 생성 (예시로 작성함.) (스마트에듀 / 라이프핏, 핀캐시, 컬리하우스 순서대로임)
 POST http://localhost:7777/api/resultCompare/selected
 Content-Type: application/json
 
 {
-  "selectedCompanyId": 12,
-  "compareCompanyIds": [3, 4, 5]
-}
-
-### [4] 나의 기업/ 비교 기업 선택 횟수 (작업중임)
-POST http://localhost:7777/api/resultCompare
-Content-Type: application/json
-
-{
-  "id":
+  "selectedCompanyId": "cm8shxv5j0001uuolvqejh6af",
+  "compareCompanyIds": ["cm8shxv5j0004uuol1dp9ax78", "cm8shxv5j0002uuolqm9ekje7", "cm8shxv5j0003uuoljngqrm6x"]
 }
