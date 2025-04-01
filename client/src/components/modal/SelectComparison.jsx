@@ -13,6 +13,7 @@ function SelectComparison({
   size,
   selectedCompanies,
   setSelectedCompanies,
+  selectedCompany,
 }) {
   const [companies, setCompanies] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -78,6 +79,10 @@ function SelectComparison({
 
     return companies.filter((company) => {
       const name = company.name.toLowerCase();
+      const isMyCompany = selectedCompany?.id === company.id;
+
+      if (isMyCompany) return false;
+
       if (Hangul.isConsonant(input[0])) {
         const firstChar = name[0];
         const firstCho = Hangul.disassemble(firstChar)[0];
@@ -86,7 +91,7 @@ function SelectComparison({
         return name.startsWith(input);
       }
     });
-  }, [searchTokens, companies]);
+  }, [searchTokens, companies, selectedCompany]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -102,7 +107,7 @@ function SelectComparison({
         onClick={(e) => e.stopPropagation()}
       >
         <ModalHeader>
-          <div>기업 추가하기</div>
+          <div>비교할 기업 선택하기</div>
           <img onClick={onClose} src={closeIcon} alt="닫기" />
         </ModalHeader>
 
