@@ -207,6 +207,7 @@ function CompareResults() {
               onClose={closeModal}
               size={mediaSize}
               openPopupModal={openPopupModal}
+              company={companies[0]} // "내가 선택한 기업" 정보 넘기기
             />
           )}
         </div>

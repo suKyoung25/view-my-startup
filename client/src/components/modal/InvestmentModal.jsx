@@ -9,7 +9,7 @@ import { useLocation, useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
 import investmentAPI from "../../api/investment.api";
 
-const InvestmentModal = ({ onClose, size, onSuccess }) => {
+const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
   //각 input들의 value를 state로 저장해둠
   const [inputValueName, setInputValueName] = useState("");
   const [inputValueAmount, setInputValueAmount] = useState("");
@@ -18,6 +18,7 @@ const InvestmentModal = ({ onClose, size, onSuccess }) => {
   const [inputValueCheckPassword, setInputValueCheckPassword] = useState("");
 
   const [companyInformation, setCompanyInformation] = useState(null);
+  const { companyId } = useParams();
 
   //useEffect를 사용하지 않고 투자하기 버튼 활성화 여부 확인
   const isInvestButtonAvailable =
@@ -26,21 +27,23 @@ const InvestmentModal = ({ onClose, size, onSuccess }) => {
     Number(inputValueAmount) &&
     inputValuePassword === inputValueCheckPassword;
 
-  //url을 통해 특정 기업의 id 출력
-  const { companyId } = useParams();
-
-  // 기업이 바뀔때마다 데이터 출력
+  // company가 없을 때만 API 호출
   useEffect(() => {
-    const companyData = async () => {
-      try {
-        const data = await companyAPI.getCompanyById(companyId);
-        setCompanyInformation(data);
-      } catch (error) {
-        console.error("Error fetching company data:", error);
-      }
-    };
-    companyData();
-  }, [companyId]);
+    if (company) {
+      setCompanyInformation(company); // props로 받은 정보로 바로 세팅
+    } else if (companyId) {
+      const companyData = async () => {
+        try {
+          const data = await companyAPI.getCompanyById(companyId);
+          setCompanyInformation(data);
+        } catch (error) {
+          console.error("Error fetching company data:", error);
+        }
+      };
+      companyData();
+    }
+  }, [company, companyId]);
+  
 
   //각 인풋의 핸들 함수
   const handleNameChange = (e) => {
@@ -67,8 +70,10 @@ const InvestmentModal = ({ onClose, size, onSuccess }) => {
         amount: inputValueAmount,
         comment: inputValueComment,
         password: inputValuePassword,
-        companyId: companyId,
+        // 🔧 company가 있으면 그 id를, 아니면 useParams로 받은 id
+        companyId: company.id, // 여기서 company.id로 고정
       });
+
       console.log(InvestmentData);
       setInputValueName("");
       setInputValueAmount("");
@@ -76,20 +81,18 @@ const InvestmentModal = ({ onClose, size, onSuccess }) => {
       setInputValuePassword("");
       setInputValueCheckPassword("");
 
-      onSuccess(); //투자 성공 시 투자완료 팝업 띄우기
-      onClose(); //투자 성공 시 해당 팝업 지우기
+      onSuccess(); // 성공 팝업
+      onClose();   // 모달 닫기
     } catch (e) {
       console.error("투자 등록 중 에러 발생...", e);
     }
   };
 
-  if (companyInformation === null) return null; //렌더링 안됨
+  if (!companyInformation) return null;
 
   return (
     <Overlay onClick={onClose}>
-      <ModalWrapper
-        onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
-      >
+      <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <Title>기업에 투자하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
@@ -98,10 +101,7 @@ const InvestmentModal = ({ onClose, size, onSuccess }) => {
         <Section>
           <SectionTitle>투자 기업 정보</SectionTitle>
           <CompanyInfo>
-            <Logo
-              src={companyInformation.imageUrl}
-              alt={companyInformation.name}
-            />
+            <Logo src={companyInformation.imageUrl} alt={companyInformation.name} />
             <CompanyText>
               <CompanyName>{companyInformation.name}</CompanyName>
               <CompanyCategory>{companyInformation.category}</CompanyCategory>
