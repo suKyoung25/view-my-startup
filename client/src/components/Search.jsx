@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Hangul from "hangul-js";
 import searchImg from "../assets/images/search/lenz.png";
 import xImg from "../assets/images/search/x.png";
 import { black_300, gray_200, gray_100 } from "../styles/colors";
 
-function Search({ size, state = "none", value, onChange, onClear }) {
+function Search({ size, state = "none", value, onChange, onClear, onSearch }) {
   const [placeholder, setPlaceholder] = useState(
     state === "searching"
       ? "기업 검색하기"
@@ -14,25 +15,48 @@ function Search({ size, state = "none", value, onChange, onClear }) {
   );
 
   const handleFocus = () => {
-    if (state === "searching") {
-      setPlaceholder("");
-    }
+    if (state === "searching") setPlaceholder("");
   };
 
   const handleBlur = () => {
-    if (state === "searching") {
-      setPlaceholder("기업 검색하기");
-    }
+    if (state === "searching") setPlaceholder("기업 검색하기");
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      console.log(value); // 필요시 검색 API 호출 등 추가 가능
+    if (e.key === "Enter" && onSearch) {
+      const processed = value.trim().toLowerCase();
+      onSearch({
+        raw: processed,
+        disassembled: Hangul.disassemble(processed).join(""),
+        cho: Hangul.assemble(
+          Hangul.disassemble(processed).map((char) =>
+            Hangul.isConsonant(char) ? char : ""
+          )
+        ),
+      });
+    }
+  };
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    if (onChange) onChange(e);
+    if (onSearch) {
+      const processed = newValue.trim().toLowerCase();
+      onSearch({
+        raw: processed,
+        disassembled: Hangul.disassemble(processed).join(""),
+        cho: Hangul.assemble(
+          Hangul.disassemble(processed).map((char) =>
+            Hangul.isConsonant(char) ? char : ""
+          )
+        ),
+      });
     }
   };
 
   const handleClear = () => {
     if (onClear) onClear();
+    if (onSearch) onSearch({ raw: "", disassembled: "", cho: "" });
   };
 
   return (
@@ -42,7 +66,7 @@ function Search({ size, state = "none", value, onChange, onClear }) {
           <Input
             $size={size}
             value={value}
-            onChange={onChange}
+            onChange={handleChange}
             placeholder={placeholder}
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -57,7 +81,7 @@ function Search({ size, state = "none", value, onChange, onClear }) {
           <Input
             $size={size}
             value={value}
-            onChange={onChange}
+            onChange={handleChange}
             placeholder={placeholder}
             onKeyDown={handleKeyDown}
           />
