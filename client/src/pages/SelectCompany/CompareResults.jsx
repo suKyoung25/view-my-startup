@@ -25,8 +25,19 @@ function CompareResults() {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const closePopupModal = () => setIsPopupModalAble(false);
   const openPopupModal = () => setIsPopupModalAble(true);
+  const closePopupModal = () => setIsPopupModalAble(false);
+  
+  const handleSuccess = () => {
+    closeModal();
+    openPopupModal();
+    if (selectedCompanyId) {
+      fetchComparedCompanies({ selectedCompanyId, compareCompanyIds })
+        .then(setCompanies)
+        .catch((err) => console.error("데이터 리로드 실패:", err));
+    }
+  };
+  
 
   //브라우저 사이즈에 따라 반응형 웹 디자인 구현
   function updateMediaSize() {
@@ -205,6 +216,7 @@ function CompareResults() {
           {isModalOpen && (
             <InvestmentModal
               onClose={closeModal}
+              onSuccess={handleSuccess} // 추가!
               size={mediaSize}
               openPopupModal={openPopupModal}
               company={companies[0]} // "내가 선택한 기업" 정보 넘기기
