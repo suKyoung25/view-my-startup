@@ -5,14 +5,18 @@ import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
 import { black_300, black_400 } from "../../styles/colors";
 import { media } from "../../styles/mixin";
+import { useLocation, useParams } from "react-router-dom";
+import companyAPI from "../../api/company.api";
 
 const InvestmentModal = ({ onClose, size, openPopupModal }) => {
-  //각 input들의 value를 state로 저장해둠둠
+  //각 input들의 value를 state로 저장해둠
   const [inputValueName, setInputValueName] = useState("");
   const [inputValueAmount, setInputValueAmount] = useState("");
   const [inputValueComment, setInputValueComment] = useState("");
   const [inputValuePassword, setInputValuePassword] = useState("");
   const [inputValueCheckPassword, setInputValueCheckPassword] = useState("");
+
+  const [companyInformation, setCompanyInformation] = useState(null);
 
   //useEffect를 사용하지 않고 투자하기 버튼 활성화 여부 확인
   const isInvestButtonAvailable =
@@ -21,12 +25,23 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
     Number(inputValueAmount) &&
     inputValuePassword === inputValueCheckPassword;
 
-  const company = {
-    name: "코드잇",
-    category: "에듀테크",
-    logoUrl: sampleLogo,
-  };
+  //url을 통해 특정 기업의 id 출력
+  const { companyId } = useParams();
 
+  // 기업이 바뀔때마다 데이터 출력
+  useEffect(() => {
+    const companyData = async () => {
+      try {
+        const data = await companyAPI.getCompanyById(companyId);
+        setCompanyInformation(data);
+      } catch (error) {
+        console.error("Error fetching company data:", error);
+      }
+    };
+    companyData();
+  }, [companyId]);
+
+  //각 인풋의 핸들 함수
   const handleNameChange = (e) => {
     setInputValueName(e.target.value);
   };
@@ -43,13 +58,25 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
     setInputValueCheckPassword(e.target.value);
   };
 
-  const popupSuccess = (e) => {
-    e.preventDefault();
+  //   //투자하기 버튼이 눌렸을 시 이벤트 핸들러
+  //   const handleClickInvestmentButton = (e) => {
+  //     e.preventDefault();
 
-    if (!isInvestButtonAvailable) return;
-    openPopupModal();
-    onClose();
-  };
+  //     //각 인풋의 유효성 확인
+  //     if (!isInvestButtonAvailable)
+  //       return alert("입력값을 올바르게 입력해주세요.");
+
+  // try {
+  // companyAPI.
+  // } catch(e) {
+
+  // }
+
+  //     openPopupModal();
+  //     onClose();
+  //   };
+
+  if (companyInformation === null) return null; //렌더링 안됨
 
   return (
     <Overlay onClick={onClose}>
@@ -64,10 +91,13 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
         <Section>
           <SectionTitle>투자 기업 정보</SectionTitle>
           <CompanyInfo>
-            <Logo src={company.logoUrl} alt={company.name} />
+            <Logo
+              src={companyInformation.imageUrl}
+              alt={companyInformation.name}
+            />
             <CompanyText>
-              <CompanyName>{company.name}</CompanyName>
-              <CompanyCategory>{company.category}</CompanyCategory>
+              <CompanyName>{companyInformation.name}</CompanyName>
+              <CompanyCategory>{companyInformation.category}</CompanyCategory>
             </CompanyText>
           </CompanyInfo>
         </Section>
@@ -129,7 +159,7 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
             type="orange"
             size={size}
             label="투자하기"
-            onClick={popupSuccess}
+            // onClick={handleClickInvestmentButton}
             disabled={!isInvestButtonAvailable}
           />
         </ButtonRow>

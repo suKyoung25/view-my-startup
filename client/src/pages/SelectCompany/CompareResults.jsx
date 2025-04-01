@@ -28,6 +28,7 @@ function CompareResults() {
   const closePopupModal = () => setIsPopupModalAble(false);
   const openPopupModal = () => setIsPopupModalAble(true);
 
+  //브라우저 사이즈에 따라 반응형 웹 디자인 구현
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 1200) setMediaSize("big");
@@ -35,6 +36,7 @@ function CompareResults() {
     else setMediaSize("small");
   }
 
+  //브라우저 사이즈에 따라 반응형 웹 디자인 구현
   useEffect(() => {
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
