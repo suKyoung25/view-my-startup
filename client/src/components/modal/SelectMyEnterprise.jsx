@@ -2,11 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Search from "../Search";
 import closeIcon from "../../assets/icon/ic_delete.png";
-import { black_300 } from "../../styles/colors";
-import { black_400 } from "../../styles/colors";
+import { black_300, black_400 } from "../../styles/colors";
 import { client } from "../../api/index.api";
+import Hangul from "hangul-js";
 
-// 아래 props는 size=big/small
 function SelectMyEnterprise({
   isOpen,
   onClose,
@@ -15,66 +14,26 @@ function SelectMyEnterprise({
   recentCompanies,
 }) {
   const [keyword, setKeyword] = useState("");
+  const [searchTokens, setSearchTokens] = useState({
+    raw: "",
+    disassembled: "",
+    cho: "",
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
   const [companies, setCompanies] = useState([]);
   const [mediaSize, setMediaSize] = useState("");
-
-  // 한글 초성 배열
-  const CHO_LIST = [
-    "ㄱ",
-    "ㄲ",
-    "ㄴ",
-    "ㄷ",
-    "ㄸ",
-    "ㄹ",
-    "ㅁ",
-    "ㅂ",
-    "ㅃ",
-    "ㅅ",
-    "ㅆ",
-    "ㅇ",
-    "ㅈ",
-    "ㅉ",
-    "ㅊ",
-    "ㅋ",
-    "ㅌ",
-    "ㅍ",
-    "ㅎ",
-  ];
-
-  // 초성 추출 함수
-  const Chosung = (t) => {
-    return t
-      .split("")
-      .map((char) => {
-        const code = char.charCodeAt(0);
-        if (code >= 44032 && code <= 55203) {
-          const cho = Math.floor((code - 44032) / 588);
-          return CHO_LIST[cho];
-        }
-        return "";
-      })
-      .join("");
-  };
+  const [loading, setLoading] = useState(true);
 
   function updateMediaSize() {
     const { innerWidth: width } = window;
-    if (width >= 744) {
-      setMediaSize("big");
-    } else {
-      setMediaSize("short");
-    }
+    setMediaSize(width >= 744 ? "big" : "short");
   }
 
   useEffect(() => {
     updateMediaSize();
-
     window.addEventListener("resize", updateMediaSize);
-
-    return () => {
-      window.removeEventListener("resize", updateMediaSize);
-    };
+    return () => window.removeEventListener("resize", updateMediaSize);
   }, []);
 
   useEffect(() => {
@@ -84,39 +43,40 @@ function SelectMyEnterprise({
         setCompanies(res.data);
       } catch (e) {
         console.error("기업 불러오기 실패:", e);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchCompanies();
   }, []);
 
-  // 초성추출함수로 기업명 조회하기
   const filteredCompanies = useMemo(() => {
-    const query = keyword.trim().toLowerCase();
-    if (!query) return [];
+    const input = searchTokens.raw;
+    if (!input || companies.length === 0) return [];
 
     return companies.filter((company) => {
-      const chosungName = Chosung(company.name.toLowerCase());
-      return (
-        company.name.toLowerCase().includes(query) || // -> keyword
-        chosungName.startsWith(query)
-      ); // 아니면 초성
-    });
-  }, [keyword, companies]);
+      const name = company.name;
+      const lower = name.toLowerCase();
 
-  // 페이지네이션 계산
+      if (Hangul.isConsonant(input[0])) {
+        // 기업 이름의 첫 글자 초성과 비교
+        const firstChar = name[0];
+        const firstCho = Hangul.disassemble(firstChar)[0];
+        return firstCho === input[0];
+      } else {
+        // 이름이 입력으로 시작하는지 체크
+        return lower.startsWith(input);
+      }
+    });
+  }, [searchTokens, companies]);
+
   const totalPages = Math.ceil(filteredCompanies.length / perPage);
   const currentData = filteredCompanies.slice(
     (currentPage - 1) * perPage,
     currentPage * perPage
   );
 
-  const handleCompanySelect = (c) => {
-    if (onSelect) {
-      onSelect(c);
-    }
-  };
-
+  const handleCompanySelect = (c) => onSelect?.(c);
   if (!isOpen) return null;
 
   return (
@@ -130,11 +90,15 @@ function SelectMyEnterprise({
           size={mediaSize}
           state="searching"
           value={keyword}
-          onChange={(e) => {
-            setKeyword(e.target.value);
+          onChange={(e) => setKeyword(e.target.value)}
+          onClear={() => {
+            setKeyword("");
+            setSearchTokens({ raw: "", disassembled: "", cho: "" });
+          }}
+          onSearch={(tokens) => {
+            setSearchTokens(tokens);
             setCurrentPage(1);
           }}
-          onClear={() => setKeyword("")}
         />
 
         {/* 최근 비교한 기업 영역 */}
@@ -159,37 +123,39 @@ function SelectMyEnterprise({
           </>
         )}
 
-        {/* 검색 결과 영역 */}
-        {keyword.trim() !== "" && (
-          <>
-            <SectionTitle>검색결과 ({filteredCompanies.length})</SectionTitle>
-            <CompanyList>
-              {currentData.map((c) => (
-                <CompanyItem key={c.id}>
-                  <Info>
-                    <div className="name">{c.name}</div>
-                    <div className="tagline">{c.category}</div>
-                  </Info>
-                  <SelectBtn onClick={() => handleCompanySelect(c)}>
-                    선택하기
-                  </SelectBtn>
-                </CompanyItem>
-              ))}
-            </CompanyList>
-
-            {/* 페이지네이션 */}
-            <Pagination>
-              {[...Array(totalPages)].map((_, i) => (
-                <PageBtn
-                  key={i + 1}
-                  onClick={() => setCurrentPage(i + 1)}
-                  $active={currentPage === i + 1}
-                >
-                  {i + 1}
-                </PageBtn>
-              ))}
-            </Pagination>
-          </>
+        {/* 기업 검색결과 */}
+        {loading ? (
+          <div>기업 정보를 불러오는 중입니다...</div>
+        ) : (
+          keyword.trim() !== "" && (
+            <>
+              <SectionTitle>검색결과 ({filteredCompanies.length})</SectionTitle>
+              <CompanyList>
+                {currentData.map((c) => (
+                  <CompanyItem key={c.id}>
+                    <Info>
+                      <div className="name">{c.name}</div>
+                      <div className="tagline">{c.category}</div>
+                    </Info>        
+                    <SelectBtn onClick={() => handleCompanySelect(c)}>
+                      선택하기
+                    </SelectBtn>
+                  </CompanyItem>
+                ))}
+              </CompanyList>
+              <Pagination>
+                {[...Array(totalPages)].map((_, i) => (
+                  <PageBtn
+                    key={i + 1}
+                    onClick={() => setCurrentPage(i + 1)}
+                    $active={currentPage === i + 1}
+                  >
+                    {i + 1}
+                  </PageBtn>
+                ))}
+              </Pagination>
+            </>
+          )
         )}
       </Container>
     </Overlay>
@@ -215,10 +181,12 @@ const Container = styled.div`
   padding: 24px;
   color: #ffffff;
   font-size: 20px;
-  width: ${(props) => {
-    if (props.$size === "big") return "496px";
-    if (props.$size === "short") return "343px";
-  }};
+  width: ${(props) =>
+    props.$size === "big"
+      ? "496px"
+      : props.$size === "short"
+      ? "343px"
+      : "100%"};
 `;
 
 const Title = styled.div`
@@ -296,6 +264,19 @@ const PageBtn = styled.button`
   border: none;
   cursor: pointer;
   font-size: 14px;
+`;
+
+const CompanyCell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const Logo = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 export default SelectMyEnterprise;

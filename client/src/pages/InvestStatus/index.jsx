@@ -6,6 +6,7 @@ import BtnPagination from "../../components/BtnPagination";
 import Dropdown from "../../components/Dropdown";
 import TableHeader from "../../components/TableHeader";
 import investmentAPI from "../../api/investment.api";
+import { Link } from "react-router-dom";
 
 function InvestState() {
   const [mediaSize, setMediaSize] = useState("");
@@ -108,10 +109,14 @@ function InvestState() {
                   <TD>
                     <CompanyCell>
                       <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
-                      {item.name}
+                      <Link to={`/company-detail/${item.id}`}>{item.name}</Link>
                     </CompanyCell>
                   </TD>
-                  <TD>{item.description}</TD>
+                  <TD>
+                    <Link to={`/company-detail/${item.id}`}>
+                      {item.description}
+                    </Link>
+                  </TD>
                   <TD>{item.category}</TD>
                   <TD>
                     {item.totalVirtualInvestmentAmount.toLocaleString()}억 원
@@ -208,8 +213,8 @@ const CompanyCell = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 `;

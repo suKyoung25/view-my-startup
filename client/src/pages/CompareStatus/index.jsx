@@ -6,6 +6,7 @@ import BtnPagination from "../../components/BtnPagination";
 import Dropdown from "../../components/Dropdown";
 import TableHeader from "../../components/TableHeader";
 import resultCompareAPI from "../../api/resultCompare.api";
+import { Link } from "react-router-dom";
 
 function CompareStatus() {
   const [mediaSize, setMediaSize] = useState("");
@@ -90,6 +91,7 @@ function CompareStatus() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = compareData.slice(startIndex, endIndex);
+  console.log(paginatedData);
 
   return (
     <Wrap>
@@ -117,10 +119,14 @@ function CompareStatus() {
                   <TD>
                     <CompanyCell>
                       <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
-                      {item.name}
+                      <Link to={`/company-detail/${item.id}`}>{item.name}</Link>
                     </CompanyCell>
                   </TD>
-                  <TD>{item.description}</TD>
+                  <TD>
+                    <Link to={`/company-detail/${item.id}`}>
+                      {item.description}
+                    </Link>
+                  </TD>
                   <TD>{item.category}</TD>
                   <TD>{item.pickAsMyStartupCount.toLocaleString()}회</TD>
                   <TD>{item.pickAsComparisonCount.toLocaleString()}회</TD>
@@ -212,8 +218,8 @@ const CompanyCell = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 `;
