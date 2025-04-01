@@ -12,16 +12,16 @@ import { useParams } from "react-router-dom";
 import sampleImg from "../../assets/images/company/sample.png";
 import PopupOneButton from "../../components/modal/PopupOneButton";
 
-function CompanyDetail({ size = "big" }) {
+function CompanyDetail() {
   const { companyId } = useParams();
   console.log("companyId:", companyId);
-  console.log("Received props:", size);
 
   const [mediaSize, setMediaSize] = useState("");
   const [companyData, setCompanyData] = useState(null);
   const [investors, setInvestors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ispopupOpen, setIsPopupOpen] = useState(false);
+
 
   useEffect(() => {
     if (!companyId) {
@@ -58,16 +58,18 @@ function CompanyDetail({ size = "big" }) {
 
   return (
     <Wrap>
-      <CompanyDetailWrap>
-        <CompanyContainer $size={size}>
+      <CompanyDetailWrap $mediaSize={mediaSize}>
+        <CompanyContainer>
           <Img
-            $size={size}
-            src={companyData?.imageUrl || sampleImg} // imageUrl이 없을 경우 기본 이미지 경로 지정
+            $mediaSize={mediaSize}
+            src={companyData?.imageUrl || sampleImg}
             alt="Company"
           />
           <TitleWrap>
-            <Title $size={size}>{companyData.name}</Title>
-            <Discription $size={size}>{companyData.category}</Discription>
+            <Title $mediaSize={mediaSize}>{companyData.name}</Title>
+            <Discription $mediaSize={mediaSize}>
+              {companyData.category}
+            </Discription>
           </TitleWrap>
         </CompanyContainer>
 
@@ -76,12 +78,19 @@ function CompanyDetail({ size = "big" }) {
             char="누적 투자 금액"
             type="price"
             number={companyData.realInvestmentAmount}
+            mediaSize={mediaSize}
           />
-          <AmountCard char="매출액" type="price" number={companyData.revenue} />
+          <AmountCard
+            char="매출액"
+            type="price"
+            number={companyData.revenue}
+            mediaSize={mediaSize}
+          />
           <AmountCard
             char="고용 인원"
             type="people"
             number={companyData.numberOfEmployees}
+            mediaSize={mediaSize}
           />
         </AmountCardContainer>
 
@@ -94,7 +103,7 @@ function CompanyDetail({ size = "big" }) {
           <InvestTitle>View My Startup에서 받은 투자</InvestTitle>
           <BtnLarge
             type="orange"
-            size={size}
+            size={mediaSize}
             label="기업 투자하기"
             onClick={() => setIsModalOpen(true)}
           />
@@ -128,6 +137,7 @@ function CompanyDetail({ size = "big" }) {
           size={mediaSize}
           type={"success"}
         />
+
       )}
     </Wrap>
   );
@@ -145,7 +155,12 @@ const Wrap = styled.div`
 `;
 
 const CompanyDetailWrap = styled.div`
-  width: 1200px;
+  width: ${({ $mediaSize }) =>
+    $mediaSize === "big"
+      ? "1200px"
+      : $mediaSize === "medium"
+      ? "696px"
+      : "343px"};
 `;
 
 const CompanyContainer = styled.div`
@@ -160,22 +175,22 @@ const TitleWrap = styled.div`
 `;
 
 const Img = styled.img`
-  width: ${(props) => (props.$size === "small" ? "49px" : "80px")};
-  height: ${(props) => (props.$size === "small" ? "49px" : "80px")};
+  width: ${({ $mediaSize }) => ($mediaSize === "small" ? "49px" : "80px")};
+  height: ${({ $mediaSize }) => ($mediaSize === "small" ? "49px" : "80px")};
   border-radius: 100%;
   object-fit: cover;
   padding-right: 20px;
 `;
 
 const Title = styled.h1`
-  font-size: ${(props) => (props.$size === "small" ? "20px" : "24px")};
+  font-size: ${({ $mediaSize }) => ($mediaSize === "small" ? "20px" : "24px")};
   font-weight: 700;
   color: white;
   margin: 0;
 `;
 
 const Discription = styled.p`
-  font-size: ${(props) => (props.$size === "small" ? "16px" : "20px")};
+  font-size: ${({ $mediaSize }) => ($mediaSize === "small" ? "16px" : "20px")};
   color: ${gray_200};
   font-weight: 500;
   margin: 0;

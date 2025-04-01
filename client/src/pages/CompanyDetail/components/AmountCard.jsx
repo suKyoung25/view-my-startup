@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { black_200, gray_100 } from "../../../styles/colors";
+import { media } from "../../../styles/mixin";
 
-function AmountCard({ char, type, number }) {
+function AmountCard({ char, type, number, mediaSize }) {
   const unit = type === "price" ? "억 원" : type === "people" ? "명" : "";
 
   return (
-    <Container>
+    <Container $mediaSize={mediaSize}>
       <Char>{char}</Char>
       <Number>
         {number}
@@ -25,11 +26,24 @@ const Container = styled.div`
   justify-content: space-between;
   color: ${gray_100};
   background-color: ${black_200};
-  width: 384px;
+  width: ${({ $mediaSize }) =>
+    $mediaSize === "big"
+      ? "384px"
+      : $mediaSize === "medium"
+      ? "216px"
+      : $mediaSize === "small"
+      ? "103px"
+      : null};
   height: 92px;
   padding: 0 20px;
   border-radius: 10px;
   font-size: 16px;
+
+  ${media.ipad`
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  `}
 `;
 
 const Char = styled.span`
