@@ -151,6 +151,7 @@ function MyCompanyComparison() {
             size={mediaSize}
             selectedCompanies={compareCompanies}
             setSelectedCompanies={setCompareCompanies}
+            selectedCompany={selectedCompany}
           />
         ) : (
           <SelectMyEnterprise

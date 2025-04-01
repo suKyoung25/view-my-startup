@@ -60,13 +60,15 @@ const CompareListSection = ({
           </Title>
           <BtnLarge
             label="기업 추가하기"
-            type="orange"
+            type={companies.length >= 5 ? "black" : "orange"}
             size="small"
-            onClick={onAddClick}
+            onClick={() => {
+              if (companies.length >= 5) return;
+              onAddClick();
+            }}
           />
         </Header>
       )}
-
 
       <CardContainer>{renderSelectedCompanies()}</CardContainer>
     </Wrapper>
