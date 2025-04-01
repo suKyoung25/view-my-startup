@@ -58,23 +58,17 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
     setInputValueCheckPassword(e.target.value);
   };
 
-  //   //투자하기 버튼이 눌렸을 시 이벤트 핸들러
-  //   const handleClickInvestmentButton = (e) => {
-  //     e.preventDefault();
+  //투자하기 버튼이 눌렸을 시 이벤트 핸들러
+  const handleClickInvestmentButton = (e) => {
+    e.preventDefault();
 
-  //     //각 인풋의 유효성 확인
-  //     if (!isInvestButtonAvailable)
-  //       return alert("입력값을 올바르게 입력해주세요.");
+    //각 인풋의 유효성 확인
+    if (!isInvestButtonAvailable)
+      return alert("입력값을 올바르게 입력해주세요.");
 
-  // try {
-  // companyAPI.
-  // } catch(e) {
-
-  // }
-
-  //     openPopupModal();
-  //     onClose();
-  //   };
+    openPopupModal();
+    onClose();
+  };
 
   if (companyInformation === null) return null; //렌더링 안됨
 
@@ -159,7 +153,7 @@ const InvestmentModal = ({ onClose, size, openPopupModal }) => {
             type="orange"
             size={size}
             label="투자하기"
-            // onClick={handleClickInvestmentButton}
+            onClick={handleClickInvestmentButton}
             disabled={!isInvestButtonAvailable}
           />
         </ButtonRow>
