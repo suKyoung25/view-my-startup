@@ -79,9 +79,7 @@ function SelectComparison({
 
     return companies.filter((company) => {
       const name = company.name.toLowerCase();
-      const isMyCompany = selectedCompany?.id === company.id;
-
-      if (isMyCompany) return false;
+      if (selectedCompany && selectedCompany.id === company.id) return false;
 
       if (Hangul.isConsonant(input[0])) {
         const firstChar = name[0];

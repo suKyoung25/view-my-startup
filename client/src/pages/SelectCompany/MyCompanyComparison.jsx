@@ -137,19 +137,17 @@ function MyCompanyComparison() {
         </div>
 
         {/* 비교 기업 리스트 및 버튼 포함 */}
-        {selectedCompany && (
-          <CompareListSection
-            companies={compareCompanies}
-            onAddClick={() => {
-              setSelectionMode("compare");
-              setModalOpen(true);
-            }}
-            onDelete={(id) => {
-              setCompareCompanies((prev) => prev.filter((c) => c.id !== id));
-            }}
-            isActive={true}
-          />
-        )}
+        <CompareListSection
+          companies={compareCompanies}
+          onAddClick={() => {
+            setSelectionMode("compare");
+            setModalOpen(true);
+          }}
+          onDelete={(id) => {
+            setCompareCompanies((prev) => prev.filter((c) => c.id !== id));
+          }}
+          isActive={true}
+        />
 
         <div className={styles.buttonWrapper}>
           <BtnLarge
