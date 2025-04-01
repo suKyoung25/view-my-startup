@@ -103,9 +103,9 @@ function HomePage() {
   const sortedData = [...filteredData].sort((a, b) => {
     switch (selectedSort) {
       case "누적 투자금액 높은순":
-        return b.totalVirtualInvestmentAmount - a.totalVirtualInvestmentAmount;
+        return b.realInvestmentAmount - a.realInvestmentAmount;
       case "누적 투자금액 낮은순":
-        return a.totalVirtualInvestmentAmount - b.totalVirtualInvestmentAmount;
+        return a.realInvestmentAmount - b.realInvestmentAmount;
       case "매출액 높은순":
         return b.revenue - a.revenue;
       case "매출액 낮은순":
@@ -178,7 +178,7 @@ function HomePage() {
                     </TD>
                     <TD>{item.category}</TD>
                     <TD>
-                      {item.totalVirtualInvestmentAmount?.toLocaleString()}억 원
+                      {item.realInvestmentAmount?.toLocaleString()}억 원
                     </TD>
                     <TD>{item.revenue?.toLocaleString()}억 원</TD>
                     <TD>{item.numberOfEmployees?.toLocaleString()}명</TD>
