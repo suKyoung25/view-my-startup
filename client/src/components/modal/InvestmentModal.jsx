@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
 import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
-import { black_300, black_400 } from "../../styles/colors";
+import { black_300, black_400, gray_200, gray_300 } from "../../styles/colors";
 import { media } from "../../styles/mixin";
 import { useLocation, useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
@@ -43,7 +43,6 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
       companyData();
     }
   }, [company, companyId]);
-  
 
   //각 인풋의 핸들 함수
   const handleNameChange = (e) => {
@@ -77,7 +76,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
       console.log("투자 성공:", InvestmentData);
       alert("투자 등록이 완료되었습니다!"); // 피드백 추가
 
-    // 입력 초기화
+      // 입력 초기화
       setInputValueName("");
       setInputValueAmount("");
       setInputValueComment("");
@@ -85,7 +84,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
       setInputValueCheckPassword("");
 
       onSuccess(); // 성공 팝업
-      onClose();   // 모달 닫기
+      onClose(); // 모달 닫기
     } catch (e) {
       console.error("투자 등록 중 에러 발생...", e);
       alert(e?.response?.data?.message || "투자 등록 중 오류가 발생했습니다."); // 수정된 부분
@@ -105,7 +104,10 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
         <Section>
           <SectionTitle>투자 기업 정보</SectionTitle>
           <CompanyInfo>
-            <Logo src={companyInformation.imageUrl} alt={companyInformation.name} />
+            <Logo
+              src={companyInformation.imageUrl}
+              alt={companyInformation.name}
+            />
             <CompanyText>
               <CompanyName>{companyInformation.name}</CompanyName>
               <CompanyCategory>{companyInformation.category}</CompanyCategory>
@@ -275,9 +277,9 @@ const CompanyCategory = styled.span`
 
 const TextArea = styled.textarea`
   width: 90%;
-  background-color: #333;
+  background-color: ${gray_300};
   color: #fff;
-  border: 2px solid #444;
+  border: 2px solid ${gray_300};
   border-radius: 8px;
   padding: 14px;
   font-size: 16px;
@@ -285,7 +287,7 @@ const TextArea = styled.textarea`
   outline: none;
 
   &::placeholder {
-    color: #888;
+    color: ${gray_200};
   }
 
   &:focus {
