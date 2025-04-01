@@ -112,7 +112,7 @@ const InvestmentRow = ({ investment, index }) => {
       <Tr>
         <Td>{investment.investorName}</Td>
         <Td>{index + 1}위</Td>
-        <Td>{investment.amount.toFixed(1)}억</Td>
+        <Td>{investment.amount.toFixed(0)}억</Td>
         <Td>{investment.comment}</Td>
         <Td>
           <Dropdown>

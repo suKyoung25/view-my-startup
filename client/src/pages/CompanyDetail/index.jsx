@@ -22,7 +22,6 @@ function CompanyDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ispopupOpen, setIsPopupOpen] = useState(false);
 
-
   useEffect(() => {
     if (!companyId) {
       console.error("companyId is undefined");
@@ -113,8 +112,13 @@ function CompanyDetail() {
 
         <TableWrap>
           <TotalAmount>
-            총 {companyData.totalVirtualInvestmentAmount?.toLocaleString()}억 원
+            총{" "}
+            {investors.length > 0
+              ? investors.reduce((sum, inv) => sum + inv.amount, 0).toFixed(2)
+              : "0"}
+            억
           </TotalAmount>
+
           <InvestmentTable data={investors} />
         </TableWrap>
 
@@ -139,7 +143,6 @@ function CompanyDetail() {
           size={mediaSize}
           type={"success"}
         />
-
       )}
     </Wrap>
   );
