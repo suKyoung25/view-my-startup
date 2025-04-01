@@ -114,7 +114,7 @@ function CompanyDetail() {
           <TotalAmount>
             총{" "}
             {investors.length > 0
-              ? investors.reduce((sum, inv) => sum + inv.amount, 0).toFixed(2)
+              ? investors.reduce((sum, inv) => sum + inv.amount, 0).toFixed(0)
               : "0"}
             억
           </TotalAmount>
