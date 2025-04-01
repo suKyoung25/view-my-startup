@@ -84,7 +84,7 @@ function SelectComparison({
         onClick={(e) => e.stopPropagation()}
       >
         <ModalHeader>
-          <div>비교할 기업 선택하기</div>
+          <div>기업 추가하기</div>
           <img onClick={onClose} src={closeIcon} alt="닫기" />
         </ModalHeader>
 

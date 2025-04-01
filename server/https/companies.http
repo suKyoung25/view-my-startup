@@ -19,7 +19,7 @@ GET http://localhost:7777/api/companies
 ###
 
 ### [3] 특정 기업 상세 조회 (예시 cuid)
-GET http://localhost:7777/api/companies/cm8qxqjvt000quu2rtydqmkqc
+GET http://localhost:7777/api/companies/cm8shxv510000uuoluai45cis
 
 ###
 

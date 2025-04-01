@@ -69,7 +69,7 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${black_400};
+  background-color: ${black_400}80;
   display: flex;
   justify-content: center;
   align-items: center;

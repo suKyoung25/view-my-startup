@@ -67,6 +67,7 @@ const CompareListSection = ({
         </Header>
       )}
 
+
       <CardContainer>{renderSelectedCompanies()}</CardContainer>
     </Wrapper>
   );

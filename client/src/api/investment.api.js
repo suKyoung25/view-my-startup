@@ -14,9 +14,16 @@ const getInvestmentStatus = async (sortBy, order) => {
   return response.data;
 };
 
+//특정 기업에 투자하기
+const postInvestment = async (options) => {
+  const response = await client.post("/api/investments", options);
+  return response.data;
+};
+
 const investmentAPI = {
   getAllInvestment,
   getInvestmentStatus,
+  postInvestment,
 };
 
 export default investmentAPI;
