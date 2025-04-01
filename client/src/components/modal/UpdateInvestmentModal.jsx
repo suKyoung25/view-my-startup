@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
 import BtnLarge from "../BtnLarge";
-import { black_300, black_400, gray_200, gray_300 } from "../../styles/colors";
+import { black_300, black_400, gray_200 } from "../../styles/colors";
 import { useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
-import investmentAPI from "../../api/investment.api";
 
-const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
+const UpdateInvestmentModal = ({ onClose, size }) => {
   //각 input들의 value를 state로 저장해둠
   const [inputValueName, setInputValueName] = useState("");
   const [inputValueAmount, setInputValueAmount] = useState("");
@@ -16,7 +15,6 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
   const [inputValueCheckPassword, setInputValueCheckPassword] = useState("");
 
   const [companyInformation, setCompanyInformation] = useState(null);
-  const { companyId } = useParams();
 
   //useEffect를 사용하지 않고 투자하기 버튼 활성화 여부 확인
   const isInvestButtonAvailable =
@@ -25,22 +23,21 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
     Number(inputValueAmount) &&
     inputValuePassword === inputValueCheckPassword;
 
-  // company가 없을 때만 API 호출
+  //url을 통해 특정 기업의 id 출력
+  const { companyId } = useParams();
+
+  // 기업이 바뀔때마다 데이터 출력
   useEffect(() => {
-    if (company) {
-      setCompanyInformation(company); // props로 받은 정보로 바로 세팅
-    } else if (companyId) {
-      const companyData = async () => {
-        try {
-          const data = await companyAPI.getCompanyById(companyId);
-          setCompanyInformation(data);
-        } catch (error) {
-          console.error("Error fetching company data:", error);
-        }
-      };
-      companyData();
-    }
-  }, [company, companyId]);
+    const companyData = async () => {
+      try {
+        const data = await companyAPI.getCompanyById(companyId);
+        setCompanyInformation(data);
+      } catch (error) {
+        console.error("Error fetching company data:", error);
+      }
+    };
+    companyData();
+  }, [companyId]);
 
   //각 인풋의 핸들 함수
   const handleNameChange = (e) => {
@@ -59,41 +56,13 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
     setInputValueCheckPassword(e.target.value);
   };
 
-  //투자하기 버튼이 눌렸을 시 이벤트 핸들러
-  const handleClickInvestmentButton = async () => {
-    try {
-      const InvestmentData = await investmentAPI.postInvestment({
-        investorName: inputValueName,
-        amount: inputValueAmount,
-        comment: inputValueComment,
-        password: inputValuePassword,
-        // company가 있으면 그 id를, 아니면 useParams로 받은 id
-        companyId: company?.id || companyId, // 수정된 부분 // 여기서 company.id로 고정
-      });
-
-      console.log("투자 성공:", InvestmentData);
-      // alert("투자 등록이 완료되었습니다!"); // 피드백 추가
-
-      // 입력 초기화
-      setInputValueName("");
-      setInputValueAmount("");
-      setInputValueComment("");
-      setInputValuePassword("");
-      setInputValueCheckPassword("");
-
-      onSuccess(); // 성공 팝업
-      onClose(); // 모달 닫기
-    } catch (e) {
-      console.error("투자 등록 중 에러 발생...", e);
-      alert(e?.response?.data?.message || "투자 등록 중 오류가 발생했습니다."); // 수정된 부분
-    }
-  };
-
-  if (!companyInformation) return null;
+  if (companyInformation === null) return null; //렌더링 안됨
 
   return (
     <Overlay onClick={onClose}>
-      <ModalWrapper onClick={(e) => e.stopPropagation()}>
+      <ModalWrapper
+        onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
+      >
         <ModalHeader>
           <Title>기업에 투자하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
@@ -170,7 +139,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
             type="orange"
             size={size}
             label="투자하기"
-            onClick={handleClickInvestmentButton}
+            // onClick={handleClickInvestmentButton}
             disabled={!isInvestButtonAvailable}
           />
         </ButtonRow>
@@ -179,7 +148,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
   );
 };
 
-export default InvestmentModal;
+export default UpdateInvestmentModal;
 
 const Overlay = styled.div`
   position: fixed;
@@ -275,9 +244,9 @@ const CompanyCategory = styled.span`
 
 const TextArea = styled.textarea`
   width: 90%;
-  background-color: ${gray_300};
+  background-color: ${black_400};
   color: #fff;
-  border: 2px solid ${gray_300};
+  border: 2px solid ${black_400};
   border-radius: 8px;
   padding: 14px;
   font-size: 16px;

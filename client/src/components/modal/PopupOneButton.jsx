@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
-import { black_400 } from "../../styles/colors";
+import { black_300, black_400 } from "../../styles/colors";
 
 export default function PopupOneButton({ onClose, size = "big", type }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -83,7 +83,7 @@ const Wrapper = styled.div`
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
   height: ${(props) => (props.$size === "small" ? "161px" : "186px")};
   padding: ${(props) => (props.$size === "small" ? "16px" : "24px")};
-  background-color: #212121;
+  background-color: ${black_300};
   border-radius: 16px;
   color: #ffff;
   display: flex;

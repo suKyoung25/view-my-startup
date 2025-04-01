@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./MyCompanyComparison.module.css";
 import plusIcon from "../../assets/icon/btn_plus.svg";
+import restart from "../../assets/icon/ic_restart.svg";
 import styled from "styled-components";
 import BtnLarge from "../../components/BtnLarge";
 import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
 import SelectComparison from "../../components/modal/SelectComparison";
 import CompareListSection from "../../components/CompareListSection";
+import resultCompareAPI from "../../api/resultCompare.api";
 
 function MyCompanyComparison() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -32,6 +34,11 @@ function MyCompanyComparison() {
 
   const handleCancel = () => {
     setSelectedCompany(null);
+  };
+
+  const handleResetClick = () => {
+    setSelectedCompany(null);
+    setCompareCompanies([]);
   };
 
   const handleCompareClick = () => {
@@ -60,6 +67,15 @@ function MyCompanyComparison() {
         compareCompanyIds,
       },
     });
+
+    //기업 비교 버튼 클릭 시 기업 선택 횟수 증가
+    const increaseCount = async () => {
+      try {
+        const data = await resultCompareAPI.getCompareStatus({ sortBy, order });
+      } catch (e) {
+        console.error("기업 선택 횟수를 증가시킬 수 없음.", e);
+      }
+    };
   };
 
   function updateMediaSize() {
@@ -80,7 +96,18 @@ function MyCompanyComparison() {
   return (
     <Wrap>
       <Inner>
-        <h2 className={styles.title}>나의 기업을 선택해 주세요!</h2>
+        <div className={styles.titleRow}>
+          <h2 className={styles.title}>나의 기업을 선택해 주세요!</h2>
+          {selectedCompany && (
+            <BtnLarge
+              label="전체 초기화"
+              type="orange"
+              size="medium"
+              icon={restart}
+              onClick={handleResetClick}
+            />
+          )}
+        </div>
 
         <div className={styles.addBoxWrapper}>
           {selectedCompany && (
@@ -151,6 +178,7 @@ function MyCompanyComparison() {
             size={mediaSize}
             selectedCompanies={compareCompanies}
             setSelectedCompanies={setCompareCompanies}
+            selectedCompany={selectedCompany}
           />
         ) : (
           <SelectMyEnterprise

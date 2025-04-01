@@ -14,16 +14,37 @@ const getInvestmentStatus = async (sortBy, order) => {
   return response.data;
 };
 
-//특정 기업에 투자하기
+// 특정 기업에 투자하기
 const postInvestment = async (options) => {
   const response = await client.post("/api/investments", options);
   return response.data;
 };
 
+// 투자 수정 (비밀번호 포함)
+const updateInvestment = async (investmentId, options) => {
+  // options 예: { password, amount, comment }
+  const response = await client.put(
+    `/api/investments/${investmentId}`,
+    options
+  );
+  return response.data;
+};
+
+// 특정 투자 삭제 (비밀번호 포함)
+const deleteInvestment = async (id, password) => {
+  const response = await client.delete(`/api/investments/${id}`, {
+    data: { password }, // 반드시 data로 감싸야 req.body.password로 서버 전달됨
+  });
+  return response.data;
+};
+
+// 모듈 export
 const investmentAPI = {
   getAllInvestment,
   getInvestmentStatus,
   postInvestment,
+  updateInvestment,
+  deleteInvestment,
 };
 
 export default investmentAPI;

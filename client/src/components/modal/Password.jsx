@@ -3,13 +3,18 @@ import styled, { keyframes } from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import { PasswordInputField } from "../Input";
 import BtnDelete from "../BtnDelete";
-import { black_400 } from "../../styles/colors";
+import { black_300, black_400 } from "../../styles/colors";
 
-export default function ModalPassword({ onClose, onDelete, size = "pc" }) {
+export default function ModalPassword({
+  onClose,
+  onDelete,
+  size = "big",
+  isUpdateMode,
+}) {
   const [password, setPassword] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
-  const handleDelete = () => {
+  const handleSubmit = () => {
     if (password.trim() === "") {
       setIsTouched(true);
       return;
@@ -32,7 +37,7 @@ export default function ModalPassword({ onClose, onDelete, size = "pc" }) {
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
       >
         <Header>
-          <Title>삭제 권한 인증</Title>
+          <Title>{isUpdateMode ? "수정 권한 인증" : "삭제 권한 인증"}</Title>
           <CloseBtn onClick={onClose}>
             <img src={closeIcon} alt="닫기" />
           </CloseBtn>
@@ -41,7 +46,7 @@ export default function ModalPassword({ onClose, onDelete, size = "pc" }) {
         <Label>비밀번호</Label>
 
         <PasswordInputField
-          size="big"
+          size={size}
           placeholder="패스워드를 입력해주세요"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -49,7 +54,11 @@ export default function ModalPassword({ onClose, onDelete, size = "pc" }) {
         />
 
         <BtnDeleteWrapper>
-          <BtnDelete onClick={handleDelete} size={size} />
+          <BtnDelete
+            onClick={handleSubmit}
+            size={size}
+            type={isUpdateMode ? "update" : "delete"}
+          />
         </BtnDeleteWrapper>
       </Wrapper>
     </Overlay>
@@ -91,7 +100,7 @@ const Wrapper = styled.div`
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
   height: ${(props) => (props.$size === "small" ? "235px" : "269px")};
 
-  background-color: #212121;
+  background-color: ${black_300};
   border-radius: 16px;
   padding: ${(props) => (props.$size === "small" ? "16px" : "24px")};
   box-sizing: border-box;
