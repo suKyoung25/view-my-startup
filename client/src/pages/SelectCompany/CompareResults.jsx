@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CompareBtn from "./CompareBtn";
 import styles from "./CompareResult.module.css";
 import SortDropdown from "../../components/Dropdown";
 import BtnLarge from "../../components/BtnLarge";
@@ -21,6 +20,8 @@ function CompareResults() {
   const [sortTop, setSortTop] = useState("누적 투자금액 높은순");
   const [sortBottom, setSortBottom] = useState("누적 투자금액 높은순");
   const [companies, setCompanies] = useState([]);
+
+  const navigate = useNavigate();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -120,7 +121,19 @@ function CompareResults() {
         <div className={styles.contents}>
           <div className={styles.content1}>
             내가 선택한 기업
-            <CompareBtn />
+            <BtnLarge
+              type={"orange"}
+              size={"medium"}
+              label={"다른 기업 비교하기"}
+              onClick={() =>
+                navigate("/select-company", {
+                  state: {
+                    selectedCompany: companies[0], // 내가 선택한 기업 정보
+                    compareCompanies: [], // 비교 기업 초기화화
+                  },
+                })
+              }
+            />
           </div>
 
           <InputField>
