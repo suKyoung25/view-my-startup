@@ -22,6 +22,7 @@ export default function BtnDelete({
 }
 
 const ButtonWrapper = styled.button`
+  box-sizing: border-box;
   width: ${(props) => (props.$size === "small" ? "135px" : "194px")};
   height: ${(props) => (props.$size === "small" ? "44px" : "48px")};
   display: flex;

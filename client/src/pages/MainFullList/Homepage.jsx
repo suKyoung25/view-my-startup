@@ -44,10 +44,12 @@ function HomePage() {
 
   //반응형 디자인
   useEffect(() => {
-    const updateMediaSize = () => {
+    function updateMediaSize() {
       const { innerWidth: width } = window;
-      setMediaSize(width > 1199 ? "big" : width > 375 ? "medium" : "small");
-    };
+      if (width >= 1200) setMediaSize("big");
+      else if (width > 375) setMediaSize("medium");
+      else setMediaSize("small");
+    }
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
     return () => window.removeEventListener("resize", updateMediaSize);
@@ -201,7 +203,7 @@ function HomePage() {
 
           <PaginationWrap>
             <BtnPagination
-              size={"big"}
+              size={mediaSize}
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               totalItems={sortedData.length}
