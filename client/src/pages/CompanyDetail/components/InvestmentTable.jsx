@@ -3,7 +3,7 @@ import styled from "styled-components";
 import dropdown from "../../../assets/icon/btn_dropdown.png";
 import ModalPassword from "../../../components/modal/Password";
 import PopupOneButton from "../../../components/modal/PopupOneButton";
-import InvestmentModal from "../../../components/modal/InvestmentModal";
+import UpdateInvestmentModal from "../../../components/modal/UpdateInvestmentModal";
 import investmentAPI from "../../../api/investment.api";
 
 import {
@@ -15,7 +15,7 @@ import {
   gray_300,
 } from "../../../styles/colors";
 
-function InvestmentTable({ data = [] }) {
+function InvestmentTable({ data = [], onRefresh }) {
   const sortedData = [...data].sort((a, b) => b.amount - a.amount);
 
   return (
@@ -43,6 +43,7 @@ function InvestmentTable({ data = [] }) {
                 key={investment.id}
                 investment={investment}
                 index={index}
+                onRefresh={onRefresh} // 넘겨줌
               />
             ))
           )}
@@ -52,13 +53,13 @@ function InvestmentTable({ data = [] }) {
   );
 }
 
-const InvestmentRow = ({ investment, index }) => {
+const InvestmentRow = ({ investment, index, onRefresh }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupType, setPopupType] = useState("");
-  const [isUpdateMode, setIsUpdateMode] = useState(false); // 수정 모드 상태 추가
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); // 수정 모달 상태 추가
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -86,6 +87,7 @@ const InvestmentRow = ({ investment, index }) => {
         await investmentAPI.deleteInvestment(investment.id, password);
         // 삭제 모드일 경우, 상태 메시지 설정
         setPopupType("delete-success");
+        onRefresh && onRefresh(); // 삭제 후 새로고침
       } catch (e) {
         console.error(e);
         setPopupType("error");
@@ -97,6 +99,12 @@ const InvestmentRow = ({ investment, index }) => {
 
   const handlePopupClose = () => {
     setIsPopupOpen(false);
+  };
+
+  const handleUpdateSuccess = () => {
+    setPopupType("update-success");
+    setIsPopupOpen(true);
+    onRefresh && onRefresh(); // 수정 후 새로고침
   };
 
   useEffect(() => {
@@ -130,9 +138,7 @@ const InvestmentRow = ({ investment, index }) => {
           </Dropdown>
         </Td>
       </Tr>
-
-      {/* 모달과 팝업을 tbody 바깥에 위치 */}
-      {/* 비밀번호 입력 모달 */}
+      // 비밀번호 입력 모달
       {isPasswordModalOpen && (
         <ModalPassword
           onClose={() => setIsPasswordModalOpen(false)}
@@ -140,21 +146,15 @@ const InvestmentRow = ({ investment, index }) => {
           isUpdateMode={isUpdateMode} // 수정 모드 상태 전달
         />
       )}
-
-      {/* 수정 모달 (비밀번호가 맞을 경우) */}
+      // 수정 모달 (비밀번호가 맞을 경우)
       {isUpdateModalOpen && (
-        <InvestmentModal
+        <UpdateInvestmentModal
           onClose={() => setIsUpdateModalOpen(false)}
           size="big"
-          company={investment.company}
-          onSuccess={() => {
-            setPopupType("update-success");
-            setIsPopupOpen(true);
-          }}
+          investment={investment}
+          onSuccess={handleUpdateSuccess}
         />
       )}
-
-      {/* 삭제 결과 팝업 */}
       {isPopupOpen && (
         <PopupOneButton onClose={handlePopupClose} type={popupType} />
       )}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 import { black_300, black_400 } from "../../styles/colors";
@@ -27,6 +27,8 @@ export default function PopupOneButton({ onClose, size = "big", type }) {
         return "삭제가 완료되었어요!";
       case "success":
         return "투자가 완료되었어요!";
+      case "update-success":
+        return "투자 내역이 수정되었습니다!";
       default:
         return "팝업 내용이 들어갑니다";
     }
