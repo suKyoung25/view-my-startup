@@ -269,7 +269,6 @@ import InvestmentModal from "../../components/modal/InvestmentModal";
 import { useParams } from "react-router-dom";
 import sampleImg from "../../assets/images/company/sample.png";
 import PopupOneButton from "../../components/modal/PopupOneButton";
-import { media } from "../../styles/mixin";
 
 function CompanyDetail() {
   const { companyId } = useParams();
@@ -477,7 +476,6 @@ const IntroContainer = styled.div`
 
 const IntroTitle = styled.div`
   font-size: 16px;
-  margin-bottom: 20px;
 `;
 
 const IntroText = styled.div`
@@ -500,9 +498,6 @@ const InvestContainer = styled.div`
 const InvestTitle = styled.div`
   font-weight: 700;
   color: white;
-  ${media.mobile`
-      font-size: 16px;
-  `}
 `;
 
 const TableWrap = styled.div`
