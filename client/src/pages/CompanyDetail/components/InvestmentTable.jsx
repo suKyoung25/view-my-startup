@@ -3,8 +3,8 @@ import styled from "styled-components";
 import dropdown from "../../../assets/icon/btn_dropdown.png";
 import ModalPassword from "../../../components/modal/Password";
 import PopupOneButton from "../../../components/modal/PopupOneButton";
-import UpdateInvestmentModal from "../../../components/modal/UpdateInvestmentModal";
-import bcrypt from "bcryptjs";
+import InvestmentModal from "../../../components/modal/InvestmentModal";
+import investmentAPI from "../../../api/investment.api";
 
 import {
   black_100,
@@ -75,26 +75,24 @@ const InvestmentRow = ({ investment, index }) => {
   };
 
   const handlePasswordSubmit = async (password) => {
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      investment.encryptedPassword
-    );
-    //password === investment.encryptedPassword
-
-    if (isPasswordCorrect) {
-      if (isUpdateMode) {
-        // 수정 모드일 경우, 수정 모달을 열고 기존 팝업 로직 건너뛰기
-        setIsUpdateModalOpen(true);
-        setIsPasswordModalOpen(false);
-        return;
-      }
-      // 삭제 모드일 경우, 상태 메시지 설정
-      setPopupType("delete-success");
+    if (isUpdateMode) {
+      // 수정 모드일 경우, 수정 모달을 열고 기존 팝업 로직 건너뛰기
+      // 수정 모드 → 그냥 모달 열기 (비밀번호는 UpdateInvestmentModal에서 검증 요청)
+      setIsUpdateModalOpen(true);
+      setIsPasswordModalOpen(false);
     } else {
-      setPopupType("error");
+      try {
+        // 삭제 요청
+        await investmentAPI.deleteInvestment(investment.id, password);
+        // 삭제 모드일 경우, 상태 메시지 설정
+        setPopupType("delete-success");
+      } catch (e) {
+        console.error(e);
+        setPopupType("error");
+      }
+      setIsPopupOpen(true);
+      setIsPasswordModalOpen(false);
     }
-    setIsPopupOpen(true);
-    setIsPasswordModalOpen(false);
   };
 
   const handlePopupClose = () => {
@@ -145,9 +143,14 @@ const InvestmentRow = ({ investment, index }) => {
 
       {/* 수정 모달 (비밀번호가 맞을 경우) */}
       {isUpdateModalOpen && (
-        <UpdateInvestmentModal
+        <InvestmentModal
           onClose={() => setIsUpdateModalOpen(false)}
-          investment={investment} // 수정할 투자 정보 전달
+          size="big"
+          company={investment.company}
+          onSuccess={() => {
+            setPopupType("update-success");
+            setIsPopupOpen(true);
+          }}
         />
       )}
 

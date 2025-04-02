@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { media } from "../../styles/mixin";
 import CompareBtn from "./CompareBtn";
 import styles from "./CompareResult.module.css";
 import SortDropdown from "../../components/Dropdown";
