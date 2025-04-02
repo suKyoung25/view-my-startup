@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import bigLogo from "../assets/images/gnb/standard=pc.svg";
 import smallLogo from "../assets/images/gnb/standard=mobile.svg";
@@ -22,6 +22,20 @@ function Gnb({ length }) {
       ? smallLogo
       : null;
 
+  //브라우저 사이즈 체크를 위해 임시로 적어둔 코드. 후에 제거할 것것
+  //여기부터
+  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  //여기까지. return 내에서도 width 지우고, import도 확인.
+
   return (
     <Contatiner $length={length}>
       <NavLink to="/" style={getLinkStyle}>
@@ -37,6 +51,8 @@ function Gnb({ length }) {
         <NavLink to="/invest-status" style={getLinkStyle}>
           투자 현황
         </NavLink>
+        {/* 브라우저 width 체크를 위한 코드 후에 삭제 필요. */}
+        <div>{width}</div>
       </Text>
     </Contatiner>
   );
@@ -97,11 +113,19 @@ const Text = styled.ul`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding: 0;
+
+  font-size: ${(props) => {
+    if (props.$length === "big") return "15px";
+    if (props.$length === "medium") return "15px";
+    if (props.$length === "small") return "13px";
+    return "0";
+  }};
 
   width: ${(props) => {
     if (props.$length === "big") return "299px";
     if (props.$length === "medium") return "299px";
-    if (props.$length === "small") return "212px";
+    if (props.$length === "small") return "218px";
   }};
 `;
 
