@@ -18,6 +18,7 @@ function BtnLarge({ type, size, label, onClick, disabled, icon }) {
 }
 
 const Container = styled.button`
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,14 +44,12 @@ const Container = styled.button`
   }};
 
   width: ${(props) => {
-    if (props.$size === "big") return "183px";
-    if (props.$size === "medium") return "149px";
-    if (props.$size === "small") return "135px";
+    if (props.$type === "" && props.$size === "big") return "194px";
+    if (props.$type === "" && props.$size === "small") return "135px";
+    return props.$size === "small" ? "135px" : "183px";
   }};
   height: ${(props) => {
-    if (props.$size === "big") return "48px";
-    if (props.$size === "medium") return "43px";
-    if (props.$size === "small") return "40px";
+    return props.$size === "small" ? "40px" : "48px";
   }};
 `;
 
@@ -61,8 +60,9 @@ const Text = styled.div`
   }};
   font-size: ${(props) => {
     if (props.$size === "big") return "16px";
-    if (props.$size === "medium") return "15px";
+    if (props.$size === "medium") return "16px";
     if (props.$size === "small") return "14px";
+    if (props.$type === "") return "18px";
   }};
 `;
 

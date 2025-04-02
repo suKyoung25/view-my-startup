@@ -54,7 +54,7 @@ function CompanyDetail() {
     function updateMediaSize() {
       const { innerWidth: width } = window;
       if (width >= 1200) setMediaSize("big");
-      else if (width > 744) setMediaSize("medium");
+      else if (width > 375) setMediaSize("medium");
       else setMediaSize("small");
     }
     updateMediaSize();
