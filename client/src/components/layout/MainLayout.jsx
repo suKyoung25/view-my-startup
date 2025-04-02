@@ -10,7 +10,7 @@ function MainLayout() {
     const { innerWidth: width } = window;
     if (width >= 1200) {
       setMediaSize("big");
-    } else if (width > 744) {
+    } else if (width > 376) {
       setMediaSize("medium");
     } else {
       setMediaSize("small");

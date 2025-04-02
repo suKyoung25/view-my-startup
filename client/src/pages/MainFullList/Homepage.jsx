@@ -46,7 +46,7 @@ function HomePage() {
   useEffect(() => {
     const updateMediaSize = () => {
       const { innerWidth: width } = window;
-      setMediaSize(width > 744 ? "medium" : "small");
+      setMediaSize(width > 1199 ? "big" : width > 375 ? "medium" : "small");
     };
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
@@ -177,9 +177,7 @@ function HomePage() {
                       </Link>
                     </TD>
                     <TD>{item.category}</TD>
-                    <TD>
-                      {item.realInvestmentAmount?.toLocaleString()}억 원
-                    </TD>
+                    <TD>{item.realInvestmentAmount?.toLocaleString()}억 원</TD>
                     <TD>{item.revenue?.toLocaleString()}억 원</TD>
                     <TD>{item.numberOfEmployees?.toLocaleString()}명</TD>
                   </tr>
