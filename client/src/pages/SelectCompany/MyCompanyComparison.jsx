@@ -15,21 +15,41 @@ function MyCompanyComparison() {
   const [mediaSize, setMediaSize] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [compareCompanies, setCompareCompanies] = useState([]);
+  const [recentMyCompanies, setRecentMyCompanies] = useState([]);
   const [selectionMode, setSelectionMode] = useState("my");
   const navigate = useNavigate();
 
-  // 나의 기업 / 비교 기업 선택 핸들러
-  const handleSelect = (company, mode) => {
-    if (mode === "my") {
-      setSelectedCompany(company);
-    } else if (mode === "compare") {
-      setCompareCompanies((prev) => {
-        const exists = prev.find((c) => c.id === company.id);
-        if (exists) return prev;
-        return [company, ...prev].slice(0, 5);
-      });
-    }
+  // '나의 기업' 선택 핸들러
+  const handleSelectMyCompany = (company) => {
+    setSelectedCompany(company);
+    updateRecentMyCompanies(company);
     setModalOpen(false);
+  };
+
+  // '비교 기업' 선택 핸들러
+  const handleSelectCompareCompany = (company) => {
+    setCompareCompanies((prev) => {
+      const exists = prev.find((c) => c.id === company.id);
+      if (exists) return prev;
+      return [company, ...prev].slice(0, 5);
+    });
+    setModalOpen(false);
+  };
+
+  // 최근 '나의 기업' 목록 업데이트
+  const updateRecentMyCompanies = (company) => {
+    setRecentMyCompanies((prev) => {
+      const existingIndex = prev.findIndex((c) => c.id === company.id);
+      if (existingIndex !== -1) {
+        const updatedRecent = [
+          company,
+          ...prev.slice(0, existingIndex),
+          ...prev.slice(existingIndex + 1),
+        ];
+        return updatedRecent.slice(0, 5);
+      }
+      return [company, ...prev].slice(0, 5);
+    });
   };
 
   const handleCancel = () => {
@@ -39,6 +59,7 @@ function MyCompanyComparison() {
   const handleResetClick = () => {
     setSelectedCompany(null);
     setCompareCompanies([]);
+    setRecentMyCompanies([]);
   };
 
   const handleCompareClick = () => {
@@ -184,9 +205,9 @@ function MyCompanyComparison() {
           <SelectMyEnterprise
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
-            onSelect={(company) => handleSelect(company, "my")}
+            onSelect={handleSelectMyCompany}
             size={mediaSize}
-            recentCompanies={compareCompanies}
+            recentCompanies={recentMyCompanies}
           />
         )}
       </Inner>

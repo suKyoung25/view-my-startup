@@ -19,6 +19,8 @@ function SelectComparison({
   selectedCompanies,
   setSelectedCompanies,
   selectedCompany,
+  recentCompanies,
+  setRecentCompanies,
 }) {
   const [companies, setCompanies] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -72,6 +74,19 @@ function SelectComparison({
     if (selectedCompanies.some((c) => c.id === company.id)) return;
 
     setSelectedCompanies((prev) => [...prev, company]);
+
+    setRecentCompanies((prev) => {
+      const existing = prev.findIndex((c) => c.id === company.id);
+      if (existing !== -1) {
+        const updatedRecent = [
+          company,
+          ...prev.slice(0, existing),
+          ...prev.slice(existing + 1),
+        ];
+        return updatedRecent.slice(0, 5);
+      }
+      return [company, ...prev].slice(0, 5);
+    });
   };
 
   const handleRemove = (id) => {
