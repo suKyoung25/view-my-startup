@@ -88,6 +88,7 @@ function CompareResults() {
     return [...list].sort((a, b) => {
       const aVal = a[field] ?? 0;
       const bVal = b[field] ?? 0;
+      console.log(a[field]);
       return order === "asc" ? aVal - bVal : bVal - aVal;
     });
   };
@@ -155,8 +156,8 @@ function CompareResults() {
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
                   <TD>
-                    {typeof company.investmentAmount === "number"
-                      ? `${company.investmentAmount.toLocaleString()}억 원`
+                    {typeof company.realInvestmentAmount === "number"
+                      ? `${company.realInvestmentAmount.toLocaleString()}억 원`
                       : "-"}
                   </TD>
                   <TD>{company.revenue}억 원</TD>
