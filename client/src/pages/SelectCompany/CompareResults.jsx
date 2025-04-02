@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import styled from "styled-components";
 import CompareBtn from "./CompareBtn";
 import styles from "./CompareResult.module.css";
@@ -143,10 +143,15 @@ function CompareResults() {
             <tbody>
               {sortCompanies(companies, sortTop).map((company) => (
                 <tr key={company.id}>
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
+                  <Link to={`/company-detail/${company.id}`}>
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                  </Link>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
                   <TD>
@@ -181,10 +186,15 @@ function CompareResults() {
               {sortCompanies(companies, sortBottom).map((company, idx) => (
                 <tr key={company.id}>
                   <TD>{idx + 1}위</TD>
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
+                  <Link to={`/company-detail/${company.id}`}>
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                  </Link>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
                   <TD>
