@@ -14,41 +14,40 @@ import PopupOneButton from "../../components/modal/PopupOneButton";
 
 function CompanyDetail() {
   const { companyId } = useParams();
-  console.log("companyId:", companyId);
-
   const [mediaSize, setMediaSize] = useState("");
   const [companyData, setCompanyData] = useState(null);
   const [investors, setInvestors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ispopupOpen, setIsPopupOpen] = useState(false);
 
+  // 새로고침용 함수 분리
+  const fetchData = async () => {
+    try {
+      const company = await companyAPI.getCompanyById(companyId);
+      const investments = await investmentAPI.getAllInvestment();
+      setCompanyData(company);
+      setInvestors(investments.filter((inv) => inv.company.id === companyId));
+    } catch (error) {
+      console.error("Error fetching company data:", error);
+    }
+  };
 
   useEffect(() => {
     if (!companyId) {
       console.error("companyId is undefined");
       return;
     }
-    const fetchData = async () => {
-      try {
-        const company = await companyAPI.getCompanyById(companyId);
-        const investments = await investmentAPI.getAllInvestment();
-        setCompanyData(company);
-        setInvestors(investments.filter((inv) => inv.company.id === companyId));
-      } catch (error) {
-        console.error("Error fetching company data:", error);
-      }
-    };
     fetchData();
   }, [companyId]);
 
-  function updateMediaSize() {
-    const { innerWidth: width } = window;
-    if (width >= 1200) setMediaSize("big");
-    else if (width > 744) setMediaSize("medium");
-    else setMediaSize("small");
-  }
-
+  // 반응형 사이즈 계산
   useEffect(() => {
+    function updateMediaSize() {
+      const { innerWidth: width } = window;
+      if (width >= 1200) setMediaSize("big");
+      else if (width > 744) setMediaSize("medium");
+      else setMediaSize("small");
+    }
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
     return () => window.removeEventListener("resize", updateMediaSize);
@@ -113,9 +112,15 @@ function CompanyDetail() {
 
         <TableWrap>
           <TotalAmount>
-            총 {companyData.totalVirtualInvestmentAmount?.toLocaleString()}억 원
+            총{" "}
+            {investors.length > 0
+              ? investors.reduce((sum, inv) => sum + inv.amount, 0).toFixed(0)
+              : "0"}
+            억
           </TotalAmount>
-          <InvestmentTable data={investors} />
+
+          {/* 수정: InvestmentTable에 onRefresh 전달 */}
+          <InvestmentTable data={investors} onRefresh={fetchData} />
         </TableWrap>
 
         <PaginationWrap>
@@ -128,6 +133,7 @@ function CompanyDetail() {
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsPopupOpen(true);
+            fetchData(); // 신규 투자 후에도 새로고침
           }}
           size={mediaSize}
         />
@@ -139,7 +145,6 @@ function CompanyDetail() {
           size={mediaSize}
           type={"success"}
         />
-
       )}
     </Wrap>
   );

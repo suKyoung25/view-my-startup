@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { media } from "../../styles/mixin";
 import CompareBtn from "./CompareBtn";
 import styles from "./CompareResult.module.css";
 import SortDropdown from "../../components/Dropdown";
@@ -150,7 +149,11 @@ function CompareResults() {
                   </CompanyCell>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>{company.realInvestmentAmount}억 원</TD>
+                  <TD>
+                    {typeof company.investmentAmount === "number"
+                      ? `${company.investmentAmount.toLocaleString()}억 원`
+                      : "-"}
+                  </TD>
                   <TD>{company.revenue}억 원</TD>
                   <TD>{company.employees}명</TD>
                 </tr>
@@ -184,9 +187,13 @@ function CompareResults() {
                   </CompanyCell>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>{company.realInvestmentAmount}억</TD>
-                  <TD>{company.revenue}억</TD>
-                  <TD>{company.employees}</TD>
+                  <TD>
+                    {typeof company.investmentAmount === "number"
+                      ? `${company.investmentAmount.toLocaleString()}억원`
+                      : "-"}
+                  </TD>
+                  <TD>{company.revenue}억원</TD>
+                  <TD>{company.employees}명</TD>
                 </tr>
               ))}
             </tbody>

@@ -8,6 +8,7 @@ import BtnLarge from "../../components/BtnLarge";
 import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
 import SelectComparison from "../../components/modal/SelectComparison";
 import CompareListSection from "../../components/CompareListSection";
+import resultCompareAPI from "../../api/resultCompare.api";
 
 function MyCompanyComparison() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,6 +67,15 @@ function MyCompanyComparison() {
         compareCompanyIds,
       },
     });
+
+    //기업 비교 버튼 클릭 시 기업 선택 횟수 증가
+    const increaseCount = async () => {
+      try {
+        const data = await resultCompareAPI.getCompareStatus({ sortBy, order });
+      } catch (e) {
+        console.error("기업 선택 횟수를 증가시킬 수 없음.", e);
+      }
+    };
   };
 
   function updateMediaSize() {
@@ -137,17 +147,19 @@ function MyCompanyComparison() {
         </div>
 
         {/* 비교 기업 리스트 및 버튼 포함 */}
-        <CompareListSection
-          companies={compareCompanies}
-          onAddClick={() => {
-            setSelectionMode("compare");
-            setModalOpen(true);
-          }}
-          onDelete={(id) => {
-            setCompareCompanies((prev) => prev.filter((c) => c.id !== id));
-          }}
-          isActive={true}
-        />
+        {(selectedCompany || compareCompanies.length > 0) && (
+          <CompareListSection
+            companies={compareCompanies}
+            onAddClick={() => {
+              setSelectionMode("compare");
+              setModalOpen(true);
+            }}
+            onDelete={(id) => {
+              setCompareCompanies((prev) => prev.filter((c) => c.id !== id));
+            }}
+            isActive={true}
+          />
+        )}
 
         <div className={styles.buttonWrapper}>
           <BtnLarge

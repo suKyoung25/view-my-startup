@@ -4,7 +4,7 @@ import dropdown from "../../../assets/icon/btn_dropdown.png";
 import ModalPassword from "../../../components/modal/Password";
 import PopupOneButton from "../../../components/modal/PopupOneButton";
 import UpdateInvestmentModal from "../../../components/modal/UpdateInvestmentModal";
-import bcrypt from "bcryptjs";
+import investmentAPI from "../../../api/investment.api";
 
 import {
   black_100,
@@ -15,7 +15,7 @@ import {
   gray_300,
 } from "../../../styles/colors";
 
-function InvestmentTable({ data = [] }) {
+function InvestmentTable({ data = [], onRefresh }) {
   const sortedData = [...data].sort((a, b) => b.amount - a.amount);
 
   return (
@@ -43,6 +43,7 @@ function InvestmentTable({ data = [] }) {
                 key={investment.id}
                 investment={investment}
                 index={index}
+                onRefresh={onRefresh} // 넘겨줌
               />
             ))
           )}
@@ -52,13 +53,13 @@ function InvestmentTable({ data = [] }) {
   );
 }
 
-const InvestmentRow = ({ investment, index }) => {
+const InvestmentRow = ({ investment, index, onRefresh }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupType, setPopupType] = useState("");
-  const [isUpdateMode, setIsUpdateMode] = useState(false); // 수정 모드 상태 추가
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false); // 수정 모달 상태 추가
+  const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -75,30 +76,35 @@ const InvestmentRow = ({ investment, index }) => {
   };
 
   const handlePasswordSubmit = async (password) => {
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      investment.encryptedPassword
-    );
-    //password === investment.encryptedPassword
-
-    if (isPasswordCorrect) {
-      if (isUpdateMode) {
-        // 수정 모드일 경우, 수정 모달을 열고 기존 팝업 로직 건너뛰기
-        setIsUpdateModalOpen(true);
-        setIsPasswordModalOpen(false);
-        return;
-      }
-      // 삭제 모드일 경우, 상태 메시지 설정
-      setPopupType("delete-success");
+    if (isUpdateMode) {
+      // 수정 모드일 경우, 수정 모달을 열고 기존 팝업 로직 건너뛰기
+      // 수정 모드 → 그냥 모달 열기 (비밀번호는 UpdateInvestmentModal에서 검증 요청)
+      setIsUpdateModalOpen(true);
+      setIsPasswordModalOpen(false);
     } else {
-      setPopupType("error");
+      try {
+        // 삭제 요청
+        await investmentAPI.deleteInvestment(investment.id, password);
+        // 삭제 모드일 경우, 상태 메시지 설정
+        setPopupType("delete-success");
+        onRefresh && onRefresh(); // 삭제 후 새로고침
+      } catch (e) {
+        console.error(e);
+        setPopupType("error");
+      }
+      setIsPopupOpen(true);
+      setIsPasswordModalOpen(false);
     }
-    setIsPopupOpen(true);
-    setIsPasswordModalOpen(false);
   };
 
   const handlePopupClose = () => {
     setIsPopupOpen(false);
+  };
+
+  const handleUpdateSuccess = () => {
+    setPopupType("update-success");
+    setIsPopupOpen(true);
+    onRefresh && onRefresh(); // 수정 후 새로고침
   };
 
   useEffect(() => {
@@ -112,7 +118,7 @@ const InvestmentRow = ({ investment, index }) => {
       <Tr>
         <Td>{investment.investorName}</Td>
         <Td>{index + 1}위</Td>
-        <Td>{investment.amount.toFixed(1)}억</Td>
+        <Td>{investment.amount.toFixed(0)}억</Td>
         <Td>{investment.comment}</Td>
         <Td>
           <Dropdown>
@@ -132,9 +138,7 @@ const InvestmentRow = ({ investment, index }) => {
           </Dropdown>
         </Td>
       </Tr>
-
-      {/* 모달과 팝업을 tbody 바깥에 위치 */}
-      {/* 비밀번호 입력 모달 */}
+      // 비밀번호 입력 모달
       {isPasswordModalOpen && (
         <ModalPassword
           onClose={() => setIsPasswordModalOpen(false)}
@@ -142,16 +146,15 @@ const InvestmentRow = ({ investment, index }) => {
           isUpdateMode={isUpdateMode} // 수정 모드 상태 전달
         />
       )}
-
-      {/* 수정 모달 (비밀번호가 맞을 경우) */}
+      // 수정 모달 (비밀번호가 맞을 경우)
       {isUpdateModalOpen && (
         <UpdateInvestmentModal
           onClose={() => setIsUpdateModalOpen(false)}
-          investment={investment} // 수정할 투자 정보 전달
+          size="big"
+          investment={investment}
+          onSuccess={handleUpdateSuccess}
         />
       )}
-
-      {/* 삭제 결과 팝업 */}
       {isPopupOpen && (
         <PopupOneButton onClose={handlePopupClose} type={popupType} />
       )}

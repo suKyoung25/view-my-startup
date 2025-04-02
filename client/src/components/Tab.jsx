@@ -19,7 +19,7 @@ const Text = styled.div`
   }};
   color: ${(props) => {
     if (props.$color === "white") return "#FFFFFF";
-    if (props.$color === "gray") return ${gray_200};
+    if (props.$color === "gray") return `${gray_200}`;
   }};
 
   width: ${(props) => {
