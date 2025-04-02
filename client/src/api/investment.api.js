@@ -38,6 +38,17 @@ const deleteInvestment = async (id, password) => {
   return response.data;
 };
 
+// 투자 수정/삭제를 위한 비밀번호 검증
+const verifyPassword = async (investmentId, password) => {
+  const response = await client.post(
+    `/api/investments/${investmentId}/verify-password`,
+    {
+      password,
+    }
+  );
+  return response.data;
+};
+
 // 모듈 export
 const investmentAPI = {
   getAllInvestment,
@@ -45,6 +56,7 @@ const investmentAPI = {
   postInvestment,
   updateInvestment,
   deleteInvestment,
+  verifyPassword,
 };
 
 export default investmentAPI;
