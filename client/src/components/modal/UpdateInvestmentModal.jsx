@@ -3,68 +3,68 @@ import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
 import BtnLarge from "../BtnLarge";
 import { black_300, black_400, gray_200 } from "../../styles/colors";
-import { useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
+import investmentAPI from "../../api/investment.api";
 
-const UpdateInvestmentModal = ({ onClose, size }) => {
+const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
   //각 input들의 value를 state로 저장해둠
-  const [inputValueName, setInputValueName] = useState("");
-  const [inputValueAmount, setInputValueAmount] = useState("");
-  const [inputValueComment, setInputValueComment] = useState("");
+  const [inputValueName, setInputValueName] = useState(
+    investment?.investorName || ""
+  );
+  const [inputValueAmount, setInputValueAmount] = useState(
+    investment?.amount || ""
+  );
+  const [inputValueComment, setInputValueComment] = useState(
+    investment?.comment || ""
+  );
   const [inputValuePassword, setInputValuePassword] = useState("");
   const [inputValueCheckPassword, setInputValueCheckPassword] = useState("");
 
   const [companyInformation, setCompanyInformation] = useState(null);
 
-  //useEffect를 사용하지 않고 투자하기 버튼 활성화 여부 확인
   const isInvestButtonAvailable =
     inputValueName.trim().length > 0 &&
     inputValueComment.trim().length > 0 &&
     Number(inputValueAmount) &&
     inputValuePassword === inputValueCheckPassword;
 
-  //url을 통해 특정 기업의 id 출력
-  const { companyId } = useParams();
-
   // 기업이 바뀔때마다 데이터 출력
   useEffect(() => {
     const companyData = async () => {
       try {
-        const data = await companyAPI.getCompanyById(companyId);
+        const data = await companyAPI.getCompanyById(investment.company.id);
         setCompanyInformation(data);
       } catch (error) {
         console.error("Error fetching company data:", error);
       }
     };
     companyData();
-  }, [companyId]);
+  }, [investment.company.id]);
 
-  //각 인풋의 핸들 함수
-  const handleNameChange = (e) => {
-    setInputValueName(e.target.value);
-  };
-  const handleAmountChange = (e) => {
-    setInputValueAmount(e.target.value);
-  };
-  const handleCommentChange = (e) => {
-    setInputValueComment(e.target.value);
-  };
-  const handlePasswordChange = (e) => {
-    setInputValuePassword(e.target.value);
-  };
-  const handleCheckPasswordChange = (e) => {
-    setInputValueCheckPassword(e.target.value);
+  const handleClickInvestmentButton = async () => {
+    try {
+      await investmentAPI.updateInvestment(investment.id, {
+        investorName: inputValueName,
+        amount: Number(inputValueAmount),
+        comment: inputValueComment,
+        password: inputValuePassword,
+      });
+
+      if (onSuccess) onSuccess(); // 성공 후 콜백 호출
+      onClose(); // 모달 닫기
+    } catch (error) {
+      console.error("투자 수정 실패:", error);
+      alert("비밀번호가 틀렸거나 수정에 실패했습니다.");
+    }
   };
 
   if (companyInformation === null) return null; //렌더링 안됨
 
   return (
     <Overlay onClick={onClose}>
-      <ModalWrapper
-        onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
-      >
+      <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
-          <Title>기업에 투자하기</Title>
+          <Title>투자 수정하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
         </ModalHeader>
 
@@ -89,7 +89,7 @@ const UpdateInvestmentModal = ({ onClose, size }) => {
               size={size}
               placeholder="투자자 이름을 입력해 주세요"
               value={inputValueName}
-              onChange={handleNameChange}
+              onChange={(e) => setInputValueName(e.target.value)}
             />
           </FieldGroup>
 
@@ -99,7 +99,7 @@ const UpdateInvestmentModal = ({ onClose, size }) => {
               size={size}
               placeholder="투자 금액을 입력해 주세요"
               value={inputValueAmount}
-              onChange={handleAmountChange}
+              onChange={(e) => setInputValueAmount(e.target.value)}
             />
           </FieldGroup>
 
@@ -108,7 +108,7 @@ const UpdateInvestmentModal = ({ onClose, size }) => {
             <TextArea
               placeholder="투자에 대한 코멘트를 입력해 주세요"
               value={inputValueComment}
-              onChange={handleCommentChange}
+              onChange={(e) => setInputValueComment(e.target.value)}
             />
           </FieldGroup>
 
@@ -118,7 +118,7 @@ const UpdateInvestmentModal = ({ onClose, size }) => {
               size={size}
               placeholder="비밀번호를 입력해주세요"
               value={inputValuePassword}
-              onChange={handlePasswordChange}
+              onChange={(e) => setInputValuePassword(e.target.value)}
             />
           </FieldGroup>
 
@@ -128,7 +128,7 @@ const UpdateInvestmentModal = ({ onClose, size }) => {
               size={size}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               value={inputValueCheckPassword}
-              onChange={handleCheckPasswordChange}
+              onChange={(e) => setInputValueCheckPassword(e.target.value)}
             />
           </FieldGroup>
         </Section>
@@ -138,8 +138,8 @@ const UpdateInvestmentModal = ({ onClose, size }) => {
           <BtnLarge
             type="orange"
             size={size}
-            label="투자하기"
-            // onClick={handleClickInvestmentButton}
+            label="수정하기"
+            onClick={handleClickInvestmentButton}
             disabled={!isInvestButtonAvailable}
           />
         </ButtonRow>
