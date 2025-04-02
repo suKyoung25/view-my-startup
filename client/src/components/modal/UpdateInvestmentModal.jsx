@@ -165,6 +165,7 @@ const Overlay = styled.div`
 `;
 
 const ModalWrapper = styled.div`
+  box-sizing: border-box;
   background: ${black_300};
   padding: 24px;
   border-radius: 16px;

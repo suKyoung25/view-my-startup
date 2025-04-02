@@ -17,6 +17,7 @@ function BtnPage({ text, size, isActive }) {
 
   useEffect(() => {
     setIsClicked(false);
+    console.log("BtnPage size:", size);
   }, []);
 
   return (
@@ -43,9 +44,9 @@ const Button = styled.div`
   justify-content: center;
   align-items: center;
 
-  font-size: ${({ $size }) => ($size === "big" ? "18px" : "16px")};
-  width: ${({ $size }) => ($size === "big" ? "48px" : "32px")};
-  height: ${({ $size }) => ($size === "big" ? "48px" : "32px")};
+  font-size: ${({ $size }) => ($size === "small" ? "16px" : "18px")};
+  width: ${({ $size }) => ($size === "small" ? "32px" : "48px")};
+  height: ${({ $size }) => ($size === "small" ? "32px" : "48px")};
 
   transition: background-color 0.2s, color 0.2s;
 `;
