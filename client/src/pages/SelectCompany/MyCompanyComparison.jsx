@@ -8,7 +8,6 @@ import BtnLarge from "../../components/BtnLarge";
 import SelectMyEnterprise from "../../components/modal/SelectMyEnterprise";
 import SelectComparison from "../../components/modal/SelectComparison";
 import CompareListSection from "../../components/CompareListSection";
-import resultCompareAPI from "../../api/resultCompare.api";
 
 function MyCompanyComparison() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,16 +22,6 @@ function MyCompanyComparison() {
   const handleSelectMyCompany = (company) => {
     setSelectedCompany(company);
     updateRecentMyCompanies(company);
-    setModalOpen(false);
-  };
-
-  // '비교 기업' 선택 핸들러
-  const handleSelectCompareCompany = (company) => {
-    setCompareCompanies((prev) => {
-      const exists = prev.find((c) => c.id === company.id);
-      if (exists) return prev;
-      return [company, ...prev].slice(0, 5);
-    });
     setModalOpen(false);
   };
 
@@ -88,15 +77,6 @@ function MyCompanyComparison() {
         compareCompanyIds,
       },
     });
-
-    //기업 비교 버튼 클릭 시 기업 선택 횟수 증가
-    const increaseCount = async () => {
-      try {
-        const data = await resultCompareAPI.getCompareStatus({ sortBy, order });
-      } catch (e) {
-        console.error("기업 선택 횟수를 증가시킬 수 없음.", e);
-      }
-    };
   };
 
   function updateMediaSize() {
@@ -208,6 +188,8 @@ function MyCompanyComparison() {
             onSelect={handleSelectMyCompany}
             size={mediaSize}
             recentCompanies={recentMyCompanies}
+            setRecentCompanies={setRecentMyCompanies}
+            excludeCompanies={compareCompanies} // 비교기업목록을 제외할 수 있게 전달
           />
         )}
       </Inner>
