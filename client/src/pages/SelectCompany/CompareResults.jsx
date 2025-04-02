@@ -166,8 +166,8 @@ function CompareResults() {
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
                   <TD>
-                    {typeof company.realInvestmentAmount === "number"
-                      ? `${company.realInvestmentAmount.toLocaleString()}억 원`
+                    {typeof company.investmentAmount === "number"
+                      ? `${company.investmentAmount.toLocaleString()}억 원`
                       : "-"}
                   </TD>
                   <TD>{company.revenue}억 원</TD>
