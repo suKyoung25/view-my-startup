@@ -93,7 +93,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
 
   return (
     <Overlay onClick={onClose}>
-      <ModalWrapper $size={size} onClick={(e) => e.stopPropagation()}>
+      <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <Title>기업에 투자하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
@@ -136,9 +136,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
 
           <FieldGroup>
             <FieldLabel>투자 코멘트</FieldLabel>
-            <TextInputField
-              size={size}
-              state="normal"
+            <TextArea
               placeholder="투자에 대한 코멘트를 입력해 주세요"
               value={inputValueComment}
               onChange={handleCommentChange}
@@ -189,6 +187,7 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: ${black_400}80;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -199,7 +198,7 @@ const ModalWrapper = styled.div`
   padding: 24px;
   border-radius: 16px;
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
-  height: auto;
+  height: 858px;
   z-index: 999;
 `;
 
@@ -238,6 +237,7 @@ const SectionTitle = styled.h3`
 const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4px;
 `;
 
 const FieldLabel = styled.h3`
