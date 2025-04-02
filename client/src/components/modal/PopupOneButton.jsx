@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, from "styled-components";
+import styled from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 import { black_300, black_400 } from "../../styles/colors";

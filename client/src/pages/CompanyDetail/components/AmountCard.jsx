@@ -38,18 +38,24 @@ const Container = styled.div`
   padding: 0 20px;
   border-radius: 10px;
   font-size: 16px;
-
-  ${media.ipad`
+  ${media.mobile`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0px;
   `}
 `;
 
 const Char = styled.span`
   font-weight: 300;
+  ${media.mobile`
+    font-size: 14px;
+  `}
 `;
 
 const Number = styled.span`
   font-weight: 500;
+  ${media.mobile`
+    font-size: 14px;
+  `}
 `;
