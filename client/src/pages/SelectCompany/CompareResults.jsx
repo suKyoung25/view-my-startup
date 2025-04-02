@@ -98,6 +98,7 @@ function CompareResults() {
     return [...list].sort((a, b) => {
       const aVal = a[field] ?? 0;
       const bVal = b[field] ?? 0;
+      console.log(a[field]);
       return order === "asc" ? aVal - bVal : bVal - aVal;
     });
   };
