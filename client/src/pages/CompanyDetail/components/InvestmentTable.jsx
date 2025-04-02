@@ -27,23 +27,24 @@ function InvestmentTable({ data = [], onRefresh }) {
   const handlePasswordSubmit = async (password) => {
     if (!selectedInvestment) return;
 
-    if (isUpdateMode) {
-      // 수정 모드일 경우, 수정 모달을 열고 기존 팝업 로직 건너뛰기
-      // 수정 모드 → 그냥 모달 열기 (비밀번호는 UpdateInvestmentModal에서 검증 요청)
-      setIsPasswordModalOpen(false);
-      setIsUpdateModalOpen(true);
-    } else {
-      try {
-        // 삭제 요청
+    try {
+      // 비밀번호 검증 (수정/삭제 공통)
+      await investmentAPI.verifyPassword(selectedInvestment.id, password);
+
+      if (isUpdateMode) {
+        // 수정 모드 - 비밀번호 일치하면 수정 모달 열기
+        setIsUpdateModalOpen(true);
+      } else {
+        // 삭제 모드 - 비밀번호 일치 후 삭제 진행
         await investmentAPI.deleteInvestment(selectedInvestment.id, password);
-        // 삭제 모드일 경우, 상태 메시지 설정
         setPopupType("delete-success");
-        onRefresh && onRefresh(); // 새로고침
-      } catch (e) {
-        console.error(e);
-        setPopupType("error");
+        onRefresh && onRefresh();
       }
-      setIsPopupOpen(true);
+    } catch (e) {
+      console.error(e);
+      setPopupType("error"); // 비번 틀리면 에러 팝업
+      setIsPopupOpen(true); // 실패했을 때만 팝업을 띄움
+    } finally {
       setIsPasswordModalOpen(false);
     }
   };
