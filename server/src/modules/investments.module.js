@@ -128,6 +128,7 @@ investmentsRouter.get("/", async (req, res, next) => {
             id: true,
             name: true,
             category: true,
+            imageUrl: true, // 이미지 잘 뜨도록 추가함
           },
         },
       },
@@ -178,8 +179,6 @@ investmentsRouter.get("/status", async (req, res, next) => {
         category: company.category,
         totalVirtualInvestmentAmount: investment?._sum.amount || 0,
         realInvestmentAmount: company.realInvestmentAmount,
-        // revenue: company.revenue,
-        // numberOfEmployees: company.numberOfEmployees,
       };
     });
 

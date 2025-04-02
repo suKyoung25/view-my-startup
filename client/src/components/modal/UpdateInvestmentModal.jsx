@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
-import sampleLogo from "../../assets/images/company/sample.png";
 import BtnLarge from "../BtnLarge";
-import { black_300, black_400 } from "../../styles/colors";
-import { media } from "../../styles/mixin";
-import { useLocation, useParams } from "react-router-dom";
+import { black_300, black_400, gray_200 } from "../../styles/colors";
+import { useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
 
-const UpdateInvestmentModal = ({ onClose, size, openPopupModal }) => {
+const UpdateInvestmentModal = ({ onClose, size }) => {
   //각 input들의 value를 state로 저장해둠
   const [inputValueName, setInputValueName] = useState("");
   const [inputValueAmount, setInputValueAmount] = useState("");
@@ -57,24 +55,6 @@ const UpdateInvestmentModal = ({ onClose, size, openPopupModal }) => {
   const handleCheckPasswordChange = (e) => {
     setInputValueCheckPassword(e.target.value);
   };
-
-  //   //투자하기 버튼이 눌렸을 시 이벤트 핸들러
-  //   const handleClickInvestmentButton = (e) => {
-  //     e.preventDefault();
-
-  //     //각 인풋의 유효성 확인
-  //     if (!isInvestButtonAvailable)
-  //       return alert("입력값을 올바르게 입력해주세요.");
-
-  // try {
-  // companyAPI.
-  // } catch(e) {
-
-  // }
-
-  //     openPopupModal();
-  //     onClose();
-  //   };
 
   if (companyInformation === null) return null; //렌더링 안됨
 
@@ -264,9 +244,9 @@ const CompanyCategory = styled.span`
 
 const TextArea = styled.textarea`
   width: 90%;
-  background-color: #333;
+  background-color: ${black_400};
   color: #fff;
-  border: 2px solid #444;
+  border: 2px solid ${black_400};
   border-radius: 8px;
   padding: 14px;
   font-size: 16px;
@@ -274,7 +254,7 @@ const TextArea = styled.textarea`
   outline: none;
 
   &::placeholder {
-    color: #888;
+    color: ${gray_200};
   }
 
   &:focus {

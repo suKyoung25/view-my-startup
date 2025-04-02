@@ -2,7 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Search from "../Search";
 import closeIcon from "../../assets/icon/ic_delete.png";
-import { black_300, black_400 } from "../../styles/colors";
+import {
+  black_300,
+  black_400,
+  brand_orange,
+  gray_200,
+} from "../../styles/colors";
 import { client } from "../../api/index.api";
 import Hangul from "hangul-js";
 
@@ -22,19 +27,7 @@ function SelectMyEnterprise({
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
   const [companies, setCompanies] = useState([]);
-  const [mediaSize, setMediaSize] = useState("");
   const [loading, setLoading] = useState(true);
-
-  function updateMediaSize() {
-    const { innerWidth: width } = window;
-    setMediaSize(width >= 744 ? "big" : "short");
-  }
-
-  useEffect(() => {
-    updateMediaSize();
-    window.addEventListener("resize", updateMediaSize);
-    return () => window.removeEventListener("resize", updateMediaSize);
-  }, []);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -87,7 +80,7 @@ function SelectMyEnterprise({
           <img onClick={onClose} src={closeIcon} alt="닫기" />
         </Title>
         <Search
-          size={mediaSize}
+          size={size}
           state="searching"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
@@ -194,7 +187,7 @@ const Container = styled.div`
   width: ${(props) =>
     props.$size === "big"
       ? "496px"
-      : props.$size === "short"
+      : props.$size === "small"
       ? "343px"
       : "100%"};
 `;
@@ -229,7 +222,7 @@ const CompanyItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #222;
+  background-color: ${black_300};
   padding: 10px 12px;
   border-radius: 8px;
 
@@ -240,7 +233,7 @@ const CompanyItem = styled.div`
 
   .tagline {
     font-size: 12px;
-    color: #888;
+    color: ${gray_200};
   }
 `;
 
@@ -251,8 +244,8 @@ const Info = styled.div`
 
 const SelectBtn = styled.button`
   background-color: transparent;
-  border: 1px solid #ff6b00;
-  color: #ff6b00;
+  border: 1px solid ${brand_orange};
+  color: ${brand_orange};
   border-radius: 6px;
   padding: 4px 10px;
   font-size: 12px;
@@ -269,7 +262,7 @@ const PageBtn = styled.button`
   width: 28px;
   height: 28px;
   border-radius: 6px;
-  background-color: ${(props) => (props.$active ? "#ff6b00" : "#333")};
+  background-color: ${(props) => (props.$active ? brand_orange : black_400)};
   color: ${(props) => (props.$active ? "white" : "#aaa")};
   border: none;
   cursor: pointer;

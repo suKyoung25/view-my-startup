@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import { PasswordInputField } from "../Input";
 import BtnDelete from "../BtnDelete";
-import { black_400 } from "../../styles/colors";
+import { black_300, black_400 } from "../../styles/colors";
 
 export default function ModalPassword({
   onClose,
@@ -46,7 +46,7 @@ export default function ModalPassword({
         <Label>비밀번호</Label>
 
         <PasswordInputField
-          size="big"
+          size={size}
           placeholder="패스워드를 입력해주세요"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -100,7 +100,7 @@ const Wrapper = styled.div`
   width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
   height: ${(props) => (props.$size === "small" ? "235px" : "269px")};
 
-  background-color: #212121;
+  background-color: ${black_300};
   border-radius: 16px;
   padding: ${(props) => (props.$size === "small" ? "16px" : "24px")};
   box-sizing: border-box;
