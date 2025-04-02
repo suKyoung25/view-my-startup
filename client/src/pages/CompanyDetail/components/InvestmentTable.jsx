@@ -138,7 +138,7 @@ const InvestmentRow = ({ investment, index, onRefresh }) => {
           </Dropdown>
         </Td>
       </Tr>
-      // 비밀번호 입력 모달
+
       {isPasswordModalOpen && (
         <ModalPassword
           onClose={() => setIsPasswordModalOpen(false)}
@@ -146,7 +146,7 @@ const InvestmentRow = ({ investment, index, onRefresh }) => {
           isUpdateMode={isUpdateMode} // 수정 모드 상태 전달
         />
       )}
-      // 수정 모달 (비밀번호가 맞을 경우)
+
       {isUpdateModalOpen && (
         <UpdateInvestmentModal
           onClose={() => setIsUpdateModalOpen(false)}
