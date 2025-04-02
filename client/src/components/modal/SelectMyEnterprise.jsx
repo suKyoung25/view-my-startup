@@ -17,8 +17,7 @@ function SelectMyEnterprise({
   size,
   onSelect,
   recentCompanies,
-  selectedCompanies,
-  setSelectedCompanies,
+  setRecentCompanies,
 }) {
   const [keyword, setKeyword] = useState("");
   const [searchTokens, setSearchTokens] = useState({
@@ -32,7 +31,7 @@ function SelectMyEnterprise({
   const [loading, setLoading] = useState(true);
 
   // '최근 선택된 기업' 저장 state
-  const [recentSelectedCompanies, setRecentSelectedCompanies] = useState([]);
+  // const [recentSelectedCompanies, setRecentSelectedCompanies] = useState([]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -49,11 +48,11 @@ function SelectMyEnterprise({
   }, []);
 
   const filteredCompanies = useMemo(() => {
-    const input = searchTokens.raw;
+    const input = searchTokens.raw.toLowerCase();
     if (!input || companies.length === 0) return [];
 
     return companies.filter((company) => {
-      const name = company.name;
+      const name = company.name.toLowerCase();
       // const lower = name.toLowerCase();
 
       if (Hangul.isConsonant(input[0])) {
@@ -63,7 +62,7 @@ function SelectMyEnterprise({
         return firstCho === input[0];
       } else {
         // 이름이 입력으로 시작하는지 체크
-        return name.startsWith(input);
+        return name.includes(input);
       }
     });
   }, [searchTokens, companies]);
@@ -74,22 +73,28 @@ function SelectMyEnterprise({
     currentPage * perPage
   );
 
-  const handleCompanySelect = (c) => {
-    onSelect?.(c);
-    setRecentSelectedCompanies((prev) => {
-      if (prev.some((company) => company.id === c.id)) {
-        return prev;
+  const handleCompanySelect = (company) => {
+    onSelect?.(company);
+    setRecentCompanies((prev) => {
+      const existingIndex = prev.findIndex((c) => c.id === company.id);
+      if (existingIndex !== -1) {
+        const updatedRecent = [
+          company,
+          ...prev.slice(0, existingIndex),
+          ...prev.slice(existingIndex + 1),
+        ];
+        return updatedRecent.slice(0, 5);
       }
-      return [c, ...prev];
+      return [company, ...prev].slice(0, 5);
     });
   };
 
-  const handleCompanyRemove = (id) => {
-    setRecentSelectedCompanies((prev) =>
-      prev.filter((company) => company.id !== id)
-    );
-    setSelectedCompanies((prev) => prev.filter((company) => company.id !== id));
-  };
+  // const handleCompanyRemove = (id) => {
+  //   setRecentSelectedCompanies((prev) =>
+  //     prev.filter((company) => company.id !== id)
+  //   );
+  //   setSelectedCompanies((prev) => prev.filter((company) => company.id !== id));
+  // };
 
   if (!isOpen) return null;
 
@@ -116,13 +121,13 @@ function SelectMyEnterprise({
         />
 
         {/* 최근 선택된 기업 */}
-        {recentSelectedCompanies.length > 0 && (
+        {recentCompanies.length > 0 && (
           <>
             <SectionTitle>
-              최근 선택된 기업 ({recentSelectedCompanies.length})
+              최근 선택된 기업 ({recentCompanies.length})
             </SectionTitle>
             <CompanyList>
-              {recentSelectedCompanies.map((company) => (
+              {recentCompanies.map((company) => (
                 <CompanyItem key={company.id}>
                   <CompanyCell>
                     <Logo
