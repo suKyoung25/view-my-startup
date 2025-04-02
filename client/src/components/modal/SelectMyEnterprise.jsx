@@ -17,6 +17,8 @@ function SelectMyEnterprise({
   size,
   onSelect,
   recentCompanies,
+  selectedCompanies,
+  setSelectedCompanies,
 }) {
   const [keyword, setKeyword] = useState("");
   const [searchTokens, setSearchTokens] = useState({
@@ -28,6 +30,9 @@ function SelectMyEnterprise({
   const perPage = 5;
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // '최근 선택된 기업' 저장 state
+  const [recentSelectedCompanies, setRecentSelectedCompanies] = useState([]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -49,7 +54,7 @@ function SelectMyEnterprise({
 
     return companies.filter((company) => {
       const name = company.name;
-      const lower = name.toLowerCase();
+      // const lower = name.toLowerCase();
 
       if (Hangul.isConsonant(input[0])) {
         // 기업 이름의 첫 글자 초성과 비교
@@ -58,7 +63,7 @@ function SelectMyEnterprise({
         return firstCho === input[0];
       } else {
         // 이름이 입력으로 시작하는지 체크
-        return lower.startsWith(input);
+        return name.startsWith(input);
       }
     });
   }, [searchTokens, companies]);
@@ -69,7 +74,23 @@ function SelectMyEnterprise({
     currentPage * perPage
   );
 
-  const handleCompanySelect = (c) => onSelect?.(c);
+  const handleCompanySelect = (c) => {
+    onSelect?.(c);
+    setRecentSelectedCompanies((prev) => {
+      if (prev.some((company) => company.id === c.id)) {
+        return prev;
+      }
+      return [c, ...prev];
+    });
+  };
+
+  const handleCompanyRemove = (id) => {
+    setRecentSelectedCompanies((prev) =>
+      prev.filter((company) => company.id !== id)
+    );
+    setSelectedCompanies((prev) => prev.filter((company) => company.id !== id));
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -94,14 +115,14 @@ function SelectMyEnterprise({
           }}
         />
 
-        {/* 최근 비교한 기업 영역 */}
-        {recentCompanies?.length > 0 && (
+        {/* 최근 선택된 기업 */}
+        {recentSelectedCompanies.length > 0 && (
           <>
             <SectionTitle>
-              최근 비교한 기업 ({recentCompanies.length})
+              최근 선택된 기업 ({recentSelectedCompanies.length})
             </SectionTitle>
             <CompanyList>
-              {recentCompanies.map((company) => (
+              {recentSelectedCompanies.map((company) => (
                 <CompanyItem key={company.id}>
                   <CompanyCell>
                     <Logo
@@ -122,12 +143,10 @@ function SelectMyEnterprise({
           </>
         )}
 
-        {/* 기업 검색결과 */}
+        {/* 검색 결과 */}
         {keyword.trim() !== "" && (
           <>
-            <SectionTitle>
-              최근 선택된 기업 ({filteredCompanies.length})
-            </SectionTitle>
+            <SectionTitle>검색 결과 ({filteredCompanies.length})</SectionTitle>
             <CompanyList>
               {currentData.map((c) => (
                 <CompanyItem key={c.id}>
