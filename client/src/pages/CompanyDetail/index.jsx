@@ -21,18 +21,6 @@ function CompanyDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ispopupOpen, setIsPopupOpen] = useState(false);
 
-  // 새로고침용 함수 분리
-  const fetchData = async () => {
-    try {
-      const company = await companyAPI.getCompanyById(companyId);
-      const investments = await investmentAPI.getAllInvestment();
-      setCompanyData(company);
-      setInvestors(investments.filter((inv) => inv.company.id === companyId));
-    } catch (error) {
-      console.error("Error fetching company data:", error);
-    }
-  };
-
   useEffect(() => {
     if (!companyId) {
       console.error("companyId is undefined");
@@ -40,6 +28,26 @@ function CompanyDetail() {
     }
     fetchData();
   }, [companyId]);
+
+  // 새로고침용 함수 분리
+  const fetchData = async () => {
+    try {
+      const company = await companyAPI.getCompanyById(companyId);
+      const investments = await investmentAPI.getAllInvestment();
+
+      const filtered = investments.filter(
+        (inv) => inv.company?.id === companyId
+      );
+
+      setCompanyData(company);
+      // setInvestors(filtered);
+      setInvestors([
+        ...investments.filter((inv) => inv.company.id === companyId),
+      ]);
+    } catch (error) {
+      console.error("Error fetching company data:", error);
+    }
+  };
 
   // 반응형 사이즈 계산
   useEffect(() => {
@@ -134,7 +142,7 @@ function CompanyDetail() {
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsPopupOpen(true);
-            fetchData(); // 신규 투자 후에도 새로고침
+            fetchData(); // 화면이 최신 데이터로 바뀜
           }}
           size={mediaSize}
         />

@@ -48,7 +48,15 @@ investmentsRouter.post("/", async (req, res, next) => {
 investmentsRouter.put("/:investmentId", async (req, res, next) => {
   try {
     const { investmentId } = req.params;
-    const { password, amount, comment } = req.body;
+    const { password, amount, comment, investorName } = req.body; // 투자자 이름도 추가
+
+    console.log("[PUT] 투자 수정 요청:", {
+      investmentId,
+      investorName,
+      amount,
+      comment,
+      password,
+    });
 
     const investment = await prisma.investment.findUnique({
       where: { id: investmentId },
@@ -72,10 +80,13 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
     const updated = await prisma.investment.update({
       where: { id: investmentId },
       data: {
+        investorName,
         amount: parsedAmount,
         comment,
       },
     });
+
+    console.log("[PUT] 투자 수정 결과:", updated);
 
     res.json({
       message: "투자 수정 완료",

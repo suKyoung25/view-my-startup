@@ -69,9 +69,9 @@ function CompareResults() {
     const [field, order] = (() => {
       switch (criteria) {
         case "누적 투자금액 높은순":
-          return ["realInvestmentAmount", "desc"];
+          return ["investmentAmount", "desc"];
         case "누적 투자금액 낮은순":
-          return ["realInvestmentAmount", "asc"];
+          return ["investmentAmount", "asc"];
         case "매출액 높은순":
           return ["revenue", "desc"];
         case "매출액 낮은순":
@@ -81,7 +81,7 @@ function CompareResults() {
         case "고용 인원 적은순":
           return ["employees", "asc"];
         default:
-          return ["realInvestmentAmount", "desc"];
+          return ["investmentAmount", "desc"];
       }
     })();
 

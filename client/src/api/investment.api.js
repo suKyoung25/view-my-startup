@@ -21,8 +21,8 @@ const postInvestment = async (options) => {
 };
 
 // 투자 수정 (비밀번호 포함)
+// options 예: { investorName, password, amount, comment }
 const updateInvestment = async (investmentId, options) => {
-  // options 예: { password, amount, comment }
   const response = await client.put(
     `/api/investments/${investmentId}`,
     options
