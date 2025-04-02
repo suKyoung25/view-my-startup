@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./MyCompanyComparison.module.css";
 import plusIcon from "../../assets/icon/btn_plus.svg";
@@ -10,13 +10,26 @@ import SelectComparison from "../../components/modal/SelectComparison";
 import CompareListSection from "../../components/CompareListSection";
 
 function MyCompanyComparison() {
+  const location = useLocation();
+  const passedState = location.state || {};
   const [modalOpen, setModalOpen] = useState(false);
   const [mediaSize, setMediaSize] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState(null);
-  const [compareCompanies, setCompareCompanies] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(
+    passedState.selectedCompany || null
+  ); // '다른기업비교하기' 버튼에 의해 초기 상태가 이미 선택된 상태인 경우도 있음
+  const [compareCompanies, setCompareCompanies] = useState(
+    passedState.compareCompanies || []
+  );
   const [recentMyCompanies, setRecentMyCompanies] = useState([]);
   const [selectionMode, setSelectionMode] = useState("my");
   const navigate = useNavigate();
+
+  // useEffect에서 초기 selectedCompany 설정
+  useEffect(() => {
+    if (location.state?.selectedCompany) {
+      setSelectedCompany(location.state.selectedCompany);
+    }
+  }, [location.state]);
 
   // '나의 기업' 선택 핸들러
   const handleSelectMyCompany = (company) => {
