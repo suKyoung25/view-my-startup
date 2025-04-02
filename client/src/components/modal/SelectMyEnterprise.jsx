@@ -18,6 +18,7 @@ function SelectMyEnterprise({
   onSelect,
   recentCompanies,
   setRecentCompanies,
+  excludeCompanies,
 }) {
   const [keyword, setKeyword] = useState("");
   const [searchTokens, setSearchTokens] = useState({
@@ -29,6 +30,7 @@ function SelectMyEnterprise({
   const perPage = 5;
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // '최근 선택된 기업' 저장 state
   // const [recentSelectedCompanies, setRecentSelectedCompanies] = useState([]);
@@ -47,19 +49,28 @@ function SelectMyEnterprise({
     fetchCompanies();
   }, []);
 
+  // 해당 기업이 제외목록에 있는지 확인
+  const isExcluded = (company) => {
+    return excludeCompanies.some((excluded) => excluded.id === company.id);
+  };
+
   const filteredCompanies = useMemo(() => {
     const input = searchTokens.raw.toLowerCase();
     if (!input || companies.length === 0) return [];
 
     return companies.filter((company) => {
       const name = company.name.toLowerCase();
+      const matchesSearchTerm =
+        name.includes(searchTerm.toLowerCase()) && !isExcluded(company);
+
+      if (!matchesSearchTerm) return false;
       // const lower = name.toLowerCase();
 
       if (Hangul.isConsonant(input[0])) {
         // 기업 이름의 첫 글자 초성과 비교
         const firstChar = name[0];
-        const firstCho = Hangul.disassemble(firstChar)[0];
-        return firstCho === input[0];
+        const disassembled = Hangul.disassemble(firstChar);
+        return disassembled.length > 0 && disassembled[0] === input[0];
       } else {
         // 이름이 입력으로 시작하는지 체크
         return name.includes(input);
@@ -74,7 +85,9 @@ function SelectMyEnterprise({
   );
 
   const handleCompanySelect = (company) => {
-    onSelect?.(company);
+    if (onSelect) {
+      onSelect(company);
+    }
     setRecentCompanies((prev) => {
       const existingIndex = prev.findIndex((c) => c.id === company.id);
       if (existingIndex !== -1) {
@@ -153,23 +166,30 @@ function SelectMyEnterprise({
           <>
             <SectionTitle>검색 결과 ({filteredCompanies.length})</SectionTitle>
             <CompanyList>
-              {currentData.map((c) => (
-                <CompanyItem key={c.id}>
-                  <CompanyCell>
-                    <Logo
-                      src={c.imageUrl || "/default-image.png"}
-                      alt={`${c.name} 로고`}
-                    />
-                    <Info>
-                      <div className="name">{c.name}</div>
-                      <div className="tagline">{c.category}</div>
-                    </Info>
-                  </CompanyCell>
-                  <SelectBtn onClick={() => handleCompanySelect(c)}>
-                    선택하기
-                  </SelectBtn>
-                </CompanyItem>
-              ))}
+              {filteredCompanies
+                .filter(
+                  (company) =>
+                    !excludeCompanies.some(
+                      (excluded) => excluded.id === company.id
+                    )
+                )
+                .map((c) => (
+                  <CompanyItem key={c.id}>
+                    <CompanyCell>
+                      <Logo
+                        src={c.imageUrl || "/default-image.png"}
+                        alt={`${c.name} 로고`}
+                      />
+                      <Info>
+                        <div className="name">{c.name}</div>
+                        <div className="tagline">{c.category}</div>
+                      </Info>
+                    </CompanyCell>
+                    <SelectBtn onClick={() => handleCompanySelect(c)}>
+                      선택하기
+                    </SelectBtn>
+                  </CompanyItem>
+                ))}
             </CompanyList>
             <Pagination>
               {[...Array(totalPages)].map((_, i) => (

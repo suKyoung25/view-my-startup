@@ -19,8 +19,6 @@ function SelectComparison({
   selectedCompanies,
   setSelectedCompanies,
   selectedCompany,
-  recentCompanies,
-  setRecentCompanies,
 }) {
   const [companies, setCompanies] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -33,6 +31,7 @@ function SelectComparison({
   const [buttonSize, setButtonSize] = useState("big");
   const [searchSize, setSearchSize] = useState("big");
   const itemsPerPage = 5;
+  const [recentCompanies, setRecentCompanies] = useState([]);
 
   const isSearching = keyword.trim() !== "";
 
