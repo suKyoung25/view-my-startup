@@ -65,18 +65,6 @@ export default function ModalPassword({
   );
 }
 
-// 애니메이션 효과
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
 // 모달 배경 (어두운 오버레이)
 const Overlay = styled.div`
   position: fixed;
@@ -92,7 +80,6 @@ const Overlay = styled.div`
 
 // 모달 박스
 const Wrapper = styled.div`
-  animation: ${fadeIn} 0.3s ease-out;
   position: fixed;
   top: 50%;
   left: 50%;
