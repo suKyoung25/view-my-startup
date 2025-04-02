@@ -70,7 +70,7 @@ resultCompareRouter.get("/data", async (req, res, next) => {
       name: company.name,
       description: company.description,
       category: company.category,
-      investmentAmount: company.investmentAmount,
+      realInvestmentAmount: company.realInvestmentAmount,
       revenue: company.revenue,
       employees: company.employees,
     }));
