@@ -6,6 +6,38 @@ const bcrypt = require("bcrypt");
 const investmentsRouter = express.Router();
 
 /**
+ * [0] 특정 투자 내역 비밀번호 확인
+ */
+investmentsRouter.post(
+  "/:investmentId/verify-password",
+  async (req, res, next) => {
+    try {
+      const { investmentId } = req.params;
+      const { password } = req.body;
+
+      const investment = await prisma.investment.findUnique({
+        where: { id: investmentId },
+      });
+
+      if (!investment)
+        throw new Exception(404, "투자 내역이 존재하지 않습니다.");
+      if (!investment.encryptedPassword)
+        throw new Exception(500, "비밀번호 정보가 존재하지 않습니다.");
+
+      const isMatch = await bcrypt.compare(
+        password,
+        investment.encryptedPassword
+      );
+      if (!isMatch) throw new Exception(403, "비밀번호가 일치하지 않습니다.");
+
+      res.json({ message: "비밀번호 일치", success: true });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+/**
  * [1] 가상 투자 등록
  */
 investmentsRouter.post("/", async (req, res, next) => {
@@ -48,7 +80,15 @@ investmentsRouter.post("/", async (req, res, next) => {
 investmentsRouter.put("/:investmentId", async (req, res, next) => {
   try {
     const { investmentId } = req.params;
-    const { password, amount, comment } = req.body;
+    const { password, amount, comment, investorName } = req.body; // 투자자 이름도 추가
+
+    console.log("[PUT] 투자 수정 요청:", {
+      investmentId,
+      investorName,
+      amount,
+      comment,
+      password,
+    });
 
     const investment = await prisma.investment.findUnique({
       where: { id: investmentId },
@@ -72,10 +112,13 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
     const updated = await prisma.investment.update({
       where: { id: investmentId },
       data: {
+        investorName,
         amount: parsedAmount,
         comment,
       },
     });
+
+    console.log("[PUT] 투자 수정 결과:", updated);
 
     res.json({
       message: "투자 수정 완료",

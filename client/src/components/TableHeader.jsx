@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { black_100 } from "../styles/colors";
 
 export default function TableHeader({ columns = [] }) {
   return (
@@ -18,7 +19,7 @@ const Th = styled.th`
   font-size: 14px;
   font-weight: 600;
   color: white;
-  background-color: #2e2e2e;
+  background-color: ${black_100};
   white-space: nowrap;
   text-align: center;
 `;

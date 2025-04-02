@@ -27,6 +27,8 @@ export default function PopupOneButton({ onClose, size = "big", type }) {
         return "삭제가 완료되었어요!";
       case "success":
         return "투자가 완료되었어요!";
+      case "update-success":
+        return "투자 내역이 수정되었습니다!";
       default:
         return "팝업 내용이 들어갑니다";
     }

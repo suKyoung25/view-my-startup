@@ -31,6 +31,7 @@ function SelectComparison({
   const [buttonSize, setButtonSize] = useState("big");
   const [searchSize, setSearchSize] = useState("big");
   const itemsPerPage = 5;
+  const [recentCompanies, setRecentCompanies] = useState([]);
 
   const isSearching = keyword.trim() !== "";
 
@@ -72,6 +73,19 @@ function SelectComparison({
     if (selectedCompanies.some((c) => c.id === company.id)) return;
 
     setSelectedCompanies((prev) => [...prev, company]);
+
+    setRecentCompanies((prev) => {
+      const existing = prev.findIndex((c) => c.id === company.id);
+      if (existing !== -1) {
+        const updatedRecent = [
+          company,
+          ...prev.slice(0, existing),
+          ...prev.slice(existing + 1),
+        ];
+        return updatedRecent.slice(0, 5);
+      }
+      return [company, ...prev].slice(0, 5);
+    });
   };
 
   const handleRemove = (id) => {
@@ -84,9 +98,7 @@ function SelectComparison({
 
     return companies.filter((company) => {
       const name = company.name.toLowerCase();
-      const isMyCompany = selectedCompany?.id === company.id;
-
-      if (isMyCompany) return false;
+      if (selectedCompany && selectedCompany.id === company.id) return false;
 
       if (Hangul.isConsonant(input[0])) {
         const firstChar = name[0];

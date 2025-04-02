@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import styled from "styled-components";
 import CompareBtn from "./CompareBtn";
 import styles from "./CompareResult.module.css";
@@ -26,6 +26,16 @@ function CompareResults() {
   const closeModal = () => setIsModalOpen(false);
   const closePopupModal = () => setIsPopupModalAble(false);
   const openPopupModal = () => setIsPopupModalAble(true);
+
+  const handleSuccess = () => {
+    closeModal();
+    openPopupModal();
+    if (selectedCompanyId) {
+      fetchComparedCompanies({ selectedCompanyId, compareCompanyIds })
+        .then(setCompanies)
+        .catch((err) => console.error("데이터 리로드 실패:", err));
+    }
+  };
 
   function updateMediaSize() {
     const { innerWidth: width } = window;
@@ -69,9 +79,9 @@ function CompareResults() {
     const [field, order] = (() => {
       switch (criteria) {
         case "누적 투자금액 높은순":
-          return ["realInvestmentAmount", "desc"];
+          return ["investmentAmount", "desc"];
         case "누적 투자금액 낮은순":
-          return ["realInvestmentAmount", "asc"];
+          return ["investmentAmount", "asc"];
         case "매출액 높은순":
           return ["revenue", "desc"];
         case "매출액 낮은순":
@@ -81,13 +91,14 @@ function CompareResults() {
         case "고용 인원 적은순":
           return ["employees", "asc"];
         default:
-          return ["realInvestmentAmount", "desc"];
+          return ["investmentAmount", "desc"];
       }
     })();
 
     return [...list].sort((a, b) => {
       const aVal = a[field] ?? 0;
       const bVal = b[field] ?? 0;
+      console.log(a[field]);
       return order === "asc" ? aVal - bVal : bVal - aVal;
     });
   };
@@ -143,13 +154,22 @@ function CompareResults() {
             <tbody>
               {sortCompanies(companies, sortTop).map((company) => (
                 <tr key={company.id}>
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
+                  <Link to={`/company-detail/${company.id}`}>
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                  </Link>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>{company.realInvestmentAmount}억 원</TD>
+                  <TD>
+                    {typeof company.investmentAmount === "number"
+                      ? `${company.investmentAmount.toLocaleString()}억 원`
+                      : "-"}
+                  </TD>
                   <TD>{company.revenue}억 원</TD>
                   <TD>{company.employees}명</TD>
                 </tr>
@@ -177,15 +197,24 @@ function CompareResults() {
               {sortCompanies(companies, sortBottom).map((company, idx) => (
                 <tr key={company.id}>
                   <TD>{idx + 1}위</TD>
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
+                  <Link to={`/company-detail/${company.id}`}>
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                  </Link>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>{company.realInvestmentAmount}억</TD>
-                  <TD>{company.revenue}억</TD>
-                  <TD>{company.employees}</TD>
+                  <TD>
+                    {typeof company.investmentAmount === "number"
+                      ? `${company.investmentAmount.toLocaleString()}억원`
+                      : "-"}
+                  </TD>
+                  <TD>{company.revenue}억원</TD>
+                  <TD>{company.employees}명</TD>
                 </tr>
               ))}
             </tbody>
@@ -202,8 +231,10 @@ function CompareResults() {
           {isModalOpen && (
             <InvestmentModal
               onClose={closeModal}
+              onSuccess={handleSuccess} // 추가!
               size={mediaSize}
               openPopupModal={openPopupModal}
+              company={companies[0]} // "내가 선택한 기업" 정보 넘기기
             />
           )}
         </div>
