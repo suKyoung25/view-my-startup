@@ -5,29 +5,22 @@ import eyeInvisibleImg from "../assets/images/passwordEye/eye-invisible.svg";
 import { brand_orange, gray_200 } from "../styles/colors";
 
 // 유저 이름 입력칸
-export function TextInputField({ size, state, placeholder, value, onChange }) {
+export function TextInputField({ size, placeholder, value, onChange }) {
+  // const [value, setValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
-  const handleBlur = () => {
-    if (value === "") {
-      setIsTouched(true);
-    }
-  };
-
-  // state가 "normal"이면 에러를 표시하지 않음
-  const showError = state !== "normal" && isTouched && value === "";
+  const showError = isTouched && value === "";
 
   return (
-    <Container $size={size} $error={showError} $state={state}>
+    <Container $size={size} $error={showError}>
       <StyledInput
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onFocus={() => setIsTouched(false)}
-        onBlur={handleBlur}
+        onFocus={() => setIsTouched(true)}
       />
-      <ErrorMessage $visible={showError}>*필수 입력사항입니다.</ErrorMessage>
+      {showError && <ErrorMessage>*필수 입력사항입니다.</ErrorMessage>}
     </Container>
   );
 }
@@ -69,14 +62,11 @@ const Container = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  width: ${(props) => (props.$size === "small" ? "311px" : "448px")};
+  width: ${(props) =>
+    props.$size === "big" ? "90%" : props.$size === "small" ? "50%" : "100%"};
+  // 너비는 해당 페이지에 따라서 조절 //modalPassword에서의 PC는 90%로, MOBILE은 50%로 함.
   border-radius: 8px;
-  border: ${(props) =>
-    props.$state === "normal"
-      ? "2px solid #444" // normal 상태일 때 기본 테두리 유지
-      : props.$error
-      ? "2px solid #EB5230" // 에러 발생 시 빨간색 테두리
-      : "2px solid #444"};
+  border: 2px solid ${(props) => (props.$error ? "#EB5230" : "#444")};
   background-color: #333;
   padding: ${(props) => (props.$size === "big" ? "14px" : "10px")};
   margin-bottom: ${(props) => (props.$error ? "20px" : "10px")};
@@ -116,9 +106,8 @@ const ErrorMessage = styled.p`
   left: 5px;
   font-size: 13px;
   color: ${brand_orange};
+  min-height: 0px;
+  margin-top: 0px;
   opacity: ${(props) => (props.$visible ? 1 : 0)};
   transition: opacity 0.2s ease;
-
-  /* state가 normal이면 숨김 */
-  ${(props) => props.$state === "normal" && "display: none;"}
 `;

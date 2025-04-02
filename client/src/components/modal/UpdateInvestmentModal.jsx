@@ -62,7 +62,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
 
   return (
     <Overlay onClick={onClose}>
-      <ModalWrapper $size={size} onClick={(e) => e.stopPropagation()}>
+      <ModalWrapper onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <Title>투자 수정하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
@@ -105,12 +105,10 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
 
           <FieldGroup>
             <FieldLabel>투자 코멘트</FieldLabel>
-            <TextInputField
-              size={size}
-              state="normal"
+            <TextArea
               placeholder="투자에 대한 코멘트를 입력해 주세요"
               value={inputValueComment}
-              onChange={handleCommentChange}
+              onChange={(e) => setInputValueComment(e.target.value)}
             />
           </FieldGroup>
 
