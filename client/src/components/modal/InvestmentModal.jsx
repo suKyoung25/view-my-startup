@@ -72,7 +72,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
       });
 
       console.log("투자 성공:", InvestmentData);
-      // alert("투자 등록이 완료되었습니다!"); // 피드백 추가
+      // alert("투자 등록이 완료되었습니다!"); // 피드백 불필요하여 주석 처리함
 
       // 입력 초기화
       setInputValueName("");

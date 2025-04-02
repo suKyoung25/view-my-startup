@@ -27,6 +27,16 @@ function CompareResults() {
   const closePopupModal = () => setIsPopupModalAble(false);
   const openPopupModal = () => setIsPopupModalAble(true);
 
+  const handleSuccess = () => {
+    closeModal();
+    openPopupModal();
+    if (selectedCompanyId) {
+      fetchComparedCompanies({ selectedCompanyId, compareCompanyIds })
+        .then(setCompanies)
+        .catch((err) => console.error("데이터 리로드 실패:", err));
+    }
+  };
+
   function updateMediaSize() {
     const { innerWidth: width } = window;
     if (width >= 1200) setMediaSize("big");
@@ -156,8 +166,8 @@ function CompareResults() {
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
                   <TD>
-                    {typeof company.realInvestmentAmount === "number"
-                      ? `${company.realInvestmentAmount.toLocaleString()}억 원`
+                    {typeof company.investmentAmount === "number"
+                      ? `${company.investmentAmount.toLocaleString()}억 원`
                       : "-"}
                   </TD>
                   <TD>{company.revenue}억 원</TD>
@@ -221,8 +231,10 @@ function CompareResults() {
           {isModalOpen && (
             <InvestmentModal
               onClose={closeModal}
+              onSuccess={handleSuccess} // 추가!
               size={mediaSize}
               openPopupModal={openPopupModal}
+              company={companies[0]} // "내가 선택한 기업" 정보 넘기기
             />
           )}
         </div>
