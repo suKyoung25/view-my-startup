@@ -1,27 +1,14 @@
 import styles from "./Homepage.module.css";
+import TableHeader from "../../components/TableHeader";
 import Search from "../../components/Search";
 import BtnPagination from "../../components/BtnPagination";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SortDropdown from "../../components/Dropdown";
 import styled from "styled-components";
 import companyAPI from "../../api/company.api";
 import { Link } from "react-router-dom";
-import Hangul from "hangul-js";
 
 function HomePage() {
-  const [mediaSize, setMediaSize] = useState("");
-  const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
-  const [companyData, setCompanyData] = useState([]);
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const [searchTokens, setSearchTokens] = useState({
-    raw: "",
-    disassembled: "",
-    cho: "",
-  });
-
-  //table row 항목
   const columns = [
     { label: "순위", name: "ranking", width: "6%" },
     { label: "기업명", name: "name", width: "12%" },
@@ -32,7 +19,6 @@ function HomePage() {
     { label: "고용 인원", name: "employees", width: "10%" },
   ];
 
-  //dropdown 항목
   const sortOptions = [
     "누적 투자금액 높은순",
     "누적 투자금액 낮은순",
@@ -42,20 +28,23 @@ function HomePage() {
     "고용 인원 적은순",
   ];
 
-  //반응형 디자인
+  const [mediaSize, setMediaSize] = useState("");
+  const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
+  const [companyData, setCompanyData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
-    function updateMediaSize() {
+    const updateMediaSize = () => {
       const { innerWidth: width } = window;
-      if (width >= 1200) setMediaSize("big");
-      else if (width > 375) setMediaSize("medium");
-      else setMediaSize("small");
-    }
+      setMediaSize(width > 744 ? "medium" : "small");
+    };
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
     return () => window.removeEventListener("resize", updateMediaSize);
   }, []);
 
-  //초기 렌더링될 데이터 가져오기
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -80,34 +69,21 @@ function HomePage() {
 
   const handleSearchClear = () => {
     setSearchKeyword("");
-    setSearchTokens({ raw: "", disassembled: "", cho: "" });
     setCurrentPage(1);
   };
 
-  const filteredData = useMemo(() => {
-    const input = searchTokens.raw;
-    if (!input) return companyData;
-
-    return companyData.filter((company) => {
-      const name = company.name.toLowerCase();
-      const description = company.description.toLowerCase();
-
-      if (Hangul.isConsonant(input[0])) {
-        const firstChar = name[0];
-        const firstCho = Hangul.disassemble(firstChar)[0];
-        return firstCho === input[0];
-      } else {
-        return name.startsWith(input) || description.includes(input);
-      }
-    });
-  }, [searchTokens, companyData]);
+  const filteredData = companyData.filter(
+    (company) =>
+      company.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      company.description.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
 
   const sortedData = [...filteredData].sort((a, b) => {
     switch (selectedSort) {
       case "누적 투자금액 높은순":
-        return b.realInvestmentAmount - a.realInvestmentAmount;
+        return b.totalVirtualInvestmentAmount - a.totalVirtualInvestmentAmount;
       case "누적 투자금액 낮은순":
-        return a.realInvestmentAmount - b.realInvestmentAmount;
+        return a.totalVirtualInvestmentAmount - b.totalVirtualInvestmentAmount;
       case "매출액 높은순":
         return b.revenue - a.revenue;
       case "매출액 낮은순":
@@ -134,15 +110,14 @@ function HomePage() {
 
             <div className={styles.controls}>
               <Search
-                size={mediaSize}
+                mediaSize={mediaSize}
                 state={"searching"}
                 value={searchKeyword}
                 onChange={handleSearchChange}
                 onClear={handleSearchClear}
-                onSearch={(tokens) => setSearchTokens(tokens)}
               />
               <SortDropdown
-                size={mediaSize}
+                mediaSize={mediaSize}
                 options={sortOptions}
                 value={selectedSort}
                 onChange={handleSortChange}
@@ -166,20 +141,18 @@ function HomePage() {
                   <tr key={item.id || index}>
                     <TD>{startIndex + index + 1}위</TD>
                     <TD>
-                      <CompanyCell>
-                        <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
-                        <Link to={`/company-detail/${item.id}`}>
-                          {item.name}
-                        </Link>
-                      </CompanyCell>
-                    </TD>
-                    <TD>
                       <Link to={`/company-detail/${item.id}`}>
-                        {item.description}
+                        <CompanyCell>
+                          <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
+                          {item.name}
+                        </CompanyCell>
                       </Link>
                     </TD>
+                    <TD>{item.description}</TD>
                     <TD>{item.category}</TD>
-                    <TD>{item.realInvestmentAmount?.toLocaleString()}억 원</TD>
+                    <TD>
+                      {item.totalVirtualInvestmentAmount?.toLocaleString()}억 원
+                    </TD>
                     <TD>{item.revenue?.toLocaleString()}억 원</TD>
                     <TD>{item.numberOfEmployees?.toLocaleString()}명</TD>
                   </tr>
@@ -203,7 +176,7 @@ function HomePage() {
 
           <PaginationWrap>
             <BtnPagination
-              size={mediaSize}
+              mediaSize
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               totalItems={sortedData.length}
@@ -267,8 +240,8 @@ const CompanyCell = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
 `;
