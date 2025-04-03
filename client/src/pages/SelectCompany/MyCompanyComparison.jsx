@@ -20,7 +20,9 @@ function MyCompanyComparison() {
   const [compareCompanies, setCompareCompanies] = useState(
     passedState.compareCompanies || []
   );
-  const [recentMyCompanies, setRecentMyCompanies] = useState([]);
+  const [recentMyCompanies, setRecentMyCompanies] = useState(
+    passedState.recentMyCompanies || []
+  );
   const [selectionMode, setSelectionMode] = useState("my");
   const navigate = useNavigate();
 
@@ -28,6 +30,9 @@ function MyCompanyComparison() {
   useEffect(() => {
     if (location.state?.selectedCompany) {
       setSelectedCompany(location.state.selectedCompany);
+    }
+    if (location.state?.recentMyCompanies) {
+      setRecentMyCompanies(location.state.recentMyCompanies);
     }
   }, [location.state]);
 
@@ -88,6 +93,7 @@ function MyCompanyComparison() {
       state: {
         selectedCompanyId,
         compareCompanyIds,
+        recentMyCompanies, // '최근 비교한 기업' 기록 계속 유지
       },
     });
   };
