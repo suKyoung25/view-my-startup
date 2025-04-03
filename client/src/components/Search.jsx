@@ -109,20 +109,21 @@ const Container = styled.div`
   border: 1px solid ${gray_200};
   border-radius: 10px;
   padding: 5px;
-  width: ${(props) =>
-    props.$mediaSize === "big"
+
+  min-width: ${(props) =>
+    props.$size === "big"
       ? "490px"
-      : props.$mediaSize === "medium"
-      ? "311px"
-      : props.$mediaSize === "small"
-      ? "83px"
+      : props.$size === "medium"
+      ? "269px"
+      : props.$size === "small"
+      ? "189px"
       : null};
   height: ${(props) =>
     props.$mediaSize === "big"
       ? "48px"
       : props.$mediaSize === "medium"
-      ? "40px"
-      : props.$mediaSize === "small"
+      ? "48px"
+      : props.$mediaSiz === "small"
       ? "40px"
       : null};
 `;

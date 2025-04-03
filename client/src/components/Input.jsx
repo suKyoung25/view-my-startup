@@ -105,6 +105,8 @@ const StyledInput = styled.input`
   outline: none;
 
   &::placeholder {
+    font-size: 14px;
+    font-family: "Pretendard";
     color: ${gray_200};
   }
 `;
@@ -120,6 +122,8 @@ const StyledTextarea = styled.textarea`
   height: 108px; /* 적절한 높이 설정 */
 
   &::placeholder {
+    font-size: 14px;
+    font-family: "Pretendard";
     color: ${gray_200};
   }
 `;
@@ -135,7 +139,7 @@ const ErrorMessage = styled.p`
   position: absolute;
   bottom: -33px;
   left: 5px;
-  font-mediasize: 13px;
+  font-size: 13px;
   color: ${brand_orange};
   opacity: ${(props) => (props.$visible ? 1 : 0)};
   transition: opacity 0.2s ease;
