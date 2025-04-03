@@ -102,7 +102,8 @@ const Container = styled.div`
   border: 1px solid ${gray_200};
   border-radius: 10px;
   padding: 5px;
-  width: ${(props) =>
+
+  min-width: ${(props) =>
     props.$size === "big"
       ? "490px"
       : props.$size === "medium"
