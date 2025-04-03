@@ -11,6 +11,7 @@ import {
   gray_200,
 } from "../../styles/colors";
 import Hangul from "hangul-js";
+import { client } from "../../api/index.api";
 
 function SelectComparison({
   isOpen,
@@ -32,6 +33,7 @@ function SelectComparison({
   const [searchSize, setSearchSize] = useState("big");
   const itemsPerPage = 5;
   const [recentCompanies, setRecentCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const isSearching = keyword.trim() !== "";
 
@@ -43,24 +45,24 @@ function SelectComparison({
       : "152px";
 
   useEffect(() => {
-    const updateSize = () => {
-      const isMobile = window.innerWidth <= 744;
-
-      setButtonSize(isMobile ? "small" : "big");
-      setSearchSize(isMobile ? "medium" : "big");
+    const fetchCompanies = async () => {
+      try {
+        const res = await client.get("/api/companies");
+        setCompanies(res.data);
+      } catch (e) {
+        console.error("기업 불러오기 실패:", e);
+      } finally {
+        setLoading(false);
+      }
     };
-
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+    fetchCompanies();
   }, []);
 
   useEffect(() => {
     if (isOpen) {
-      fetch("http://localhost:7777/api/companies")
-        .then((res) => res.json())
-        .then((data) => setCompanies(data))
-        .catch((err) => console.error("기업 데이터 가져오기 실패", err));
+      setKeyword("");
+      setSearchTokens({ raw: "", disassembled: "", cho: "" });
+      setCurrentPage(1);
     }
   }, [isOpen]);
 
@@ -74,7 +76,6 @@ function SelectComparison({
 
     setSelectedCompanies((prev) => [...prev, company]);
 
-    // 최근 선택한 기업 목록 업데이트
     setRecentCompanies((prev) => {
       const existing = prev.findIndex((c) => c.id === company.id);
       if (existing !== -1) {
@@ -170,7 +171,6 @@ function SelectComparison({
                 />
               </CompanyCard>
             ))}
-            <Divider />
           </>
         )}
 
@@ -325,12 +325,6 @@ const CompanyText = styled.div`
     margin: 8px;
     color: ${gray_200};
   }
-`;
-
-const Divider = styled.hr`
-  border: none;
-  border-top: 1px solid #444;
-  margin: 16px 0;
 `;
 
 const PaginationWrapper = styled.div`
