@@ -106,15 +106,15 @@ const Container = styled.div`
     props.$size === "big"
       ? "490px"
       : props.$size === "medium"
-      ? "311px"
+      ? "269px"
       : props.$size === "small"
-      ? "83px"
+      ? "189px"
       : null};
   height: ${(props) =>
     props.$size === "big"
       ? "48px"
       : props.$size === "medium"
-      ? "40px"
+      ? "48px"
       : props.$size === "small"
       ? "40px"
       : null};
@@ -145,7 +145,7 @@ const Input = styled.input`
       props.$size === "big"
         ? "14px"
         : props.$size === "medium"
-        ? "13px"
+        ? "14px"
         : props.$size === "small"
         ? "13px"
         : "13px"};

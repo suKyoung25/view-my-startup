@@ -17,7 +17,6 @@ function BtnPage({ text, size, isActive }) {
 
   useEffect(() => {
     setIsClicked(false);
-    console.log("BtnPage size:", size);
   }, []);
 
   return (
