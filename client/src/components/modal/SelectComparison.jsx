@@ -74,6 +74,7 @@ function SelectComparison({
 
     setSelectedCompanies((prev) => [...prev, company]);
 
+    // 최근 선택한 기업 목록 업데이트
     setRecentCompanies((prev) => {
       const existing = prev.findIndex((c) => c.id === company.id);
       if (existing !== -1) {
