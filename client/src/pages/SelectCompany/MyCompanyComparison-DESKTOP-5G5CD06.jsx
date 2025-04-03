@@ -92,7 +92,7 @@ function MyCompanyComparison() {
             <BtnLarge
               label="전체 초기화"
               type="orange"
-              size="medium"
+              mediaSize="medium"
               icon={restart}
               onClick={handleResetClick}
             />
@@ -154,7 +154,7 @@ function MyCompanyComparison() {
         <div className={styles.buttonWrapper}>
           <BtnLarge
             type={compareCompanies.length > 0 ? "orange" : "black"}
-            size={mediaSize}
+            mediaSize={mediaSize}
             label={"기업 비교하기"}
             onClick={handleCompareClick}
           />
@@ -165,7 +165,7 @@ function MyCompanyComparison() {
           <SelectComparison
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
-            size={mediaSize}
+            mediaSize={mediaSize}
             selectedCompanies={compareCompanies}
             setSelectedCompanies={setCompareCompanies}
             selectedCompany={selectedCompany}
@@ -175,7 +175,7 @@ function MyCompanyComparison() {
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
             onSelect={(company) => handleSelect(company, "my")}
-            size={mediaSize}
+            mediaSize={mediaSize}
             recentCompanies={compareCompanies}
           />
         )}

@@ -41,7 +41,6 @@ function InvestmentTable({ data = [], onRefresh, mediaSize }) {
         await investmentAPI.deleteInvestment(selectedInvestment.id, password);
         setPopupType("delete-success");
         onRefresh && onRefresh();
-
       }
     } catch (e) {
       console.error(e);
