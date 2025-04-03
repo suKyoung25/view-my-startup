@@ -2,22 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { black_300 } from "../styles/colors";
 
-function InputField({ variant = "default", children }) {
-  const [mediaSize, setMediaSize] = useState("big");
-
-  useEffect(() => {
-    const updateMediaSize = () => {
-      const width = window.innerWidth;
-      if (width >= 1200) setMediaSize("big");
-      else if (width > 744) setMediaSize("medium");
-      else setMediaSize("small");
-    };
-
-    updateMediaSize();
-    window.addEventListener("resize", updateMediaSize);
-    return () => window.removeEventListener("resize", updateMediaSize);
-  }, []);
-
+function InputField({ mediaSize, variant = "default", children }) {
   return (
     <Outer $variant={variant} $mediaSize={mediaSize}>
       {variant === "dashed" ? (

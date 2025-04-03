@@ -14,7 +14,7 @@ import {
   gray_300,
 } from "../../../styles/colors";
 
-function InvestmentTable({ data = [], onRefresh }) {
+function InvestmentTable({ data = [], onRefresh, mediaSize }) {
   const sortedData = [...data].sort((a, b) => b.amount - a.amount);
   const [selectedInvestment, setSelectedInvestment] = useState(null);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -23,6 +23,8 @@ function InvestmentTable({ data = [], onRefresh }) {
   const [popupType, setPopupType] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDropdownId, setSelectedDropdownId] = useState(null);
+
+  console.log("InvestmentTable - mediaSize:", mediaSize);
 
   const handlePasswordSubmit = async (password) => {
     if (!selectedInvestment) return;
@@ -72,14 +74,15 @@ function InvestmentTable({ data = [], onRefresh }) {
         <ModalPassword
           onClose={() => setIsPasswordModalOpen(false)}
           onDelete={handlePasswordSubmit}
-          isUpdateMode={isUpdateMode} // 수정 모드 상태 전달
+          isUpdateMode={isUpdateMode}
+          mediaSize={mediaSize}
         />
       )}
 
       {isUpdateModalOpen && selectedInvestment && (
         <UpdateInvestmentModal
           onClose={() => setIsUpdateModalOpen(false)}
-          size="big"
+          mediaSize={mediaSize}
           investment={selectedInvestment}
           onSuccess={handleUpdateSuccess}
         />
@@ -89,10 +92,11 @@ function InvestmentTable({ data = [], onRefresh }) {
         <PopupOneButton
           onClose={() => setIsPopupOpen(false)}
           type={popupType}
+          mediaSize={mediaSize}
         />
       )}
 
-      <Table>
+      <Table $mediaSize={mediaSize}>
         <thead>
           <tr>
             <Th>투자자 이름</Th>

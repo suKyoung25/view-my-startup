@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import styles from "./CompareResult.module.css";
 import SortDropdown from "../../components/Dropdown";
@@ -9,6 +9,7 @@ import InvestmentModal from "../../components/modal/InvestmentModal";
 import InputField from "../../components/InputField";
 import PopupOneButton from "../../components/modal/PopupOneButton";
 import { fetchComparedCompanies } from "../../api/myCompany";
+import rankingsAPI from "../../api/rankings.api";
 
 function CompareResults() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function CompareResults() {
   const [sortTop, setSortTop] = useState("누적 투자금액 높은순");
   const [sortBottom, setSortBottom] = useState("누적 투자금액 높은순");
   const [companies, setCompanies] = useState([]);
+  const [rankingCompanies, setRankingCompanies] = useState([]);
 
   const navigate = useNavigate();
 
@@ -29,9 +31,10 @@ function CompareResults() {
   const openPopupModal = () => setIsPopupModalAble(true);
 
   const handleSuccess = () => {
-    closeModal();
-    openPopupModal();
+    closeModal(); // 모달 닫고
+    openPopupModal(); // 성공 팝업 열고
     if (selectedCompanyId) {
+      // 선택된 기업 + 비교 기업 데이터 다시 불러오기
       fetchComparedCompanies({ selectedCompanyId, compareCompanyIds })
         .then(setCompanies)
         .catch((err) => console.error("데이터 리로드 실패:", err));
@@ -67,6 +70,25 @@ function CompareResults() {
     loadData();
   }, [selectedCompanyId, compareCompanyIds]);
 
+  useEffect(() => {
+    const fetchRankingData = async () => {
+      if (!selectedCompanyId) return;
+      try {
+        const sortBy = getSortKey(sortBottom);
+        const order = getSortOrder(sortBottom);
+        const data = await rankingsAPI.getSurroundingRankings({
+          selectedCompanyId,
+          sortBy,
+          order,
+        });
+        setRankingCompanies(data);
+      } catch (err) {
+        console.error("기업 순위 데이터 불러오기 실패:", err);
+      }
+    };
+    fetchRankingData();
+  }, [selectedCompanyId, sortBottom]);
+
   const sortOptions = [
     "누적 투자금액 높은순",
     "누적 투자금액 낮은순",
@@ -76,30 +98,31 @@ function CompareResults() {
     "고용 인원 적은순",
   ];
 
-  const sortCompanies = (list, criteria) => {
-    const [field, order] = (() => {
-      switch (criteria) {
-        case "누적 투자금액 높은순":
-          return ["investmentAmount", "desc"];
-        case "누적 투자금액 낮은순":
-          return ["investmentAmount", "asc"];
-        case "매출액 높은순":
-          return ["revenue", "desc"];
-        case "매출액 낮은순":
-          return ["revenue", "asc"];
-        case "고용 인원 많은순":
-          return ["employees", "desc"];
-        case "고용 인원 적은순":
-          return ["employees", "asc"];
-        default:
-          return ["investmentAmount", "desc"];
-      }
-    })();
+  const getSortKey = (label) => {
+    switch (label) {
+      case "누적 투자금액 높은순":
+      case "누적 투자금액 낮은순":
+        return "investmentAmount";
+      case "매출액 높은순":
+      case "매출액 낮은순":
+        return "revenue";
+      case "고용 인원 많은순":
+      case "고용 인원 적은순":
+        return "employees";
+      default:
+        return "investmentAmount";
+    }
+  };
 
-    return [...list].sort((a, b) => {
-      const aVal = a[field] ?? 0;
-      const bVal = b[field] ?? 0;
-      console.log(a[field]);
+  const getSortOrder = (label) =>
+    label.includes("낮은순") || label.includes("적은순") ? "asc" : "desc";
+
+  const sortCompanies = (companies, criteria) => {
+    const key = getSortKey(criteria);
+    const order = getSortOrder(criteria);
+    return [...companies].sort((a, b) => {
+      const aVal = a[key] ?? 0;
+      const bVal = b[key] ?? 0;
       return order === "asc" ? aVal - bVal : bVal - aVal;
     });
   };
@@ -123,23 +146,17 @@ function CompareResults() {
             내가 선택한 기업
             <BtnLarge
               type={"orange"}
-              size={"medium"}
+              mediaSize={"medium"}
               label={"다른 기업 비교하기"}
-              onClick={() => {
-                const selectedCompany = companies.find(
-                  (c) => c.id === selectedCompanyId
-                );
-                if (selectedCompany) {
-                  navigate("/select-company", {
-                    state: {
-                      selectedCompany,
-                      compareCompanies: [],
-                      preserveOnRefresh: true, // 새로고침 시 초기화 여부 구분
-                    },
-                  });
-                }
-              }}
-              disabled={companies.length === 0}
+              onClick={() =>
+                navigate("/select-company", {
+                  state: {
+                    selectedCompany: companies[0], // 내가 선택한 기업 정보
+
+                    compareCompanies: [], // 비교 기업 초기화
+                  },
+                })
+              }
             />
           </div>
 
@@ -160,7 +177,7 @@ function CompareResults() {
           <div className={styles.content2}>
             비교 결과 확인하기
             <SortDropdown
-              size={mediaSize}
+              mediaSize={mediaSize}
               options={sortOptions}
               value={sortTop}
               onChange={setSortTop}
@@ -173,23 +190,18 @@ function CompareResults() {
             </thead>
             <tbody>
               {sortCompanies(companies, sortTop).map((company) => (
-                <tr key={company.id}>
-                  <Link to={`/company-detail/${company.id}`}>
-                    <CompanyCell>
-                      <img
-                        src={company.imageUrl}
-                        alt={`${company.name} 로고`}
-                      />
-                      <span>{company.name}</span>
-                    </CompanyCell>
-                  </Link>
+                <tr
+                  key={company.id}
+                  onClick={() => navigate(`/company-detail/${company.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <CompanyCell>
+                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
+                    <span>{company.name}</span>
+                  </CompanyCell>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>
-                    {typeof company.investmentAmount === "number"
-                      ? `${company.investmentAmount.toLocaleString()}억 원`
-                      : "-"}
-                  </TD>
+                  <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
                   <TD>{company.revenue}억 원</TD>
                   <TD>{company.employees}명</TD>
                 </tr>
@@ -202,7 +214,7 @@ function CompareResults() {
           <div className={styles.content3}>
             기업 순위 확인하기
             <SortDropdown
-              size={mediaSize}
+              mediaSize={mediaSize}
               options={sortOptions}
               value={sortBottom}
               onChange={setSortBottom}
@@ -214,26 +226,21 @@ function CompareResults() {
               <TableHeader columns={rankColumns} />
             </thead>
             <tbody>
-              {sortCompanies(companies, sortBottom).map((company, idx) => (
-                <tr key={company.id}>
-                  <TD>{idx + 1}위</TD>
-                  <Link to={`/company-detail/${company.id}`}>
-                    <CompanyCell>
-                      <img
-                        src={company.imageUrl}
-                        alt={`${company.name} 로고`}
-                      />
-                      <span>{company.name}</span>
-                    </CompanyCell>
-                  </Link>
+              {rankingCompanies.map((company) => (
+                <tr
+                  key={company.id}
+                  onClick={() => navigate(`/company-detail/${company.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <TD>{company.ranking}위</TD>
+                  <CompanyCell>
+                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
+                    <span>{company.name}</span>
+                  </CompanyCell>
                   <LeftAlignTD>{company.description}</LeftAlignTD>
                   <TD>{company.category}</TD>
-                  <TD>
-                    {typeof company.investmentAmount === "number"
-                      ? `${company.investmentAmount.toLocaleString()}억원`
-                      : "-"}
-                  </TD>
-                  <TD>{company.revenue}억원</TD>
+                  <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
+                  <TD>{company.revenue}억 원</TD>
                   <TD>{company.employees}명</TD>
                 </tr>
               ))}
@@ -243,7 +250,7 @@ function CompareResults() {
           <Spacer />
           <BtnLarge
             type={"orange"}
-            size={mediaSize}
+            mediaSize={mediaSize}
             label={"나의 기업에 투자하기"}
             onClick={openModal}
           />
@@ -251,8 +258,8 @@ function CompareResults() {
           {isModalOpen && (
             <InvestmentModal
               onClose={closeModal}
-              onSuccess={handleSuccess} // 추가!
-              size={mediaSize}
+              onSuccess={handleSuccess} // 성공 후 처리 로직
+              mediaSize={mediaSize}
               openPopupModal={openPopupModal}
               company={companies[0]} // "내가 선택한 기업" 정보 넘기기
             />
@@ -262,7 +269,7 @@ function CompareResults() {
         {isPopupModalOpen && (
           <PopupOneButton
             onClose={closePopupModal}
-            size={mediaSize}
+            mediaSize={mediaSize}
             type={"success"}
           />
         )}

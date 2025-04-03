@@ -66,7 +66,7 @@ function CompanyDetail() {
 
   return (
     <Wrap>
-      <CompanyDetailWrap $mediaSize={mediaSize}>
+      <CompanyDetailWrap $size={mediaSize}>
         <CompanyContainer>
           <Img
             $mediaSize={mediaSize}
@@ -111,7 +111,7 @@ function CompanyDetail() {
           <InvestTitle>View My Startup에서 받은 투자</InvestTitle>
           <BtnLarge
             type="orange"
-            size={mediaSize}
+            $mediaSize={mediaSize}
             label="기업 투자하기"
             onClick={() => setIsModalOpen(true)}
           />
@@ -129,29 +129,33 @@ function CompanyDetail() {
           </TotalAmount>
 
           {/* 수정: InvestmentTable에 onRefresh 전달 */}
-          <InvestmentTable data={investors} onRefresh={fetchData} />
+          <InvestmentTable
+            data={investors}
+            onRefresh={fetchData}
+            mediaSize={mediaSize}
+          />
         </TableWrap>
 
         <PaginationWrap>
-          <BtnPagination size="big" />
+          <BtnPagination $mediaSize={mediaSize} />
         </PaginationWrap>
       </CompanyDetailWrap>
 
       {isModalOpen && (
         <InvestmentModal
+          mediaSize={mediaSize}
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsPopupOpen(true);
             fetchData(); // 화면이 최신 데이터로 바뀜
           }}
-          size={mediaSize}
         />
       )}
 
       {ispopupOpen && (
         <PopupOneButton
           onClose={() => setIsPopupOpen(false)}
-          size={mediaSize}
+          mediaSize={mediaSize}
           type={"success"}
         />
       )}
@@ -171,12 +175,12 @@ const Wrap = styled.div`
 `;
 
 const CompanyDetailWrap = styled.div`
-  width: ${({ $mediaSize }) =>
-    $mediaSize === "big"
-      ? "1200px"
-      : $mediaSize === "medium"
+  width: ${(props) =>
+    props.$mediaSize === "small"
+      ? "343px"
+      : props.$mediaSize === "medium"
       ? "696px"
-      : "343px"};
+      : "1200px"};
 `;
 
 const CompanyContainer = styled.div`
@@ -191,8 +195,8 @@ const TitleWrap = styled.div`
 `;
 
 const Img = styled.img`
-  width: ${({ $mediaSize }) => ($mediaSize === "small" ? "49px" : "80px")};
-  height: ${({ $mediaSize }) => ($mediaSize === "small" ? "49px" : "80px")};
+  width: ${(props) => (props.$mediaSize === "small" ? "49px" : "80px")};
+  height: ${(props) => (props.$mediaSize === "small" ? "49px" : "80px")};
   border-radius: 100%;
   object-fit: cover;
   margin-right: 20px;
