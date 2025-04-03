@@ -18,7 +18,7 @@ const CompareListSection = ({
         : window.innerWidth > 744
         ? "medium"
         : "small"
-      : "medium";
+      : "big";
 
   const renderSelectedCompanies = () => {
     if (!companies) return null;
@@ -78,6 +78,7 @@ const CompareListSection = ({
 export default CompareListSection;
 
 const Wrapper = styled.section`
+  box-sizing: border-box;
   color: white;
 `;
 

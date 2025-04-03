@@ -3,7 +3,7 @@ import styled, { css, keyframes } from "styled-components";
 import arrowDown from "../assets/images/dropdownarrow/arrow.svg";
 import { black_400, gray_200 } from "../styles/colors";
 
-function SortDropdown({ size, options = [], value, onChange }) {
+function SortDropdown({ mediaSize, options = [], value, onChange }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -27,7 +27,7 @@ function SortDropdown({ size, options = [], value, onChange }) {
 
   return (
     <Wrapper ref={dropdownRef}>
-      <DropdownButton $size={size} onClick={toggleDropdown}>
+      <DropdownButton $mediaSize={mediaSize} onClick={toggleDropdown}>
         <SelectedText>{value}</SelectedText>
         <ArrowIcon src={arrowDown} alt="화살표" $isOpen={open} />
       </DropdownButton>

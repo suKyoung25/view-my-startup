@@ -2,8 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { black_100, brand_orange, gray_200 } from "../styles/colors";
 
-// 아래 props는 size=big/small
-function BtnLeft({ size }) {
+// 아래 props는 mediaSize=big/small
+function BtnLeft({ mediaSize }) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = (e) => {
@@ -16,7 +16,7 @@ function BtnLeft({ size }) {
   };
 
   return (
-    <Button $size={size} $isClicked={isClicked} onClick={handleClick}>
+    <Button $mediaSize={mediaSize} $isClicked={isClicked} onClick={handleClick}>
       <div>&lt;</div>
     </Button>
   );
@@ -49,6 +49,7 @@ const Button = styled.div`
     if (props.$size === "big") return "48px";
     if (props.$size === "medium") return "48px";
     if (props.$size === "small") return "32px";
+
   }};
 `;
 
