@@ -334,7 +334,7 @@ const PaginationWrapper = styled.div`
 `;
 
 const Warning = styled.p`
-  color: ${brand_orange}
+  color: ${brand_orange};
   font-size: 13px;
   text-align: right;
   margin-top: 12px;

@@ -125,15 +125,21 @@ function CompareResults() {
               type={"orange"}
               size={"medium"}
               label={"다른 기업 비교하기"}
-              onClick={() =>
-                navigate("/select-company", {
-                  state: {
-                    selectedCompany: companies[0], // 내가 선택한 기업 정보
-                    compareCompanies: [], // 비교 기업 초기화
-                    recentMyCompanies: [companies[0]], // 최근 선택한 나의 기업 계속 유지
-                  },
-                })
-              }
+              onClick={() => {
+                const selectedCompany = companies.find(
+                  (c) => c.id === selectedCompanyId
+                );
+                if (selectedCompany) {
+                  navigate("/select-company", {
+                    state: {
+                      selectedCompany,
+                      compareCompanies: [],
+                      preserveOnRefresh: true, // 새로고침 시 초기화 여부 구분
+                    },
+                  });
+                }
+              }}
+              disabled={companies.length === 0}
             />
           </div>
 
