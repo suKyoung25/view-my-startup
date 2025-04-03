@@ -23,6 +23,8 @@ function SortDropdown({ mediaSize, options = [], value, onChange }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  console.log(size);
+
   return (
     <Wrapper ref={dropdownRef}>
       <DropdownButton $mediaSize={mediaSize} onClick={toggleDropdown}>
@@ -60,12 +62,31 @@ const DropdownButton = styled.button`
   background-color: ${black_400};
   color: #fff;
   border: 1px solid ${gray_200};
-  border-radius: 14px;
-  width: ${(props) => (props.$mediaSize === "big" ? "280px" : "240px")};
-  height: ${(props) => (props.$mediaSize === "big" ? "44px" : "39px")};
+  border-radius: 10px;
+  width: ${(props) =>
+    props.$size === "big"
+      ? "210px"
+      : props.$size === "medium"
+      ? "210px"
+      : props.$size === "small"
+      ? "210px"
+      : null};
+  height: ${(props) =>
+    props.$size === "big"
+      ? "48px"
+      : props.$size === "medium"
+      ? "48px"
+      : props.$size === "small"
+      ? "40px"
+      : null};
   padding: 0 16px;
 
-  font-size: ${(props) => (props.$mediaSize === "big" ? "14px" : "12px")};
+  font-size: ${(props) =>
+    props.$size === "big" || props.$size === "medium"
+      ? "14px"
+      : props.$size === "small"
+      ? "12px"
+      : null};
   cursor: pointer;
 `;
 
@@ -103,7 +124,7 @@ const DropdownList = styled.div`
   background-color: ${black_400};
 
   border: 1px solid ${gray_200};
-  border-radius: 14px;
+  border-radius: 10px;
   overflow: hidden;
   z-index: 1000;
 
