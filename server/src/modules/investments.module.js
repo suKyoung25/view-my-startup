@@ -6,7 +6,39 @@ const bcrypt = require("bcrypt");
 const investmentsRouter = express.Router();
 
 /**
- * [1] 가상 투자 등록
+ * [1] 특정 투자 내역 비밀번호 확인
+ */
+investmentsRouter.post(
+  "/:investmentId/verify-password",
+  async (req, res, next) => {
+    try {
+      const { investmentId } = req.params;
+      const { password } = req.body;
+
+      const investment = await prisma.investment.findUnique({
+        where: { id: investmentId },
+      });
+
+      if (!investment)
+        throw new Exception(404, "투자 내역이 존재하지 않습니다.");
+      if (!investment.encryptedPassword)
+        throw new Exception(500, "비밀번호 정보가 존재하지 않습니다.");
+
+      const isMatch = await bcrypt.compare(
+        password,
+        investment.encryptedPassword
+      );
+      if (!isMatch) throw new Exception(403, "비밀번호가 일치하지 않습니다.");
+
+      res.json({ message: "비밀번호 일치", success: true });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+/**
+ * [2] 가상 투자 등록
  */
 investmentsRouter.post("/", async (req, res, next) => {
   try {
@@ -43,7 +75,7 @@ investmentsRouter.post("/", async (req, res, next) => {
 });
 
 /**
- * [2] 가상 투자 수정
+ * [3] 가상 투자 수정
  */
 investmentsRouter.put("/:investmentId", async (req, res, next) => {
   try {
@@ -98,7 +130,7 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * [3] 가상 투자 삭제
+ * [4] 가상 투자 삭제
  */
 investmentsRouter.delete("/:investmentId", async (req, res, next) => {
   try {
@@ -128,7 +160,7 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * [4] 개별 투자 내역 전체 조회 (투자 히스토리용)
+ * [5] 개별 투자 내역 전체 조회 (투자 히스토리용)
  */
 investmentsRouter.get("/", async (req, res, next) => {
   try {
@@ -164,7 +196,7 @@ investmentsRouter.get("/", async (req, res, next) => {
 });
 
 /**
- * [5] 투자 현황 요약 조회 (기업별 누적 가상 투자 집계)
+ * [6] 투자 현황 요약 조회 (기업별 누적 가상 투자 집계)
  */
 investmentsRouter.get("/status", async (req, res, next) => {
   try {

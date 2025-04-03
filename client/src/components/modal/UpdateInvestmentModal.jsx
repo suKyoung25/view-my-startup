@@ -110,7 +110,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
               state="normal"
               placeholder="투자에 대한 코멘트를 입력해 주세요"
               value={inputValueComment}
-              onChange={handleCommentChange}
+              onChange={(e) => setInputValueComment(e.target.value)}
             />
           </FieldGroup>
 

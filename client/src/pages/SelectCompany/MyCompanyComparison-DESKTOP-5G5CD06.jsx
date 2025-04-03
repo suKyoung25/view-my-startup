@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./MyCompanyComparison.module.css";
 import plusIcon from "../../assets/icon/btn_plus.svg";
@@ -10,53 +10,25 @@ import SelectComparison from "../../components/modal/SelectComparison";
 import CompareListSection from "../../components/CompareListSection";
 
 function MyCompanyComparison() {
-  const location = useLocation();
-  const passedState = location.state || {};
   const [modalOpen, setModalOpen] = useState(false);
   const [mediaSize, setMediaSize] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState(
-    passedState.selectedCompany || null
-  ); // '다른기업비교하기' 버튼에 의해 초기 상태가 이미 선택된 상태인 경우도 있음
-  const [compareCompanies, setCompareCompanies] = useState(
-    passedState.compareCompanies || []
-  );
-  const [recentMyCompanies, setRecentMyCompanies] = useState(
-    passedState.recentMyCompanies || []
-  );
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [compareCompanies, setCompareCompanies] = useState([]);
   const [selectionMode, setSelectionMode] = useState("my");
   const navigate = useNavigate();
 
-  // useEffect에서 초기 selectedCompany 설정
-  useEffect(() => {
-    if (location.state?.selectedCompany) {
-      setSelectedCompany(location.state.selectedCompany);
+  // 나의 기업 / 비교 기업 선택 핸들러
+  const handleSelect = (company, mode) => {
+    if (mode === "my") {
+      setSelectedCompany(company);
+    } else if (mode === "compare") {
+      setCompareCompanies((prev) => {
+        const exists = prev.find((c) => c.id === company.id);
+        if (exists) return prev;
+        return [company, ...prev].slice(0, 5);
+      });
     }
-    if (location.state?.recentMyCompanies) {
-      setRecentMyCompanies(location.state.recentMyCompanies);
-    }
-  }, [location.state]);
-
-  // '나의 기업' 선택 핸들러
-  const handleSelectMyCompany = (company) => {
-    setSelectedCompany(company);
-    updateRecentMyCompanies(company);
     setModalOpen(false);
-  };
-
-  // 최근 '나의 기업' 목록 업데이트
-  const updateRecentMyCompanies = (company) => {
-    setRecentMyCompanies((prev) => {
-      const existingIndex = prev.findIndex((c) => c.id === company.id);
-      if (existingIndex !== -1) {
-        const updatedRecent = [
-          company,
-          ...prev.slice(0, existingIndex),
-          ...prev.slice(existingIndex + 1),
-        ];
-        return updatedRecent.slice(0, 5);
-      }
-      return [company, ...prev].slice(0, 5);
-    });
   };
 
   const handleCancel = () => {
@@ -66,7 +38,6 @@ function MyCompanyComparison() {
   const handleResetClick = () => {
     setSelectedCompany(null);
     setCompareCompanies([]);
-    setRecentMyCompanies([]);
   };
 
   const handleCompareClick = () => {
@@ -93,7 +64,6 @@ function MyCompanyComparison() {
       state: {
         selectedCompanyId,
         compareCompanyIds,
-        recentMyCompanies, // '최근 비교한 기업' 기록 계속 유지
       },
     });
   };
@@ -167,7 +137,7 @@ function MyCompanyComparison() {
         </div>
 
         {/* 비교 기업 리스트 및 버튼 포함 */}
-        {(selectedCompany || compareCompanies.length > 0) && (
+        {selectedCompany && (
           <CompareListSection
             companies={compareCompanies}
             onAddClick={() => {
@@ -204,11 +174,9 @@ function MyCompanyComparison() {
           <SelectMyEnterprise
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
-            onSelect={handleSelectMyCompany}
+            onSelect={(company) => handleSelect(company, "my")}
             size={mediaSize}
-            recentCompanies={recentMyCompanies}
-            setRecentCompanies={setRecentMyCompanies}
-            excludeCompanies={compareCompanies} // 비교기업목록을 제외할 수 있게 전달
+            recentCompanies={compareCompanies}
           />
         )}
       </Inner>

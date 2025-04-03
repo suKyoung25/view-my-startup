@@ -29,19 +29,25 @@ function InvestmentTable({ data = [], onRefresh, mediaSize }) {
   const handlePasswordSubmit = async (password) => {
     if (!selectedInvestment) return;
 
-    if (isUpdateMode) {
-      setIsPasswordModalOpen(false);
-      setIsUpdateModalOpen(true);
-    } else {
-      try {
+    try {
+      // 비밀번호 검증 (수정/삭제 공통)
+      await investmentAPI.verifyPassword(selectedInvestment.id, password);
+
+      if (isUpdateMode) {
+        // 수정 모드 - 비밀번호 일치하면 수정 모달 열기
+        setIsUpdateModalOpen(true);
+      } else {
+        // 삭제 모드 - 비밀번호 일치 후 삭제 진행
         await investmentAPI.deleteInvestment(selectedInvestment.id, password);
         setPopupType("delete-success");
         onRefresh && onRefresh();
-      } catch (e) {
-        console.error(e);
-        setPopupType("error");
+
       }
-      setIsPopupOpen(true);
+    } catch (e) {
+      console.error(e);
+      setPopupType("error"); // 비번 틀리면 에러 팝업
+      setIsPopupOpen(true); // 실패했을 때만 팝업을 띄움
+    } finally {
       setIsPasswordModalOpen(false);
     }
   };
