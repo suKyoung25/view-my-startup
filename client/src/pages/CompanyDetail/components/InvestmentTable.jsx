@@ -14,7 +14,7 @@ import {
   gray_300,
 } from "../../../styles/colors";
 
-function InvestmentTable({ data = [], onRefresh }) {
+function InvestmentTable({ data = [], onRefresh, mediaSize }) {
   const sortedData = [...data].sort((a, b) => b.amount - a.amount);
   const [selectedInvestment, setSelectedInvestment] = useState(null);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -24,21 +24,19 @@ function InvestmentTable({ data = [], onRefresh }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDropdownId, setSelectedDropdownId] = useState(null);
 
+  console.log("InvestmentTable - mediaSize:", mediaSize);
+
   const handlePasswordSubmit = async (password) => {
     if (!selectedInvestment) return;
 
     if (isUpdateMode) {
-      // 수정 모드일 경우, 수정 모달을 열고 기존 팝업 로직 건너뛰기
-      // 수정 모드 → 그냥 모달 열기 (비밀번호는 UpdateInvestmentModal에서 검증 요청)
       setIsPasswordModalOpen(false);
       setIsUpdateModalOpen(true);
     } else {
       try {
-        // 삭제 요청
         await investmentAPI.deleteInvestment(selectedInvestment.id, password);
-        // 삭제 모드일 경우, 상태 메시지 설정
         setPopupType("delete-success");
-        onRefresh && onRefresh(); // 새로고침
+        onRefresh && onRefresh();
       } catch (e) {
         console.error(e);
         setPopupType("error");
@@ -71,14 +69,15 @@ function InvestmentTable({ data = [], onRefresh }) {
         <ModalPassword
           onClose={() => setIsPasswordModalOpen(false)}
           onDelete={handlePasswordSubmit}
-          isUpdateMode={isUpdateMode} // 수정 모드 상태 전달
+          isUpdateMode={isUpdateMode}
+          mediaSize={mediaSize}
         />
       )}
 
       {isUpdateModalOpen && selectedInvestment && (
         <UpdateInvestmentModal
           onClose={() => setIsUpdateModalOpen(false)}
-          size="big"
+          mediaSize={mediaSize}
           investment={selectedInvestment}
           onSuccess={handleUpdateSuccess}
         />
@@ -88,10 +87,11 @@ function InvestmentTable({ data = [], onRefresh }) {
         <PopupOneButton
           onClose={() => setIsPopupOpen(false)}
           type={popupType}
+          mediaSize={mediaSize}
         />
       )}
 
-      <Table>
+      <Table $mediaSize={mediaSize}>
         <thead>
           <tr>
             <Th>투자자 이름</Th>

@@ -3,7 +3,7 @@ import styled, { css, keyframes } from "styled-components";
 import arrowDown from "../assets/images/dropdownarrow/arrow.svg";
 import { black_400, gray_200 } from "../styles/colors";
 
-function SortDropdown({ size, options = [], value, onChange }) {
+function SortDropdown({ mediaSize, options = [], value, onChange }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -25,7 +25,7 @@ function SortDropdown({ size, options = [], value, onChange }) {
 
   return (
     <Wrapper ref={dropdownRef}>
-      <DropdownButton $size={size} onClick={toggleDropdown}>
+      <DropdownButton $mediaSize={mediaSize} onClick={toggleDropdown}>
         <SelectedText>{value}</SelectedText>
         <ArrowIcon src={arrowDown} alt="화살표" $isOpen={open} />
       </DropdownButton>
@@ -61,11 +61,11 @@ const DropdownButton = styled.button`
   color: #fff;
   border: 1px solid ${gray_200};
   border-radius: 14px;
-  width: ${(props) => (props.$size === "big" ? "280px" : "240px")};
-  height: ${(props) => (props.$size === "big" ? "44px" : "39px")};
+  width: ${(props) => (props.$mediaSize === "big" ? "280px" : "240px")};
+  height: ${(props) => (props.$mediaSize === "big" ? "44px" : "39px")};
   padding: 0 16px;
 
-  font-size: ${(props) => (props.$size === "big" ? "14px" : "12px")};
+  font-size: ${(props) => (props.$mediaSize === "big" ? "14px" : "12px")};
   cursor: pointer;
 `;
 

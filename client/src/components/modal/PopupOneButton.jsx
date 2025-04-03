@@ -1,24 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 import closeIcon from "../../assets/icon/ic_delete.png";
 import BtnDelete from "../BtnDelete";
 import { black_300, black_400 } from "../../styles/colors";
 
-export default function PopupOneButton({ onClose, size = "big", type }) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const isMobile = windowWidth <= 768;
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    document.body.style.overflow = "hidden"; // 스크롤 막기
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      document.body.style.overflow = "auto";
-    };
-  }, []);
-
+export default function PopupOneButton({ onClose, mediaSize, type }) {
   const getMessage = () => {
     switch (type) {
       case "error":
@@ -41,23 +27,16 @@ export default function PopupOneButton({ onClose, size = "big", type }) {
 
   return (
     <Overlay onClick={onClose}>
-      <Wrapper
-        $size={isMobile ? "small" : size}
-        onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
-      >
+      <Wrapper $size={mediaSize} onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>
           <img src={closeIcon} alt="닫기" />
         </CloseButton>
 
-        <ContentBox $size={isMobile ? "small" : size}>
-          <Message $size={isMobile ? "small" : size}>{getMessage()}</Message>
+        <ContentBox $size={mediaSize}>
+          <Message $size={mediaSize}>{getMessage()}</Message>
 
           <ButtonGroup>
-            <BtnDelete
-              onClick={onConfirm}
-              size={isMobile ? "small" : size}
-              type="confirm"
-            />
+            <BtnDelete onClick={onConfirm} size={mediaSize} type="confirm" />
           </ButtonGroup>
         </ContentBox>
       </Wrapper>
