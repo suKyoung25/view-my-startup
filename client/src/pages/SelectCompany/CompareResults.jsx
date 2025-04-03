@@ -146,7 +146,7 @@ function CompareResults() {
             내가 선택한 기업
             <BtnLarge
               type={"orange"}
-              size={"medium"}
+              mediaSize={"medium"}
               label={"다른 기업 비교하기"}
               onClick={() =>
                 navigate("/select-company", {
@@ -177,7 +177,7 @@ function CompareResults() {
           <div className={styles.content2}>
             비교 결과 확인하기
             <SortDropdown
-              size={mediaSize}
+              mediaSize={mediaSize}
               options={sortOptions}
               value={sortTop}
               onChange={setSortTop}
@@ -214,7 +214,7 @@ function CompareResults() {
           <div className={styles.content3}>
             기업 순위 확인하기
             <SortDropdown
-              size={mediaSize}
+              mediaSize={mediaSize}
               options={sortOptions}
               value={sortBottom}
               onChange={setSortBottom}
@@ -250,7 +250,7 @@ function CompareResults() {
           <Spacer />
           <BtnLarge
             type={"orange"}
-            size={mediaSize}
+            mediaSize={mediaSize}
             label={"나의 기업에 투자하기"}
             onClick={openModal}
           />
@@ -259,7 +259,7 @@ function CompareResults() {
             <InvestmentModal
               onClose={closeModal}
               onSuccess={handleSuccess} // 성공 후 처리 로직
-              size={mediaSize}
+              mediaSize={mediaSize}
               openPopupModal={openPopupModal}
               company={companies[0]} // "내가 선택한 기업" 정보 넘기기
             />
@@ -269,7 +269,7 @@ function CompareResults() {
         {isPopupModalOpen && (
           <PopupOneButton
             onClose={closePopupModal}
-            size={mediaSize}
+            mediaSize={mediaSize}
             type={"success"}
           />
         )}

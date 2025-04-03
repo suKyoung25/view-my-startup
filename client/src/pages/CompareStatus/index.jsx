@@ -100,7 +100,7 @@ function CompareStatus() {
           <Title>비교 현황</Title>
 
           <Dropdown
-            size={mediaSize}
+            mediaSize={mediaSize}
             options={sortOptions}
             value={selectedSort} // 현재 선택된 정렬 기준
             onChange={handleSortChange} // 선택 바뀔 때 실행할 함수
@@ -138,7 +138,7 @@ function CompareStatus() {
 
         <PaginationWrap>
           <BtnPagination
-            size="big"
+            mediaSize="big"
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
             totalItems={compareData.length}

@@ -66,7 +66,7 @@ function CompanyDetail() {
 
   return (
     <Wrap>
-      <CompanyDetailWrap $mediaSize={mediaSize}>
+      <CompanyDetailWrap $size={mediaSize}>
         <CompanyContainer>
           <Img
             $mediaSize={mediaSize}
@@ -175,12 +175,12 @@ const Wrap = styled.div`
 `;
 
 const CompanyDetailWrap = styled.div`
-  width: ${({ $mediaSize }) =>
-    $mediaSize === "big"
-      ? "1200px"
-      : $mediaSize === "medium"
+  width: ${(props) =>
+    props.$mediaSize === "small"
+      ? "343px"
+      : props.$mediaSize === "medium"
       ? "696px"
-      : "343px"};
+      : "1200px"};
 `;
 
 const CompanyContainer = styled.div`
@@ -195,8 +195,8 @@ const TitleWrap = styled.div`
 `;
 
 const Img = styled.img`
-  width: ${({ $mediaSize }) => ($mediaSize === "small" ? "49px" : "80px")};
-  height: ${({ $mediaSize }) => ($mediaSize === "small" ? "49px" : "80px")};
+  width: ${(props) => (props.$mediaSize === "small" ? "49px" : "80px")};
+  height: ${(props) => (props.$mediaSize === "small" ? "49px" : "80px")};
   border-radius: 100%;
   object-fit: cover;
   margin-right: 20px;
