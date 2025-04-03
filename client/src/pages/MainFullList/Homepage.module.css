@@ -70,3 +70,14 @@ body {
 .pagination {
   align-items: center;
 }
+
+/*타블렛 사이즈*/
+@media (min-width: 376px) and (max-width: 1199px) {
+  .content {
+    padding: 40px 24px 83px 24px;
+  }
+}
+
+/*모바일 사이즈*/
+@media (max-width: 375px) {
+}

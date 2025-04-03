@@ -44,10 +44,12 @@ function HomePage() {
 
   //반응형 디자인
   useEffect(() => {
-    const updateMediaSize = () => {
+    function updateMediaSize() {
       const { innerWidth: width } = window;
-      setMediaSize(width > 744 ? "medium" : "small");
-    };
+      if (width >= 1200) setMediaSize("big");
+      else if (width > 375) setMediaSize("medium");
+      else setMediaSize("small");
+    }
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
     return () => window.removeEventListener("resize", updateMediaSize);
@@ -177,9 +179,7 @@ function HomePage() {
                       </Link>
                     </TD>
                     <TD>{item.category}</TD>
-                    <TD>
-                      {item.realInvestmentAmount?.toLocaleString()}억 원
-                    </TD>
+                    <TD>{item.realInvestmentAmount?.toLocaleString()}억 원</TD>
                     <TD>{item.revenue?.toLocaleString()}억 원</TD>
                     <TD>{item.numberOfEmployees?.toLocaleString()}명</TD>
                   </tr>
@@ -203,7 +203,7 @@ function HomePage() {
 
           <PaginationWrap>
             <BtnPagination
-              size={"big"}
+              size={mediaSize}
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               totalItems={sortedData.length}
