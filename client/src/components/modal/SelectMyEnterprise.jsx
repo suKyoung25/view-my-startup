@@ -49,6 +49,14 @@ function SelectMyEnterprise({
     fetchCompanies();
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      setKeyword("");
+      setSearchTokens({ raw: "", disassembled: "", cho: "" });
+      setCurrentPage(1);
+    }
+  }, [isOpen]);
+
   // 해당 기업이 제외목록에 있는지 확인
   const isExcluded = (company) => {
     return excludeCompanies.some((excluded) => excluded.id === company.id);

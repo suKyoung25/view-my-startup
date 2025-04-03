@@ -129,7 +129,8 @@ function CompareResults() {
                 navigate("/select-company", {
                   state: {
                     selectedCompany: companies[0], // 내가 선택한 기업 정보
-                    compareCompanies: [], // 비교 기업 초기화화
+                    compareCompanies: [], // 비교 기업 초기화
+                    recentMyCompanies: [companies[0]], // 최근 선택한 나의 기업 계속 유지
                   },
                 })
               }
