@@ -23,7 +23,6 @@ function SortDropdown({ mediaSize, options = [], value, onChange }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  console.log(size);
 
   return (
     <Wrapper ref={dropdownRef}>

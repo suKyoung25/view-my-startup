@@ -1,15 +1,14 @@
 import styles from "./Homepage.module.css";
-import TableHeader from "../../components/TableHeader";
 import Search from "../../components/Search";
 import BtnPagination from "../../components/BtnPagination";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import SortDropdown from "../../components/Dropdown";
 import styled from "styled-components";
 import companyAPI from "../../api/company.api";
 import { Link } from "react-router-dom";
+import Hangul from "hangul-js";
 
 function HomePage() {
-
   const [mediaSize, setMediaSize] = useState("");
   const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
   const [companyData, setCompanyData] = useState([]);
@@ -32,7 +31,6 @@ function HomePage() {
     { label: "매출액", name: "revenue", width: "12%" },
     { label: "고용 인원", name: "employees", width: "12%" },
   ];
-
 
   //반응형/테블릿 사이즈에선 "순위" 컬럼 제외
   //big 일때는 일부러 조건문 안함.
@@ -57,17 +55,10 @@ function HomePage() {
     "고용 인원 적은순",
   ];
 
-  const [mediaSize, setMediaSize] = useState("");
-  const [selectedSort, setSelectedSort] = useState("누적 투자금액 높은순");
-  const [companyData, setCompanyData] = useState([]);
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
+  //반응형 디자인
   useEffect(() => {
-    const updateMediaSize = () => {
+    function updateMediaSize() {
       const { innerWidth: width } = window;
-
       if (width >= 1200) setMediaSize("big");
       else if (width > 730) setMediaSize("medium");
       else setMediaSize("small");
@@ -77,6 +68,7 @@ function HomePage() {
     return () => window.removeEventListener("resize", updateMediaSize);
   }, []);
 
+  //초기 렌더링될 데이터 가져오기
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -101,21 +93,34 @@ function HomePage() {
 
   const handleSearchClear = () => {
     setSearchKeyword("");
+    setSearchTokens({ raw: "", disassembled: "", cho: "" });
     setCurrentPage(1);
   };
 
-  const filteredData = companyData.filter(
-    (company) =>
-      company.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      company.description.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
+  const filteredData = useMemo(() => {
+    const input = searchTokens.raw;
+    if (!input) return companyData;
+
+    return companyData.filter((company) => {
+      const name = company.name.toLowerCase();
+      const description = company.description.toLowerCase();
+
+      if (Hangul.isConsonant(input[0])) {
+        const firstChar = name[0];
+        const firstCho = Hangul.disassemble(firstChar)[0];
+        return firstCho === input[0];
+      } else {
+        return name.startsWith(input) || description.includes(input);
+      }
+    });
+  }, [searchTokens, companyData]);
 
   const sortedData = [...filteredData].sort((a, b) => {
     switch (selectedSort) {
       case "누적 투자금액 높은순":
-        return b.totalVirtualInvestmentAmount - a.totalVirtualInvestmentAmount;
+        return b.realInvestmentAmount - a.realInvestmentAmount;
       case "누적 투자금액 낮은순":
-        return a.totalVirtualInvestmentAmount - b.totalVirtualInvestmentAmount;
+        return a.realInvestmentAmount - b.realInvestmentAmount;
       case "매출액 높은순":
         return b.revenue - a.revenue;
       case "매출액 낮은순":
@@ -150,6 +155,7 @@ function HomePage() {
                 value={searchKeyword}
                 onChange={handleSearchChange}
                 onClear={handleSearchClear}
+                onSearch={(tokens) => setSearchTokens(tokens)}
               />
               <SortDropdown
                 mediaSize={mediaSize}
@@ -183,7 +189,7 @@ function HomePage() {
                         }
                       })}
                       <TD>
-                        <CompanyCell size={mediaSize}>
+                        <CompanyCell mediaSize={mediaSize}>
                           <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
                           <Link to={`/company-detail/${item.id}`}>
                             {item.name}
@@ -223,7 +229,7 @@ function HomePage() {
 
           <PaginationWrap>
             <BtnPagination
-              mediaSize
+              mediaSize={mediaSize}
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               totalItems={sortedData.length}
@@ -309,9 +315,9 @@ const CompanyCell = styled.div`
   display: flex;
   justify-content: baseline;
   padding-left: ${(props) =>
-    props.size === "big"
+    props.mediaSize === "big"
       ? "24px"
-      : props.size === "medium" || props.size === "small"
+      : props.mediaSize === "medium" || props.mediaSize === "small"
       ? "16px"
       : null};
   align-items: center;
@@ -319,8 +325,8 @@ const CompanyCell = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 `;
