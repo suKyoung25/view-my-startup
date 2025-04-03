@@ -11,7 +11,6 @@ import {
   gray_200,
 } from "../../styles/colors";
 import Hangul from "hangul-js";
-import { client } from "../../api/index.api";
 
 function SelectComparison({
   isOpen,
@@ -33,7 +32,6 @@ function SelectComparison({
   const [searchSize, setSearchSize] = useState("big");
   const itemsPerPage = 5;
   const [recentCompanies, setRecentCompanies] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const isSearching = keyword.trim() !== "";
 
@@ -45,24 +43,24 @@ function SelectComparison({
       : "152px";
 
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const res = await client.get("/api/companies");
-        setCompanies(res.data);
-      } catch (e) {
-        console.error("기업 불러오기 실패:", e);
-      } finally {
-        setLoading(false);
-      }
+    const updateSize = () => {
+      const isMobile = window.innerWidth <= 744;
+
+      setButtonSize(isMobile ? "small" : "big");
+      setSearchSize(isMobile ? "medium" : "big");
     };
-    fetchCompanies();
+
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
   }, []);
 
   useEffect(() => {
     if (isOpen) {
-      setKeyword("");
-      setSearchTokens({ raw: "", disassembled: "", cho: "" });
-      setCurrentPage(1);
+      fetch("http://localhost:7777/api/companies")
+        .then((res) => res.json())
+        .then((data) => setCompanies(data))
+        .catch((err) => console.error("기업 데이터 가져오기 실패", err));
     }
   }, [isOpen]);
 
@@ -171,6 +169,7 @@ function SelectComparison({
                 />
               </CompanyCard>
             ))}
+            <Divider />
           </>
         )}
 
@@ -327,6 +326,12 @@ const CompanyText = styled.div`
   }
 `;
 
+const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid #444;
+  margin: 16px 0;
+`;
+
 const PaginationWrapper = styled.div`
   margin-top: 24px;
   display: flex;
@@ -334,7 +339,7 @@ const PaginationWrapper = styled.div`
 `;
 
 const Warning = styled.p`
-  color: ${brand_orange}
+  color: ${brand_orange};
   font-size: 13px;
   text-align: right;
   margin-top: 12px;
