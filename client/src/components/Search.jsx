@@ -104,9 +104,9 @@ const Container = styled.div`
   padding: 5px;
   width: ${(props) =>
     props.$size === "big"
-      ? "490px"
+      ? "448px"
       : props.$size === "medium"
-      ? "311px"
+      ? "448px"
       : props.$size === "small"
       ? "83px"
       : null};
@@ -114,7 +114,7 @@ const Container = styled.div`
     props.$size === "big"
       ? "48px"
       : props.$size === "medium"
-      ? "40px"
+      ? "48px"
       : props.$size === "small"
       ? "40px"
       : null};

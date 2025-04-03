@@ -119,6 +119,8 @@ function SelectMyEnterprise({
 
   if (!isOpen) return null;
 
+  console.log(size);
+
   return (
     <Overlay onClick={onClose}>
       <Container $size={size} onClick={(e) => e.stopPropagation()}>
@@ -236,12 +238,17 @@ const Container = styled.div`
   padding: 24px;
   color: #ffffff;
   font-size: 20px;
+
   width: ${(props) =>
     props.$size === "big"
+      ? "496px"
+      : props.$size === "medium"
       ? "496px"
       : props.$size === "small"
       ? "343px"
       : "100%"};
+
+  margin: 0 auto;
 `;
 
 const Title = styled.div`
