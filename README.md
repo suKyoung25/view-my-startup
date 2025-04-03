@@ -18,7 +18,8 @@
 
 ### 파일 구조
 
-project-root/
+<pre><code>```bash
+FS/
 ├── client/ # 프론트엔드 (React + Vite)
 │ ├── node_modules/
 │ ├── public/ # 정적 파일 (필요 시)
@@ -66,6 +67,8 @@ project-root/
 ├── package.json  
 ├── package-lock.json
 └── README.md
+```</code></pre>
+
 
 ### 배포 주소
 
