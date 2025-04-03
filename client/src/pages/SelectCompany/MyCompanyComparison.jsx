@@ -37,6 +37,10 @@ function MyCompanyComparison() {
     }
   }, []);
 
+  useEffect(() => {
+    console.log("mediaSize 상태 변경됨 👉", mediaSize);
+  }, [mediaSize]);
+
   // '나의 기업' 선택 핸들러
   const handleSelectMyCompany = (company) => {
     setSelectedCompany(company);
@@ -98,16 +102,14 @@ function MyCompanyComparison() {
     });
   };
 
-  function updateMediaSize() {
-    const { innerWidth: width } = window;
-    if (width >= 744) {
-      setMediaSize("big");
-    } else {
-      setMediaSize("medium");
-    }
-  }
-
+  //반응형 디자인
   useEffect(() => {
+    function updateMediaSize() {
+      const { innerWidth: width } = window;
+      if (width >= 1200) setMediaSize("big");
+      else if (width > 375) setMediaSize("medium");
+      else setMediaSize("small");
+    }
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
     return () => window.removeEventListener("resize", updateMediaSize);
@@ -184,7 +186,7 @@ function MyCompanyComparison() {
         <div className={styles.buttonWrapper}>
           <BtnLarge
             type={compareCompanies.length > 0 ? "orange" : "black"}
-            mediaSize={mediaSize}
+            mediaSize={mediaSize === "small" ? "small" : "big"}
             label={"기업 비교하기"}
             onClick={handleCompareClick}
           />
@@ -230,6 +232,7 @@ const Wrap = styled.div`
 const Inner = styled.div`
   width: 100%;
   max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
