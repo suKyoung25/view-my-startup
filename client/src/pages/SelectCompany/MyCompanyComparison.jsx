@@ -11,30 +11,31 @@ import CompareListSection from "../../components/CompareListSection";
 
 function MyCompanyComparison() {
   const location = useLocation();
-  const passedState = location.state || {};
-  const [modalOpen, setModalOpen] = useState(false);
-  const [mediaSize, setMediaSize] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState(
-    passedState.selectedCompany || null
-  ); // '다른기업비교하기' 버튼에 의해 초기 상태가 이미 선택된 상태인 경우도 있음
-  const [compareCompanies, setCompareCompanies] = useState(
-    passedState.compareCompanies || []
-  );
-  const [recentMyCompanies, setRecentMyCompanies] = useState(
-    passedState.recentMyCompanies || []
-  );
-  const [selectionMode, setSelectionMode] = useState("my");
   const navigate = useNavigate();
 
-  // useEffect에서 초기 selectedCompany 설정
+  const [modalOpen, setModalOpen] = useState(false);
+  const [mediaSize, setMediaSize] = useState("");
+  const [selectedCompany, setSelectedCompany] = useState(null); // '다른기업비교하기' 버튼에 의해 초기 상태가 이미 선택된 상태인 경우도 있음
+  const [compareCompanies, setCompareCompanies] = useState([]);
+  const [recentMyCompanies, setRecentMyCompanies] = useState([]);
+  const [selectionMode, setSelectionMode] = useState("my");
+
   useEffect(() => {
-    if (location.state?.selectedCompany) {
-      setSelectedCompany(location.state.selectedCompany);
+    const navigationType = performance.getEntriesByType("navigation")[0]?.type;
+    const isReload = navigationType === "reload";
+
+    const shouldPreserve = location.state?.preserveOnRefresh;
+
+    // 페이지 처음 로드될 때만 실행되도록
+    if (shouldPreserve) {
+      setSelectedCompany(location.state.selectedCompany || null);
+      setCompareCompanies(location.state.compareCompanies || []);
+    } else if (isReload) {
+      // 새로고침이나 직접 접속 시 초기화
+      setSelectedCompany(null);
+      setCompareCompanies([]);
     }
-    if (location.state?.recentMyCompanies) {
-      setRecentMyCompanies(location.state.recentMyCompanies);
-    }
-  }, [location.state]);
+  }, []);
 
   // '나의 기업' 선택 핸들러
   const handleSelectMyCompany = (company) => {
@@ -93,7 +94,6 @@ function MyCompanyComparison() {
       state: {
         selectedCompanyId,
         compareCompanyIds,
-        recentMyCompanies, // '최근 비교한 기업' 기록 계속 유지
       },
     });
   };
@@ -206,8 +206,6 @@ function MyCompanyComparison() {
             onClose={() => setModalOpen(false)}
             onSelect={handleSelectMyCompany}
             mediaSize={mediaSize}
-            recentCompanies={recentMyCompanies}
-            setRecentCompanies={setRecentMyCompanies}
             excludeCompanies={compareCompanies} // 비교기업목록을 제외할 수 있게 전달
           />
         )}
