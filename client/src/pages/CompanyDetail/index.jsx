@@ -20,6 +20,8 @@ function CompanyDetail() {
   const [investors, setInvestors] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ispopupOpen, setIsPopupOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     if (!companyId) {
@@ -40,7 +42,7 @@ function CompanyDetail() {
       );
 
       setCompanyData(company);
-      // setInvestors(filtered);
+      setInvestors(filtered);
       setInvestors([
         ...investments.filter((inv) => inv.company.id === companyId),
       ]);
@@ -48,6 +50,15 @@ function CompanyDetail() {
       console.error("Error fetching company data:", error);
     }
   };
+
+  //페이지네이션 로직
+  const currentInvestors = investors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  //디버깅
+  console.log(investors.length);
 
   // 반응형 사이즈 계산
   useEffect(() => {
@@ -133,7 +144,7 @@ function CompanyDetail() {
 
           {/* 수정: InvestmentTable에 onRefresh 전달 */}
           <InvestmentTable
-            data={investors}
+            data={currentInvestors} //5명의 투자자마 보여주기
             onRefresh={fetchData}
             mediaSize={mediaSize}
           />
@@ -142,11 +153,10 @@ function CompanyDetail() {
         <PaginationWrap>
           <BtnPagination
             mediaSize={mediaSize}
-            //하단은 페이지네이션(백엔드) 관련이라 일단 주석처리함.
-            // currentPage={currentPage}
-            // itemsPerPage={itemsPerPage}
-            // totalItems={compareData.length}
-            // onPageChange={(page) => setCurrentPage(page)}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={investors.length}
+            onPageChange={(page) => setCurrentPage(page)}
           />
         </PaginationWrap>
       </CompanyDetailWrap>
