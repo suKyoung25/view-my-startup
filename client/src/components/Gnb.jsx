@@ -79,6 +79,8 @@ const Contatiner = styled.div`
     if (props.$length === "small") return "56px";
     return "0";
   }};
+
+  border-bottom: 1px solid #2e2e2e;
 `;
 
 const Logo = styled.img`

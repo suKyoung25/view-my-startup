@@ -11,7 +11,7 @@ import InvestmentModal from "../../components/modal/InvestmentModal";
 import { useParams } from "react-router-dom";
 import sampleImg from "../../assets/images/company/sample.png";
 import PopupOneButton from "../../components/modal/PopupOneButton";
-import { media } from "../../styles/mixin";
+import styles from "./companyDetail.module.css";
 
 function CompanyDetail() {
   const { companyId } = useParams();
@@ -64,24 +64,27 @@ function CompanyDetail() {
 
   if (!companyData) return <p>Loading...</p>;
 
+  //디버깅
+  console.log(mediaSize);
+
   return (
     <Wrap>
       <CompanyDetailWrap $size={mediaSize}>
-        <CompanyContainer>
+        <div className={styles.companyContainer}>
           <Img
             $mediaSize={mediaSize}
             src={companyData?.imageUrl || sampleImg}
             alt="Company"
           />
-          <TitleWrap>
+          <div className={styles.titleWrap}>
             <Title $mediaSize={mediaSize}>{companyData.name}</Title>
             <Discription $mediaSize={mediaSize}>
               {companyData.category}
             </Discription>
-          </TitleWrap>
-        </CompanyContainer>
+          </div>
+        </div>
 
-        <AmountCardContainer>
+        <div className={styles.amountCardContainer}>
           <AmountCard
             char="누적 투자 금액"
             type="price"
@@ -100,7 +103,7 @@ function CompanyDetail() {
             number={companyData.numberOfEmployees}
             mediaSize={mediaSize}
           />
-        </AmountCardContainer>
+        </div>
 
         <IntroContainer>
           <IntroTitle>기업 소개</IntroTitle>
@@ -111,13 +114,13 @@ function CompanyDetail() {
           <InvestTitle>View My Startup에서 받은 투자</InvestTitle>
           <BtnLarge
             type="orange"
-            $mediaSize={mediaSize}
+            mediaSize={mediaSize}
             label="기업 투자하기"
             onClick={() => setIsModalOpen(true)}
           />
         </InvestContainer>
 
-        <Hr />
+        <Hr $mediaSize={mediaSize} />
 
         <TableWrap>
           <TotalAmount>
@@ -137,7 +140,14 @@ function CompanyDetail() {
         </TableWrap>
 
         <PaginationWrap>
-          <BtnPagination $mediaSize={mediaSize} />
+          <BtnPagination
+            mediaSize={mediaSize}
+            //하단은 페이지네이션(백엔드) 관련이라 일단 주석처리함.
+            // currentPage={currentPage}
+            // itemsPerPage={itemsPerPage}
+            // totalItems={compareData.length}
+            // onPageChange={(page) => setCurrentPage(page)}
+          />
         </PaginationWrap>
       </CompanyDetailWrap>
 
@@ -180,18 +190,12 @@ const CompanyDetailWrap = styled.div`
       ? "343px"
       : props.$mediaSize === "medium"
       ? "696px"
-      : "1200px"};
-`;
+      : null};
 
-const CompanyContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 112px;
-  padding-bottom: 20px;
-`;
-
-const TitleWrap = styled.div`
-  flex-direction: column;
+  margin: ${(props) =>
+    props.$mediaSize === "medium" || props.$mediaSize === "small"
+      ? "0 16px 68px 16px"
+      : "0 23px 115px 13px"};
 `;
 
 const Img = styled.img`
@@ -216,11 +220,6 @@ const Discription = styled.p`
   margin: 0;
 `;
 
-const AmountCardContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const IntroContainer = styled.div`
   background-color: ${black_200};
   color: white;
@@ -240,8 +239,15 @@ const IntroText = styled.div`
 
 const Hr = styled.hr`
   border: none;
-  border-top: 1px solid ${gray_200};
-  margin: 20px 0;
+  border-top: 1px solid #2e2e2e;
+  margin: ${(props) =>
+    props.$mediaSize === "big"
+      ? "20px"
+      : props.$mediaSize === "medium"
+      ? "16px"
+      : props.$mediaSize === "small"
+      ? "16px"
+      : null};
 `;
 
 const InvestContainer = styled.div`
@@ -254,9 +260,12 @@ const InvestContainer = styled.div`
 const InvestTitle = styled.div`
   font-weight: 700;
   color: white;
-  ${media.mobile`
-      font-size: 16px;
-  `}
+  font-size: ${(props) =>
+    props.$mediaSize === "big"
+      ? "20px"
+      : props.$mediaSize === "medium" || props.$mediaSize === "small"
+      ? "16"
+      : null};
 `;
 
 const TableWrap = styled.div`

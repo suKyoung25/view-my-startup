@@ -138,7 +138,7 @@ function CompareStatus() {
 
         <PaginationWrap>
           <BtnPagination
-            mediaSize="big"
+            mediaSize={mediaSize}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
             totalItems={compareData.length}
