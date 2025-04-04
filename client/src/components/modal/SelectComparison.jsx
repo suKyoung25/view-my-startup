@@ -16,7 +16,7 @@ import { client } from "../../api/index.api";
 function SelectComparison({
   isOpen,
   onClose,
-  size,
+  mediaSize,
   selectedCompanies,
   setSelectedCompanies,
   selectedCompany,
@@ -40,7 +40,7 @@ function SelectComparison({
   const modalHeight =
     isSearching || selectedCompanies.length > 0
       ? "858px"
-      : size === "small"
+      : mediaSize === "small"
       ? "112px"
       : "152px";
 
@@ -121,7 +121,7 @@ function SelectComparison({
   return (
     <Overlay onClick={onClose}>
       <ModalWrapper
-        $size={size}
+        $mediaSize={mediaSize}
         $height={modalHeight}
         onClick={(e) => e.stopPropagation()}
       >
@@ -131,7 +131,7 @@ function SelectComparison({
         </ModalHeader>
 
         <Search
-          size={searchSize}
+          mediaSize={searchSize}
           state="searching"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
@@ -166,7 +166,7 @@ function SelectComparison({
                 <BtnOutline
                   text="cancel"
                   type="black"
-                  size={buttonSize}
+                  mediaSize={buttonSize}
                   onClick={() => handleRemove(company.id)}
                 />
               </CompanyCard>
@@ -202,14 +202,14 @@ function SelectComparison({
                     <BtnOutline
                       text="complete"
                       type="black"
-                      size={buttonSize}
+                      mediaSize={buttonSize}
                       src="existSmall"
                     />
                   ) : (
                     <BtnOutline
                       text="choice"
                       type="orange"
-                      size={buttonSize}
+                      mediaSize={buttonSize}
                       onClick={() => handleSelect(company)}
                     />
                   )}
@@ -219,7 +219,7 @@ function SelectComparison({
 
             <PaginationWrapper>
               <BtnPagination
-                size={buttonSize}
+                mediaSize={buttonSize}
                 currentPage={currentPage}
                 itemsPerPage={itemsPerPage}
                 totalItems={filteredCompanies.length}
@@ -257,7 +257,7 @@ const ModalWrapper = styled.div`
   font-size: 20px;
   padding: 24px;
   border-radius: 16px;
-  width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
+  width: ${(props) => (props.$mediaSize === "small" ? "343px" : "496px")};
   max-height: 90vh;
   overflow-y: auto;
   height: fit-content;

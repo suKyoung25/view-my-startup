@@ -89,7 +89,7 @@ function InvestState() {
         <TopBar>
           <Title>투자 현황</Title>
           <Dropdown
-            size={mediaSize}
+            mediaSize={mediaSize}
             options={sortOptions}
             value={selectedSort}
             onChange={handleSortChange}
@@ -130,7 +130,7 @@ function InvestState() {
 
         <PaginationWrap>
           <BtnPagination
-            size="big"
+            mediaSize
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
             totalItems={sortedData.length}
