@@ -151,9 +151,9 @@ function CompareResults() {
               onClick={() =>
                 navigate("/select-company", {
                   state: {
-                    selectedCompany: companies[0], // 내가 선택한 기업 정보
-
-                    compareCompanies: [], // 비교 기업 초기화
+                    selectedCompany: companies[0], // select-company 페이지로 넘어가면 선택된 기업은 유지하도록
+                    compareCompanies: [], // 빈 배열로 초기화 설정
+                    preserveOnRefresh: true, // 키 값 이 버튼 누르면 MyCompanyComparison에 조건 넣은 것처럼 실행
                   },
                 })
               }
