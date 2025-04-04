@@ -118,14 +118,14 @@ const Text = styled.ul`
   font-size: ${(props) => {
     if (props.$length === "big") return "15px";
     if (props.$length === "medium") return "15px";
-    if (props.$length === "small") return "13px";
+    if (props.$length === "small") return "12px";
     return "0";
   }};
 
   width: ${(props) => {
     if (props.$length === "big") return "299px";
     if (props.$length === "medium") return "299px";
-    if (props.$length === "small") return "218px";
+    if (props.$length === "small") return "212px";
   }};
 `;
 

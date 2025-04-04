@@ -63,11 +63,11 @@ const DropdownButton = styled.button`
   border-radius: 10px;
   width: ${(props) =>
     props.$mediaSize === "big"
-      ? "210px"
+      ? "264px" //투자 현황쪽의 VMS 드롭다운바를 기준으로 설정.
       : props.$mediaSize === "medium"
-      ? "210px"
+      ? "264px" //투자 현황쪽의 VMS 드롭다운바를 기준으로 설정.
       : props.$mediaSize === "small"
-      ? "210px"
+      ? "241px"
       : null};
   height: ${(props) =>
     props.$mediaSize === "big"
@@ -77,7 +77,12 @@ const DropdownButton = styled.button`
       : props.$mediaSize === "small"
       ? "40px"
       : null};
-  padding: 0 16px;
+  padding: ${(props) =>
+    props.$mediaSize === "big" || props.$mediaSize === "medium"
+      ? "16px"
+      : props.$mediaSize === "small"
+      ? "12px"
+      : null}
 
   font-size: ${(props) =>
     props.$mediaSize === "big" || props.$mediaSize === "medium"
