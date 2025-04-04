@@ -188,7 +188,7 @@ function CompareResults() {
           </div>
 
           <StyledTableWrapper>
-            <StyledTable className={styles.table1}>
+            <StyledTable1>
               <thead>
                 <TableHeader columns={columns} />
               </thead>
@@ -214,7 +214,7 @@ function CompareResults() {
                   </tr>
                 ))}
               </tbody>
-            </StyledTable>
+            </StyledTable1>
           </StyledTableWrapper>
 
           <SpacerSmall />
@@ -230,7 +230,7 @@ function CompareResults() {
           </div>
 
           <StyledTableWrapper>
-            <StyledTable className={styles.table2}>
+            <StyledTable2>
               <thead>
                 <TableHeader columns={rankColumns} />
               </thead>
@@ -257,16 +257,18 @@ function CompareResults() {
                   </tr>
                 ))}
               </tbody>
-            </StyledTable>
+            </StyledTable2>
           </StyledTableWrapper>
 
           <Spacer />
-          <BtnLarge
-            type={"orange"}
-            mediaSize={mediaSize}
-            label={"나의 기업에 투자하기"}
-            onClick={openModal}
-          />
+          <BtnWrapper>
+            <BtnLarge
+              type={"orange"}
+              mediaSize="big"
+              label={"나의 기업에 투자하기"}
+              onClick={openModal}
+            />
+          </BtnWrapper>
 
           {isModalOpen && (
             <InvestmentModal
@@ -301,7 +303,7 @@ const Wrap = styled.div`
 const SelectedCompanyBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   text-align: center;
   gap: 8px;
@@ -328,33 +330,25 @@ const CenteredWrapper = styled.div`
   align-items: center;
 `;
 
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 16px;
-  min-width: 696px; /* 부모(Wrapper)에 따라 자동 */
+// const StyledTable = styled.table`
+//   width: 100%;
+//   border-collapse: collapse;
+//   margin-top: 16px;
+//   min-width: 696px; /* 부모(Wrapper)에 따라 자동 */
 
-  thead tr {
-    border-bottom: 16px solid #131313;
-  }
+//   thead tr {
+//     border-bottom: 16px solid #131313;
+//   }
 
-  th,
-  td {
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-  }
-`;
+//   th,
+//   td {
+//     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+//   }
+// `;
 
 const StyledTableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
-
-  @media (max-width: 1199px) {
-    min-width: 696px; /* medium */
-  }
-
-  @media (max-width: 730px) {
-    min-width: 696px; /* small */
-  }
 `;
 
 const TD = styled.td`
@@ -365,6 +359,46 @@ const TD = styled.td`
   color: #d8d8d8;
   text-align: center;
   word-break: keep-all;
+`;
+
+const StyledTable1 = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 696px;
+
+  thead tr {
+    border-bottom: 16px solid #131313;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  @media (max-width: 730px) {
+    min-width: 576px;
+  }
+`;
+
+const StyledTable2 = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 768px;
+
+  thead tr {
+    border-bottom: 16px solid #131313;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  @media (max-width: 730px) {
+    min-width: 656px;
+  }
 `;
 
 const LeftAlignTD = styled.td`
@@ -405,4 +439,10 @@ const CompanyCell = styled.td`
   span {
     white-space: nowrap;
   }
+`;
+const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
 `;
