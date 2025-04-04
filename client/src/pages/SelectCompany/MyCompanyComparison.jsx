@@ -139,7 +139,7 @@ function MyCompanyComparison() {
             <BtnLarge
               label="전체 초기화"
               type="orange"
-              mediaSize="medium"
+              mediaSize={mediaSize}
               icon={restart}
               onClick={handleResetClick}
             />
