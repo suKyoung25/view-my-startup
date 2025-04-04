@@ -27,16 +27,20 @@ export default function PopupOneButton({ onClose, mediaSize, type }) {
 
   return (
     <Overlay onClick={onClose}>
-      <Wrapper $size={mediaSize} onClick={(e) => e.stopPropagation()}>
+      <Wrapper $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>
           <img src={closeIcon} alt="닫기" />
         </CloseButton>
 
-        <ContentBox $size={mediaSize}>
-          <Message $size={mediaSize}>{getMessage()}</Message>
+        <ContentBox $mediaSize={mediaSize}>
+          <Message $mediaSize={mediaSize}>{getMessage()}</Message>
 
           <ButtonGroup>
-            <BtnDelete onClick={onConfirm} size={mediaSize} type="confirm" />
+            <BtnDelete
+              onClick={onConfirm}
+              mediaSize={mediaSize}
+              type="confirm"
+            />
           </ButtonGroup>
         </ContentBox>
       </Wrapper>
@@ -61,9 +65,9 @@ const Wrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
-  height: ${(props) => (props.$size === "small" ? "161px" : "186px")};
-  padding: ${(props) => (props.$size === "small" ? "16px" : "24px")};
+  width: ${(props) => (props.$mediaSize === "small" ? "343px" : "496px")};
+  height: ${(props) => (props.$mediaSize === "small" ? "161px" : "186px")};
+  padding: ${(props) => (props.$mediaSize === "small" ? "16px" : "24px")};
   background-color: ${black_300};
   border-radius: 16px;
   color: #ffff;
@@ -88,20 +92,20 @@ const CloseButton = styled.button`
 `;
 
 const ContentBox = styled.div`
-  width: ${(props) => (props.$size === "small" ? "311px" : "448px")};
-  height: ${(props) => (props.$size === "small" ? "129px" : "138px")};
+  width: ${(props) => (props.$mediaSize === "small" ? "311px" : "448px")};
+  height: ${(props) => (props.$mediaSize === "small" ? "129px" : "138px")};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${(props) => (props.$size === "small" ? "16px" : "24px")};
+  gap: ${(props) => (props.$mediaSize === "small" ? "16px" : "24px")};
 `;
 
 const Message = styled.div`
   text-align: center;
   font-family: "Pretendard";
   font-weight: 400;
-  font-size: ${(props) => (props.$size === "small" ? "14px" : "15px")};
+  font-size: ${(props) => (props.$mediaSize === "small" ? "14px" : "15px")};
   line-height: 100%;
   letter-spacing: 0;
   margin-top: 32px;
