@@ -63,7 +63,7 @@ const DropdownButton = styled.button`
   border-radius: 10px;
   width: ${(props) =>
     props.$mediaSize === "big"
-      ? "210px"
+      ? "230px"
       : props.$mediaSize === "medium"
       ? "210px"
       : props.$mediaSize === "small"
@@ -90,6 +90,7 @@ const DropdownButton = styled.button`
 
 const SelectedText = styled.span`
   text-align: left;
+  padding-right: 10px;
 `;
 
 const ArrowIcon = styled.img`
