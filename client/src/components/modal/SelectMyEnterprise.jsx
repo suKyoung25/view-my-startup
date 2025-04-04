@@ -236,7 +236,7 @@ const Title = styled.div`
 `;
 
 const SectionTitle = styled.div`
-  font-mediasize: 14px;
+  font-size: 14px;
   color: #aaa;
   margin: 20px 0 12px;
 `;
@@ -257,12 +257,12 @@ const CompanyItem = styled.div`
   border-radius: 8px;
 
   .name {
-    font-mediasize: 14px;
+    font-size: 14px;
     font-weight: bold;
   }
 
   .tagline {
-    font-mediasize: 12px;
+    font-size: 12px;
     color: ${gray_200};
   }
 `;
@@ -278,7 +278,7 @@ const SelectBtn = styled.button`
   color: ${brand_orange};
   border-radius: 6px;
   padding: 4px 10px;
-  font-mediasize: 12px;
+  font-size: 12px;
   cursor: pointer;
 `;
 
@@ -296,7 +296,7 @@ const PageBtn = styled.button`
   color: ${(props) => (props.$active ? "white" : "#aaa")};
   border: none;
   cursor: pointer;
-  font-mediasize: 14px;
+  font-size: 14px;
 `;
 
 const CompanyCell = styled.div`
