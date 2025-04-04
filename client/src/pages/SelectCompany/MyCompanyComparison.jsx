@@ -15,35 +15,45 @@ function MyCompanyComparison() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [mediaSize, setMediaSize] = useState("");
-  const [selectedCompany, setSelectedCompany] = useState(null); // '다른기업비교하기' 버튼에 의해 초기 상태가 이미 선택된 상태인 경우도 있음
+  const [selectedCompany, setSelectedCompany] = useState(null); // '다른 기업 비교하기' 버튼에 의해 초기 상태가 이미 선택된 상태인 경우도 있음
   const [compareCompanies, setCompareCompanies] = useState([]);
   const [recentMyCompanies, setRecentMyCompanies] = useState([]);
   const [selectionMode, setSelectionMode] = useState("my");
 
   useEffect(() => {
     const navigationEntry = performance.getEntriesByType("navigation")[0];
-    const isReload = navigationEntry?.type === "reload"; // 이부분이 사용자가 새로고침을 했을경우의 변수
+    const isReload = navigationEntry?.type === "reload"; // 사용자가 새로고침을 했을경우의 변수
     const state = location.state; // 이전 데이터 유지된 상태 유지 변수
+
+    const wasRefreshed = localStorage.getItem("wasRefreshed");
+
+    if (isReload && state?.preserveOnRefresh && wasRefreshed === "true") {
+      // 새로고침 시 로컬스토리지로 판단해 강제 초기화
+      localStorage.removeItem("wasRefreshed");
+      setSelectedCompany(null);
+      setCompareCompanies([]);
+      return;
+    }
 
     // state가 null이 아니라는 것이 확정된 이후에 처리
     if (state) {
       if (state.preserveOnRefresh) {
         // true일 경우 이전 데이터 상태복원
         setSelectedCompany(state.selectedCompany); // 선택된 기업 유지 상태로 저장
-        setCompareCompanies([]); // 비교 기업은 초기화화
+        setCompareCompanies([]); // 비교 기업은 초기화
       } else {
         setSelectedCompany(null); // '다른 기업 비교하기' 버튼을 누른게 아니라면 강제 초기화'
         setCompareCompanies([]);
       }
-    } else if (isReload || state === null) {
-      // 새로고침침하거나 선택한 기업 데이터가 아예 없다면
+    } else {
+      // 새로고침하거나 선택한 기업 데이터가 아예 없다면
       setSelectedCompany(null); // 전부 초기화
       setCompareCompanies([]);
     }
   }, [location.state]);
 
   useEffect(() => {
-    console.log("mediaSize 상태 변경됨 👉", mediaSize);
+    console.log("mediaSize 상태 변경됨: ", mediaSize);
   }, [mediaSize]);
 
   // '나의 기업' 선택 핸들러
@@ -107,7 +117,7 @@ function MyCompanyComparison() {
     });
   };
 
-  //반응형 디자인
+  // 반응형 디자인
   useEffect(() => {
     function updateMediaSize() {
       const { innerWidth: width } = window;
