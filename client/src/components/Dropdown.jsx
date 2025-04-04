@@ -63,9 +63,9 @@ const DropdownButton = styled.button`
   border-radius: 10px;
   width: ${(props) =>
     props.$mediaSize === "big"
-      ? "210px"
+      ? "264px"
       : props.$mediaSize === "medium"
-      ? "210px"
+      ? "264px"
       : props.$mediaSize === "small"
       ? "210px"
       : null};
