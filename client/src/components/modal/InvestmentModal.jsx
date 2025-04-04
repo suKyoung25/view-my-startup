@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
 import investmentAPI from "../../api/investment.api";
 
-const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
+const InvestmentModal = ({ onClose, mediaSize, onSuccess, company }) => {
   //각 input들의 value를 state로 저장해둠
   const [inputValueName, setInputValueName] = useState("");
   const [inputValueAmount, setInputValueAmount] = useState("");
@@ -93,7 +93,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
 
   return (
     <Overlay onClick={onClose}>
-      <ModalWrapper $size={size} onClick={(e) => e.stopPropagation()}>
+      <ModalWrapper $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <Title>기업에 투자하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
@@ -117,7 +117,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
           <FieldGroup>
             <FieldLabel>투자자 이름</FieldLabel>
             <TextInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="투자자 이름을 입력해 주세요"
               value={inputValueName}
               onChange={handleNameChange}
@@ -127,7 +127,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
           <FieldGroup>
             <FieldLabel>투자 금액</FieldLabel>
             <TextInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="투자 금액을 입력해 주세요"
               value={inputValueAmount}
               onChange={handleAmountChange}
@@ -137,7 +137,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
           <FieldGroup>
             <FieldLabel>투자 코멘트</FieldLabel>
             <TextInputField
-              size={size}
+              mediaSize={mediaSize}
               state="normal"
               placeholder="투자에 대한 코멘트를 입력해 주세요"
               value={inputValueComment}
@@ -148,7 +148,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
           <FieldGroup>
             <FieldLabel>비밀번호</FieldLabel>
             <PasswordInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="비밀번호를 입력해주세요"
               value={inputValuePassword}
               onChange={handlePasswordChange}
@@ -158,7 +158,7 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
           <FieldGroup>
             <FieldLabel>비밀번호 확인</FieldLabel>
             <PasswordInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               value={inputValueCheckPassword}
               onChange={handleCheckPasswordChange}
@@ -167,10 +167,15 @@ const InvestmentModal = ({ onClose, size, onSuccess, company }) => {
         </Section>
 
         <ButtonRow>
-          <BtnLarge type="" size={size} label="취소" onClick={onClose} />
+          <BtnLarge
+            type=""
+            mediaSize={mediaSize}
+            label="취소"
+            onClick={onClose}
+          />
           <BtnLarge
             type="orange"
-            size={size}
+            mediaSize={mediaSize}
             label="투자하기"
             onClick={handleClickInvestmentButton}
             disabled={!isInvestButtonAvailable}
@@ -200,7 +205,7 @@ const ModalWrapper = styled.div`
   background: ${black_300};
   padding: 24px;
   border-radius: 16px;
-  width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
+  width: ${(props) => (props.$mediaSize === "small" ? "343px" : "496px")};
   height: auto;
   z-index: 999;
 `;

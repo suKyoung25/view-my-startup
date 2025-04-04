@@ -35,21 +35,20 @@ const Button = styled.div`
   align-items: center;
 
   font-size: ${(props) => {
-    if (props.$size === "big") return "18px";
-    if (props.$size === "medium") return "18px";
-    if (props.$size === "small") return "16px";
+    if (props.$mediaSize === "big") return "18px";
+    if (props.$mediaSize === "medium") return "18px";
+    if (props.$mediaSize === "small") return "16px";
   }};
 
   width: ${(props) => {
-    if (props.$size === "big") return "48px";
-    if (props.$size === "medium") return "48px";
-    if (props.$size === "small") return "32px";
+    if (props.$mediaSize === "big") return "48px";
+    if (props.$mediaSize === "medium") return "48px";
+    if (props.$mediaSize === "small") return "32px";
   }};
   height: ${(props) => {
-    if (props.$size === "big") return "48px";
-    if (props.$size === "medium") return "48px";
-    if (props.$size === "small") return "32px";
-
+    if (props.$mediaSize === "big") return "48px";
+    if (props.$mediaSize === "medium") return "48px";
+    if (props.$mediaSize === "small") return "32px";
   }};
 `;
 

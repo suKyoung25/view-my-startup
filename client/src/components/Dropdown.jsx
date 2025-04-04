@@ -70,11 +70,11 @@ const DropdownButton = styled.button`
       ? "210px"
       : null};
   height: ${(props) =>
-    props.$size === "big"
+    props.$mediaSize === "big"
       ? "48px"
-      : props.$size === "medium"
+      : props.$mediaSize === "medium"
       ? "48px"
-      : props.$size === "small"
+      : props.$mediaSize === "small"
       ? "40px"
       : null};
   padding: 0 16px;
