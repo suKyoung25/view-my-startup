@@ -18,7 +18,7 @@ import {
 function SelectMyEnterprise({
   isOpen,
   onClose,
-  size,
+  mediaSize,
   onSelect,
   excludeCompanies,
 }) {
@@ -90,17 +90,17 @@ function SelectMyEnterprise({
 
   if (!isOpen) return null;
 
-  console.log(size);
+  console.log(mediaSize);
 
   return (
     <Overlay onClick={onClose}>
-      <Container $size={size} onClick={(e) => e.stopPropagation()}>
+      <Container $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>
         <Title>
           <div>나의 기업 선택하기</div>
           <img onClick={onClose} src={closeIcon} alt="닫기" />
         </Title>
         <Search
-          size={size}
+          mediaSize={mediaSize}
           state="searching"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
@@ -211,11 +211,11 @@ const Container = styled.div`
   font-size: 20px;
 
   width: ${(props) =>
-    props.$size === "big"
+    props.$mediaSize === "big"
       ? "496px"
-      : props.$size === "medium"
+      : props.$mediaSize === "medium"
       ? "496px"
-      : props.$size === "small"
+      : props.$mediaSize === "small"
       ? "343px"
       : "100%"};
 
@@ -236,7 +236,7 @@ const Title = styled.div`
 `;
 
 const SectionTitle = styled.div`
-  font-size: 14px;
+  font-mediasize: 14px;
   color: #aaa;
   margin: 20px 0 12px;
 `;
@@ -257,12 +257,12 @@ const CompanyItem = styled.div`
   border-radius: 8px;
 
   .name {
-    font-size: 14px;
+    font-mediasize: 14px;
     font-weight: bold;
   }
 
   .tagline {
-    font-size: 12px;
+    font-mediasize: 12px;
     color: ${gray_200};
   }
 `;
@@ -278,7 +278,7 @@ const SelectBtn = styled.button`
   color: ${brand_orange};
   border-radius: 6px;
   padding: 4px 10px;
-  font-size: 12px;
+  font-mediasize: 12px;
   cursor: pointer;
 `;
 
@@ -296,7 +296,7 @@ const PageBtn = styled.button`
   color: ${(props) => (props.$active ? "white" : "#aaa")};
   border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-mediasize: 14px;
 `;
 
 const CompanyCell = styled.div`
