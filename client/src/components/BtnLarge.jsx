@@ -59,10 +59,6 @@ const Container = styled.button`
 `;
 
 const Text = styled.div`
-  padding: ${(props) => {
-    if (props.$mediaSize === "big") return "13px 48px 13px 48px";
-    if (props.$mediaSize === "small") return "13px 24px 13px 24px";
-  }};
   font-size: ${(props) => {
     if (props.$mediaSize === "big") return "16px";
     if (props.$mediaSize === "medium") return "16px";

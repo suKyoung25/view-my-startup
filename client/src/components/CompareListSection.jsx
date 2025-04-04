@@ -63,7 +63,7 @@ const CompareListSection = ({
           <BtnLarge
             label="기업 추가하기"
             type={companies.length >= 5 ? "black" : "orange"}
-            mediaSize="big"
+            mediaSize={mediaSize}
             onClick={() => {
               if (companies.length >= 5) return;
               onAddClick();
