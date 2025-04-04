@@ -59,6 +59,7 @@ const Container = styled.button`
 `;
 
 const Text = styled.div`
+  font-weight: 600;
   font-size: ${(props) => {
     if (props.$mediaSize === "big") return "16px";
     if (props.$mediaSize === "medium") return "16px";
