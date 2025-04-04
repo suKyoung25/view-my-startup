@@ -46,7 +46,7 @@ function CompareResults() {
     function updateMediaSize() {
       const { innerWidth: width } = window;
       if (width >= 1200) setMediaSize("big");
-      else if (width > 375) setMediaSize("medium");
+      else if (width > 730) setMediaSize("medium");
       else setMediaSize("small");
     }
     updateMediaSize();
@@ -152,16 +152,16 @@ function CompareResults() {
               onClick={() =>
                 navigate("/select-company", {
                   state: {
-                    selectedCompany: companies[0], // select-company 페이지로 넘어가면 선택된 기업은 유지하도록
-                    compareCompanies: [], // 빈 배열로 초기화 설정
-                    preserveOnRefresh: true, // 키 값 이 버튼 누르면 MyCompanyComparison에 조건 넣은 것처럼 실행
+                    selectedCompany: companies[0], // 내가 선택한 기업 정보
+
+                    compareCompanies: [], // 비교 기업 초기화
                   },
                 })
               }
             />
           </div>
 
-          <InputField variant="default" mediaSize={mediaSize}>
+          <InputField key={mediaSize} mediaSize={mediaSize}>
             {companies.length > 0 && (
               <CenteredWrapper>
                 <SelectedCompanyBox>
@@ -187,30 +187,35 @@ function CompareResults() {
             />
           </div>
 
-          <StyledTable className={styles.table1}>
-            <thead>
-              <TableHeader columns={columns} />
-            </thead>
-            <tbody>
-              {sortCompanies(companies, sortTop).map((company) => (
-                <tr
-                  key={company.id}
-                  onClick={() => navigate(`/company-detail/${company.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
-                  <LeftAlignTD>{company.description}</LeftAlignTD>
-                  <TD>{company.category}</TD>
-                  <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
-                  <TD>{company.revenue}억 원</TD>
-                  <TD>{company.employees}명</TD>
-                </tr>
-              ))}
-            </tbody>
-          </StyledTable>
+          <StyledTableWrapper>
+            <StyledTable className={styles.table1}>
+              <thead>
+                <TableHeader columns={columns} />
+              </thead>
+              <tbody>
+                {sortCompanies(companies, sortTop).map((company) => (
+                  <tr
+                    key={company.id}
+                    onClick={() => navigate(`/company-detail/${company.id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                    <LeftAlignTD>{company.description}</LeftAlignTD>
+                    <TD>{company.category}</TD>
+                    <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
+                    <TD>{company.revenue}억 원</TD>
+                    <TD>{company.employees}명</TD>
+                  </tr>
+                ))}
+              </tbody>
+            </StyledTable>
+          </StyledTableWrapper>
 
           <SpacerSmall />
 
@@ -224,31 +229,36 @@ function CompareResults() {
             />
           </div>
 
-          <StyledTable className={styles.table2}>
-            <thead>
-              <TableHeader columns={rankColumns} />
-            </thead>
-            <tbody>
-              {rankingCompanies.map((company) => (
-                <tr
-                  key={company.id}
-                  onClick={() => navigate(`/company-detail/${company.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TD>{company.ranking}위</TD>
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
-                  <LeftAlignTD>{company.description}</LeftAlignTD>
-                  <TD>{company.category}</TD>
-                  <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
-                  <TD>{company.revenue}억 원</TD>
-                  <TD>{company.employees}명</TD>
-                </tr>
-              ))}
-            </tbody>
-          </StyledTable>
+          <StyledTableWrapper>
+            <StyledTable className={styles.table2}>
+              <thead>
+                <TableHeader columns={rankColumns} />
+              </thead>
+              <tbody>
+                {rankingCompanies.map((company) => (
+                  <tr
+                    key={company.id}
+                    onClick={() => navigate(`/company-detail/${company.id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <TD>{company.ranking}위</TD>
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                    <LeftAlignTD>{company.description}</LeftAlignTD>
+                    <TD>{company.category}</TD>
+                    <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
+                    <TD>{company.revenue}억 원</TD>
+                    <TD>{company.employees}명</TD>
+                  </tr>
+                ))}
+              </tbody>
+            </StyledTable>
+          </StyledTableWrapper>
 
           <Spacer />
           <BtnLarge
@@ -322,9 +332,28 @@ const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
+  min-width: 696px; /* 부모(Wrapper)에 따라 자동 */
 
   thead tr {
     border-bottom: 16px solid #131313;
+  }
+
+  th,
+  td {
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  }
+`;
+
+const StyledTableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+
+  @media (max-width: 1199px) {
+    min-width: 696px; /* medium */
+  }
+
+  @media (max-width: 730px) {
+    min-width: 696px; /* small */
   }
 `;
 
@@ -335,6 +364,7 @@ const TD = styled.td`
   background-color: #212121;
   color: #d8d8d8;
   text-align: center;
+  word-break: keep-all;
 `;
 
 const LeftAlignTD = styled.td`
