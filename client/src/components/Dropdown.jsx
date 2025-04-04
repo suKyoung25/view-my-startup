@@ -95,6 +95,7 @@ const DropdownButton = styled.button`
 
 const SelectedText = styled.span`
   text-align: left;
+  padding-right: 10px;
 `;
 
 const ArrowIcon = styled.img`
