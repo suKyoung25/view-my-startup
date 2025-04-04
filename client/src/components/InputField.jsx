@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { black_300 } from "../styles/colors";
 
 function InputField({ variant = "default", children, mediaSize = "big" }) {
+  console.log("🔥 [InputField] mediaSize:", mediaSize);
+
   return (
     <Outer $variant={variant} $mediaSize={mediaSize}>
       <Inner $mediaSize={mediaSize} $variant={variant}>
@@ -61,5 +63,6 @@ const Inner = styled.div`
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
-  padding: 45px;
+  padding: ${({ $mediaSize }) =>
+    $mediaSize === "big" ? "45px" : $mediaSize === "medium" ? "32px" : "20px"};
 `;
