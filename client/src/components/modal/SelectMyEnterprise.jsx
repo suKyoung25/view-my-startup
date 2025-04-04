@@ -201,6 +201,7 @@ const Overlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 999;
+  padding: 0 12px;
 `;
 
 const Container = styled.div`
@@ -215,9 +216,9 @@ const Container = styled.div`
       ? "496px"
       : props.$mediaSize === "medium"
       ? "496px"
-      : props.$mediaSize === "small"
-      ? "343px"
-      : "100%"};
+      : "343px"};
+
+  box-sizing: border-box;
 
   margin: 0 auto;
 `;
