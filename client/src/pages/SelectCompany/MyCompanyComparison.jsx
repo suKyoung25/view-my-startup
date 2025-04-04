@@ -191,7 +191,7 @@ function MyCompanyComparison() {
         <div className={styles.buttonWrapper}>
           <BtnLarge
             type={compareCompanies.length > 0 ? "orange" : "black"}
-            mediaSize={mediaSize === "small" ? "small" : "big"}
+            mediaSize={mediaSize}
             label={"기업 비교하기"}
             onClick={handleCompareClick}
           />
@@ -247,6 +247,7 @@ const CompanyInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 12px;
 `;
 
