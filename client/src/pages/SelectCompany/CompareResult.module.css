@@ -61,6 +61,19 @@
     padding-left: 24px;
     padding-right: 24px;
   }
+
+  .table1,
+  .table2 {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+
+  .table1 table,
+  .table2 table {
+    width: 1200px;
+  }
 }
 
 /*375px 이하일 때 (mobile) */
