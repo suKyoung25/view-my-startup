@@ -10,14 +10,16 @@ import {
 } from "../../styles/colors";
 import { client } from "../../api/index.api";
 import Hangul from "hangul-js";
+import {
+  getRecentMyCompanies,
+  setRecentMyCompanies,
+} from "../../pages/SelectCompany/localStorage";
 
 function SelectMyEnterprise({
   isOpen,
   onClose,
-  size,
+  mediaSize,
   onSelect,
-  recentCompanies,
-  setRecentCompanies,
   excludeCompanies,
 }) {
   const [keyword, setKeyword] = useState("");
@@ -29,11 +31,7 @@ function SelectMyEnterprise({
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
   const [companies, setCompanies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  // '최근 선택된 기업' 저장 state
-  // const [recentSelectedCompanies, setRecentSelectedCompanies] = useState([]);
+  const [recentCompanies, setRecentCompanies] = useState([]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -42,52 +40,40 @@ function SelectMyEnterprise({
         setCompanies(res.data);
       } catch (e) {
         console.error("기업 불러오기 실패:", e);
-      } finally {
-        setLoading(false);
       }
     };
-    fetchCompanies();
-  }, []);
-
-  useEffect(() => {
     if (isOpen) {
-      setKeyword("");
-      setSearchTokens({ raw: "", disassembled: "", cho: "" });
-      setCurrentPage(1);
+      fetchCompanies();
+      const storedRecent = getRecentMyCompanies();
+      setRecentCompanies(storedRecent);
     }
   }, [isOpen]);
 
-  // 해당 기업이 제외목록에 있는지 확인
-  const isExcluded = (company) => {
-    return excludeCompanies.some((excluded) => excluded.id === company.id);
-  };
+  useEffect(() => {
+    if (recentCompanies.length > 0) {
+      setRecentMyCompanies(recentCompanies);
+    }
+  }, [recentCompanies]);
 
   const filteredCompanies = useMemo(() => {
     const input = searchTokens.raw.toLowerCase();
     if (!input || companies.length === 0) return [];
 
     return companies.filter((company) => {
+      if (excludeCompanies.some((ex) => ex.id === company.id)) return false;
+
       const name = company.name.toLowerCase();
-      const matchesSearchTerm =
-        name.includes(searchTerm.toLowerCase()) && !isExcluded(company);
-
-      if (!matchesSearchTerm) return false;
-      // const lower = name.toLowerCase();
-
       if (Hangul.isConsonant(input[0])) {
-        // 기업 이름의 첫 글자 초성과 비교
         const firstChar = name[0];
-        const disassembled = Hangul.disassemble(firstChar);
-        return disassembled.length > 0 && disassembled[0] === input[0];
-      } else {
-        // 이름이 입력으로 시작하는지 체크
-        return name.includes(input);
+        const firstCho = Hangul.disassemble(firstChar)[0];
+        return firstCho === input[0];
       }
+      return name.includes(input);
     });
-  }, [searchTokens, companies]);
+  }, [searchTokens, companies, excludeCompanies]);
 
   const totalPages = Math.ceil(filteredCompanies.length / perPage);
-  const currentData = filteredCompanies.slice(
+  const currentPageData = filteredCompanies.slice(
     (currentPage - 1) * perPage,
     currentPage * perPage
   );
@@ -97,37 +83,24 @@ function SelectMyEnterprise({
       onSelect(company);
     }
     setRecentCompanies((prev) => {
-      const existingIndex = prev.findIndex((c) => c.id === company.id);
-      if (existingIndex !== -1) {
-        const updatedRecent = [
-          company,
-          ...prev.slice(0, existingIndex),
-          ...prev.slice(existingIndex + 1),
-        ];
-        return updatedRecent.slice(0, 5);
-      }
-      return [company, ...prev].slice(0, 5);
+      const filtered = prev.filter((c) => c.id !== company.id);
+      return [company, ...filtered].slice(0, 5);
     });
   };
 
-  // const handleCompanyRemove = (id) => {
-  //   setRecentSelectedCompanies((prev) =>
-  //     prev.filter((company) => company.id !== id)
-  //   );
-  //   setSelectedCompanies((prev) => prev.filter((company) => company.id !== id));
-  // };
-
   if (!isOpen) return null;
+
+  console.log(mediaSize);
 
   return (
     <Overlay onClick={onClose}>
-      <Container $size={size} onClick={(e) => e.stopPropagation()}>
+      <Container $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>
         <Title>
           <div>나의 기업 선택하기</div>
           <img onClick={onClose} src={closeIcon} alt="닫기" />
         </Title>
         <Search
-          size={size}
+          mediaSize={mediaSize}
           state="searching"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
@@ -174,7 +147,7 @@ function SelectMyEnterprise({
           <>
             <SectionTitle>검색 결과 ({filteredCompanies.length})</SectionTitle>
             <CompanyList>
-              {filteredCompanies
+              {currentPageData
                 .filter(
                   (company) =>
                     !excludeCompanies.some(
@@ -236,12 +209,17 @@ const Container = styled.div`
   padding: 24px;
   color: #ffffff;
   font-size: 20px;
+
   width: ${(props) =>
-    props.$size === "big"
+    props.$mediaSize === "big"
       ? "496px"
-      : props.$size === "small"
+      : props.$mediaSize === "medium"
+      ? "496px"
+      : props.$mediaSize === "small"
       ? "343px"
       : "100%"};
+
+  margin: 0 auto;
 `;
 
 const Title = styled.div`
@@ -258,7 +236,7 @@ const Title = styled.div`
 `;
 
 const SectionTitle = styled.div`
-  font-size: 14px;
+  font-mediasize: 14px;
   color: #aaa;
   margin: 20px 0 12px;
 `;
@@ -279,12 +257,12 @@ const CompanyItem = styled.div`
   border-radius: 8px;
 
   .name {
-    font-size: 14px;
+    font-mediasize: 14px;
     font-weight: bold;
   }
 
   .tagline {
-    font-size: 12px;
+    font-mediasize: 12px;
     color: ${gray_200};
   }
 `;
@@ -300,7 +278,7 @@ const SelectBtn = styled.button`
   color: ${brand_orange};
   border-radius: 6px;
   padding: 4px 10px;
-  font-size: 12px;
+  font-mediasize: 12px;
   cursor: pointer;
 `;
 
@@ -318,7 +296,7 @@ const PageBtn = styled.button`
   color: ${(props) => (props.$active ? "white" : "#aaa")};
   border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-mediasize: 14px;
 `;
 
 const CompanyCell = styled.div`

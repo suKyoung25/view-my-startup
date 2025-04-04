@@ -150,7 +150,7 @@ function HomePage() {
 
             <div className={styles.controls}>
               <Search
-                size={mediaSize}
+                mediaSize={mediaSize}
                 state={"searching"}
                 value={searchKeyword}
                 onChange={handleSearchChange}
@@ -158,7 +158,7 @@ function HomePage() {
                 onSearch={(tokens) => setSearchTokens(tokens)}
               />
               <SortDropdown
-                size={mediaSize}
+                mediaSize={mediaSize}
                 options={sortOptions}
                 value={selectedSort}
                 onChange={handleSortChange}
@@ -189,7 +189,7 @@ function HomePage() {
                         }
                       })}
                       <TD>
-                        <CompanyCell size={mediaSize}>
+                        <CompanyCell mediaSize={mediaSize}>
                           <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
                           <Link to={`/company-detail/${item.id}`}>
                             {item.name}
@@ -229,7 +229,7 @@ function HomePage() {
 
           <PaginationWrap>
             <BtnPagination
-              size={mediaSize}
+              mediaSize={mediaSize}
               currentPage={currentPage}
               itemsPerPage={itemsPerPage}
               totalItems={sortedData.length}
@@ -315,9 +315,9 @@ const CompanyCell = styled.div`
   display: flex;
   justify-content: baseline;
   padding-left: ${(props) =>
-    props.size === "big"
+    props.mediaSize === "big"
       ? "24px"
-      : props.size === "medium" || props.size === "small"
+      : props.mediaSize === "medium" || props.mediaSize === "small"
       ? "16px"
       : null};
   align-items: center;
