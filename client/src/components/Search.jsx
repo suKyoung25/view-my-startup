@@ -112,7 +112,7 @@ const Container = styled.div`
 
   min-width: ${(props) =>
     props.$size === "big"
-      ? "490px"
+      ? "448px"
       : props.$size === "medium"
       ? "269px"
       : props.$size === "small"
@@ -121,9 +121,9 @@ const Container = styled.div`
   height: ${(props) =>
     props.$mediaSize === "big"
       ? "48px"
-      : props.$mediaSize === "medium"
+      : props.$size === "medium"
       ? "48px"
-      : props.$mediaSiz === "small"
+      : props.$size === "small"
       ? "40px"
       : null};
 `;
