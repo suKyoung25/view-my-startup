@@ -23,7 +23,6 @@ function SortDropdown({ mediaSize, options = [], value, onChange }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
   return (
     <Wrapper ref={dropdownRef}>
       <DropdownButton $mediaSize={mediaSize} onClick={toggleDropdown}>
@@ -63,11 +62,11 @@ const DropdownButton = styled.button`
   border: 1px solid ${gray_200};
   border-radius: 10px;
   width: ${(props) =>
-    props.$size === "big"
+    props.$mediaSize === "big"
       ? "210px"
-      : props.$size === "medium"
+      : props.$mediaSize === "medium"
       ? "210px"
-      : props.$size === "small"
+      : props.$mediaSize === "small"
       ? "210px"
       : null};
   height: ${(props) =>
@@ -81,9 +80,9 @@ const DropdownButton = styled.button`
   padding: 0 16px;
 
   font-size: ${(props) =>
-    props.$size === "big" || props.$size === "medium"
+    props.$mediaSize === "big" || props.$mediaSize === "medium"
       ? "14px"
-      : props.$size === "small"
+      : props.$mediaSize === "small"
       ? "12px"
       : null};
   cursor: pointer;

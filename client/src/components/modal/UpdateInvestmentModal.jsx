@@ -6,7 +6,12 @@ import { black_300, black_400, gray_200 } from "../../styles/colors";
 import companyAPI from "../../api/company.api";
 import investmentAPI from "../../api/investment.api";
 
-const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
+const UpdateInvestmentModal = ({
+  onClose,
+  mediaSize,
+  investment,
+  onSuccess,
+}) => {
   //각 input들의 value를 state로 저장해둠
   const [inputValueName, setInputValueName] = useState(
     investment?.investorName || ""
@@ -62,7 +67,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
 
   return (
     <Overlay onClick={onClose}>
-      <ModalWrapper $size={size} onClick={(e) => e.stopPropagation()}>
+      <ModalWrapper $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <Title>투자 수정하기</Title>
           <CloseButton onClick={onClose}>×</CloseButton>
@@ -86,7 +91,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
           <FieldGroup>
             <FieldLabel>투자자 이름</FieldLabel>
             <TextInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="투자자 이름을 입력해 주세요"
               value={inputValueName}
               onChange={(e) => setInputValueName(e.target.value)}
@@ -96,7 +101,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
           <FieldGroup>
             <FieldLabel>투자 금액</FieldLabel>
             <TextInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="투자 금액을 입력해 주세요"
               value={inputValueAmount}
               onChange={(e) => setInputValueAmount(e.target.value)}
@@ -106,7 +111,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
           <FieldGroup>
             <FieldLabel>투자 코멘트</FieldLabel>
             <TextInputField
-              size={size}
+              mediaSize={mediaSize}
               state="normal"
               placeholder="투자에 대한 코멘트를 입력해 주세요"
               value={inputValueComment}
@@ -117,7 +122,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
           <FieldGroup>
             <FieldLabel>비밀번호</FieldLabel>
             <PasswordInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="비밀번호를 입력해주세요"
               value={inputValuePassword}
               onChange={(e) => setInputValuePassword(e.target.value)}
@@ -127,7 +132,7 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
           <FieldGroup>
             <FieldLabel>비밀번호 확인</FieldLabel>
             <PasswordInputField
-              size={size}
+              mediaSize={mediaSize}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               value={inputValueCheckPassword}
               onChange={(e) => setInputValueCheckPassword(e.target.value)}
@@ -136,10 +141,15 @@ const UpdateInvestmentModal = ({ onClose, size, investment, onSuccess }) => {
         </Section>
 
         <ButtonRow>
-          <BtnLarge type="" size={size} label="취소" onClick={onClose} />
+          <BtnLarge
+            type=""
+            mediaSize={mediaSize}
+            label="취소"
+            onClick={onClose}
+          />
           <BtnLarge
             type="orange"
-            size={size}
+            mediaSize={mediaSize}
             label="수정하기"
             onClick={handleClickInvestmentButton}
             disabled={!isInvestButtonAvailable}
@@ -169,7 +179,7 @@ const ModalWrapper = styled.div`
   background: ${black_300};
   padding: 24px;
   border-radius: 16px;
-  width: ${(props) => (props.$size === "small" ? "343px" : "496px")};
+  width: ${(props) => (props.$mediaSize === "small" ? "343px" : "496px")};
   height: 858px;
   z-index: 999;
 `;
