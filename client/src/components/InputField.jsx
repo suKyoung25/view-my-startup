@@ -4,14 +4,6 @@ import { black_300 } from "../styles/colors";
 
 function InputField({ variant = "default", children, mediaSize = "big" }) {
   return (
-    // <Outer $variant={variant} $mediaSize={mediaSize}>
-    //   {variant === "dashed" ? (
-    //     <Inner $mediaSize={mediaSize}>{children}</Inner>
-    //   ) : (
-    //     children
-    //   )}
-    // </Outer>
-
     <Outer $variant={variant} $mediaSize={mediaSize}>
       <Inner $mediaSize={mediaSize} $variant={variant}>
         {children}
@@ -36,7 +28,7 @@ const Outer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   box-sizing: border-box;
 
   background-color: ${({ $variant }) =>
@@ -61,14 +53,11 @@ const Inner = styled.div`
       : $mediaSize === "medium"
       ? "207px"
       : "147px"};
-  /* 
-  height: 100%; */
 
   background-color: ${black_300};
   border-radius: 4px;
 
   display: flex;
-  /* flex-direction: column;  */
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
