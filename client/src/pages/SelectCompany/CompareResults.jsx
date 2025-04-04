@@ -41,14 +41,14 @@ function CompareResults() {
     }
   };
 
-  function updateMediaSize() {
-    const { innerWidth: width } = window;
-    if (width >= 1200) setMediaSize("big");
-    else if (width > 744) setMediaSize("medium");
-    else setMediaSize("small");
-  }
-
+  //반응형 디자인
   useEffect(() => {
+    function updateMediaSize() {
+      const { innerWidth: width } = window;
+      if (width >= 1200) setMediaSize("big");
+      else if (width > 375) setMediaSize("medium");
+      else setMediaSize("small");
+    }
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
     return () => window.removeEventListener("resize", updateMediaSize);
@@ -138,6 +138,7 @@ function CompareResults() {
 
   const rankColumns = [{ label: "순위", name: "ranking", flex: 1 }, ...columns];
 
+  console.log("mediaSize", mediaSize);
   return (
     <>
       <Wrap>
@@ -160,15 +161,17 @@ function CompareResults() {
             />
           </div>
 
-          <InputField>
+          <InputField variant="default" mediaSize={mediaSize}>
             {companies.length > 0 && (
-              <SelectedCompanyBox>
-                <img src={companies[0].imageUrl} alt="로고" />
-                <div>
-                  <div>{companies[0].name}</div>
-                  <div>{companies[0].category}</div>
-                </div>
-              </SelectedCompanyBox>
+              <CenteredWrapper>
+                <SelectedCompanyBox>
+                  <img src={companies[0].imageUrl} alt="로고" />
+                  <div>
+                    <div>{companies[0].name}</div>
+                    <div>{companies[0].category}</div>
+                  </div>
+                </SelectedCompanyBox>
+              </CenteredWrapper>
             )}
           </InputField>
 
@@ -305,6 +308,14 @@ const SelectedCompanyBox = styled.div`
     font-weight: 600;
     color: #ffffff;
   }
+`;
+
+const CenteredWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledTable = styled.table`
