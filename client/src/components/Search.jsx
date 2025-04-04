@@ -111,19 +111,19 @@ const Container = styled.div`
   padding: 5px;
 
   min-width: ${(props) =>
-    props.$size === "big"
+    props.$mediaSize === "big"
       ? "448px"
-      : props.$size === "medium"
+      : props.$mediaSize === "medium"
       ? "269px"
-      : props.$size === "small"
+      : props.$mediaSize === "small"
       ? "189px"
       : null};
   height: ${(props) =>
     props.$mediaSize === "big"
       ? "48px"
-      : props.$size === "medium"
+      : props.$mediaSize === "medium"
       ? "48px"
-      : props.$size === "small"
+      : props.$mediaSize === "small"
       ? "40px"
       : null};
 `;
