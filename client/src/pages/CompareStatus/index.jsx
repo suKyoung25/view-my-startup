@@ -17,7 +17,7 @@ function CompareStatus() {
 
   const columns = [
     { label: "순위", name: "ranking", width: "6%" },
-    { label: "기업명", name: "name", width: "12%" },
+    { label: "기업명", name: "name", width: "18%" },
     { label: "기업 소개", name: "description", width: "30%" },
     { label: "카테고리", name: "category", width: "12%" },
     {
@@ -120,8 +120,8 @@ function CompareStatus() {
             <tbody>
               {paginatedData.map((item, index) => (
                 <tr key={item.id}>
-                  <td className={styles.td}>{startIndex + index + 1}위</td>
-                  <td className={styles.td}>
+                  <td className={styles.rank}>{startIndex + index + 1}위</td>
+                  <td className={styles.name}>
                     <div className={styles.companyCell}>
                       <img
                         className={styles.logo}
@@ -131,7 +131,7 @@ function CompareStatus() {
                       <Link to={`/company-detail/${item.id}`}>{item.name}</Link>
                     </div>
                   </td>
-                  <td className={styles.td}>
+                  <td className={styles.introduce}>
                     <Link to={`/company-detail/${item.id}`}>
                       {item.description}
                     </Link>
