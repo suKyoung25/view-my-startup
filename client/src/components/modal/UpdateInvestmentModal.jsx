@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { TextInputField, PasswordInputField } from "../Input";
 import BtnLarge from "../BtnLarge";
-import { black_300, black_400, gray_200 } from "../../styles/colors";
+import { black_300, black_400, gray_200, gray_300 } from "../../styles/colors";
 import companyAPI from "../../api/company.api";
 import investmentAPI from "../../api/investment.api";
+
+const modalRoot = document.getElementById("modal-root");
 
 const UpdateInvestmentModal = ({
   onClose,
@@ -65,7 +68,7 @@ const UpdateInvestmentModal = ({
 
   if (companyInformation === null) return null; //렌더링 안됨
 
-  return (
+  return ReactDOM.createPortal(
     <Overlay onClick={onClose}>
       <ModalWrapper $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
@@ -156,7 +159,8 @@ const UpdateInvestmentModal = ({
           />
         </ButtonRow>
       </ModalWrapper>
-    </Overlay>
+    </Overlay>,
+    modalRoot
   );
 };
 
@@ -180,7 +184,7 @@ const ModalWrapper = styled.div`
   padding: 24px;
   border-radius: 16px;
   width: ${(props) => (props.$mediaSize === "small" ? "343px" : "496px")};
-  height: 858px;
+  height: auto;
   z-index: 999;
 `;
 
@@ -219,7 +223,6 @@ const SectionTitle = styled.h3`
 const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
 `;
 
 const FieldLabel = styled.h3`
@@ -257,9 +260,9 @@ const CompanyCategory = styled.span`
 
 const TextArea = styled.textarea`
   width: 90%;
-  background-color: ${black_400};
+  background-color: ${gray_300};
   color: #fff;
-  border: 2px solid ${black_400};
+  border: 2px solid ${gray_300};
   border-radius: 8px;
   padding: 14px;
   font-size: 16px;
