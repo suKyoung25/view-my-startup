@@ -63,9 +63,9 @@ const DropdownButton = styled.button`
   border-radius: 10px;
   width: ${(props) =>
     props.$mediaSize === "big"
-      ? "264px" //투자 현황쪽의 VMS 드롭다운바를 기준으로 설정.
+      ? "268px" //투자 현황쪽의 VMS 드롭다운바를 기준으로 설정.
       : props.$mediaSize === "medium"
-      ? "264px" //투자 현황쪽의 VMS 드롭다운바를 기준으로 설정.
+      ? "268px" //투자 현황쪽의 VMS 드롭다운바를 기준으로 설정.
       : props.$mediaSize === "small"
       ? "241px"
       : null};
@@ -79,10 +79,10 @@ const DropdownButton = styled.button`
       : null};
   padding: ${(props) =>
     props.$mediaSize === "big" || props.$mediaSize === "medium"
-      ? "16px"
+      ? "15px"
       : props.$mediaSize === "small"
       ? "12px"
-      : null}
+      : null};
 
   font-size: ${(props) =>
     props.$mediaSize === "big" || props.$mediaSize === "medium"
@@ -95,7 +95,6 @@ const DropdownButton = styled.button`
 
 const SelectedText = styled.span`
   text-align: left;
-  padding-right: 10px;
 `;
 
 const ArrowIcon = styled.img`
@@ -148,11 +147,11 @@ const DropdownItem = styled.button`
   justify-content: center;
   width: 100%;
   text-align: left;
-  padding: 10px 16px;
+  padding: 14px 16px;
   color: #fff;
   background-color: ${(props) => (props.$isSelected ? "#212121" : black_400)};
   border: none;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   border-bottom: 1px solid ${gray_200};
 

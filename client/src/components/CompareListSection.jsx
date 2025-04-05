@@ -57,13 +57,13 @@ const CompareListSection = ({
     <Wrapper $mediaSize={mediaSize}>
       {isActive && (
         <Header $mediaSize={mediaSize}>
-          <Title>
+          <Title $mediaSize={mediaSize}>
             어떤 기업이 궁금하세요? {companies.length > 0 && " (최대 5개)"}
           </Title>
           <BtnLarge
             label="기업 추가하기"
             type={companies.length >= 5 ? "black" : "orange"}
-            mediaSize={mediaSize}
+            mediaSize="small"
             onClick={() => {
               if (companies.length >= 5) return;
               onAddClick();
@@ -86,17 +86,15 @@ const Wrapper = styled.section`
 
 const Header = styled.div`
   display: flex;
-  flex-direction: ${({ $mediaSize }) =>
-    $mediaSize === "small" ? "column" : "row"};
+  flex-direction: row;
   justify-content: space-between;
-  align-items: ${({ $mediaSize }) =>
-    $mediaSize === "small" ? "flex-start" : "center"};
+  align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 `;
 
 const Title = styled.h2`
-  font-size: 20px;
+  font-size: ${({ $mediaSize }) => ($mediaSize === "small" ? "16px" : "20px")};
 `;
 
 const CardContainer = styled.div`

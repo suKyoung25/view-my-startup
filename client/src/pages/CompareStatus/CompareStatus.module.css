@@ -12,12 +12,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
-  margin-bottom: 24px;
+  margin-bottom: 15px;
   flex-wrap: wrap;
 }
 
 .title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: white;
   margin: 0;
@@ -60,6 +60,36 @@
   word-break: keep-all;
 }
 
+.rank {
+  padding: 20px 14px;
+  font-size: 14px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+  background-color: #212121;
+  color: #d8d8d8;
+  word-break: keep-all;
+}
+
+.name {
+  padding: 15px 0;
+  font-size: 14px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+  background-color: #212121;
+  color: #d8d8d8;
+  word-break: keep-all;
+}
+
+.introduce {
+  padding: 20px 16px;
+  font-size: 14px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+  background-color: #212121;
+  color: #d8d8d8;
+  word-break: keep-all;
+}
+
 /* 기업명 + 로고 셀 */
 .companyCell {
   display: flex;
@@ -79,6 +109,7 @@
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+  text-align: left;
 }
 
 /* 페이지네이션 영역 */

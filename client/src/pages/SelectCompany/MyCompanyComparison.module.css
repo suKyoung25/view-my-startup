@@ -60,11 +60,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #1e1e1e;
   padding: 24px 16px;
   border-radius: 10px;
-  width: 126px;
-  height: 187px;
   text-align: center;
 }
 

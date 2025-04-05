@@ -147,7 +147,7 @@ function CompareResults() {
             내가 선택한 기업
             <BtnLarge
               type={"orange"}
-              mediaSize={"medium"}
+              mediaSize={mediaSize}
               label={"다른 기업 비교하기"}
               onClick={() =>
                 navigate("/select-company", {
@@ -303,7 +303,7 @@ const Wrap = styled.div`
 const SelectedCompanyBox = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
+  align-items: center;
   justify-content: center;
   text-align: center;
   gap: 8px;
@@ -329,22 +329,6 @@ const CenteredWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-// const StyledTable = styled.table`
-//   width: 100%;
-//   border-collapse: collapse;
-//   margin-top: 16px;
-//   min-width: 696px; /* 부모(Wrapper)에 따라 자동 */
-
-//   thead tr {
-//     border-bottom: 16px solid #131313;
-//   }
-
-//   th,
-//   td {
-//     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-//   }
-// `;
 
 const StyledTableWrapper = styled.div`
   width: 100%;
