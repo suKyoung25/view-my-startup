@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { brand_orange } from "../styles/colors";
-import { black_100 } from "../styles/colors";
+import { black_100, black_300 } from "../styles/colors";
 import { gray_200 } from "../styles/colors";
 
 {
@@ -39,12 +39,14 @@ const Container = styled.button`
   background-color: ${(props) => {
     if (props.$type === "black") return black_100;
     if (props.$type === "orange") return brand_orange;
+    if (props.$type === "") return black_300;
     return "none";
   }};
 
   color: ${(props) => {
     if (props.$type === "black") return gray_200;
     if (props.$type === "orange") return "#FFFFFF";
+    if (props.$type === "") return brand_orange;
     return brand_orange;
   }};
 

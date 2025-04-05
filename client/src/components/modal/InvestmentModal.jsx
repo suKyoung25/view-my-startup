@@ -6,6 +6,7 @@ import { black_300, black_400, gray_200, gray_300 } from "../../styles/colors";
 import { useParams } from "react-router-dom";
 import companyAPI from "../../api/company.api";
 import investmentAPI from "../../api/investment.api";
+import closeIcon from "../../assets/icon/ic_delete.png";
 
 const InvestmentModal = ({ onClose, mediaSize, onSuccess, company }) => {
   //각 input들의 value를 state로 저장해둠
@@ -96,7 +97,9 @@ const InvestmentModal = ({ onClose, mediaSize, onSuccess, company }) => {
       <ModalWrapper $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <Title>기업에 투자하기</Title>
-          <CloseButton onClick={onClose}>×</CloseButton>
+          <CloseButton>
+            <img onClick={onClose} src={closeIcon} alt="닫기" />
+          </CloseButton>
         </ModalHeader>
 
         <Section>
@@ -203,10 +206,9 @@ const Overlay = styled.div`
 const ModalWrapper = styled.div`
   box-sizing: border-box;
   background: ${black_300};
-  padding: 24px;
+  padding: 20px;
   border-radius: 16px;
   width: ${(props) => (props.$mediaSize === "small" ? "343px" : "496px")};
-  height: auto;
   z-index: 999;
 `;
 
@@ -224,81 +226,83 @@ const Title = styled.h2`
 const CloseButton = styled.button`
   background: none;
   border: none;
-  font-size: 24px;
-  color: #fff;
   cursor: pointer;
 `;
 
 const Section = styled.div`
-  margin-top: 24px;
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 10px;
 `;
 
 const SectionTitle = styled.h3`
-  font-size: 16px;
-  color: #ccc;
+  font-size: 18px;
+  color: #fff;
   margin: 0 0 6px 0;
 `;
 
 const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 10px;
 `;
 
 const FieldLabel = styled.h3`
   font-size: 18px;
-  color: #ccc;
+  color: #fff;
   margin: 0 0 6px 0;
 `;
 
 const CompanyInfo = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
+  margin-bottom: 15px;
 `;
 
 const Logo = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 `;
 
 const CompanyText = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 12px;
 `;
 
-const CompanyName = styled.span`
-  font-weight: bold;
+const CompanyName = styled.div`
+  font-size: 16px;
   color: #fff;
 `;
 
-const CompanyCategory = styled.span`
+const CompanyCategory = styled.div`
+  padding-top: 3px;
   font-size: 12px;
   color: #aaa;
 `;
 
-const TextArea = styled.textarea`
-  width: 90%;
-  background-color: ${gray_300};
-  color: #fff;
-  border: 2px solid ${gray_300};
-  border-radius: 8px;
-  padding: 14px;
-  font-size: 16px;
-  resize: none;
-  outline: none;
+// const TextArea = styled.textarea`
+//   width: 90%;
+//   background-color: ${gray_300};
+//   color: #fff;
+//   border: 2px solid ${gray_300};
+//   border-radius: 8px;
+//   padding: 14px;
+//   font-size: 16px;
+//   resize: none;
+//   outline: none;
 
-  &::placeholder {
-    color: ${gray_200};
-  }
+//   &::placeholder {
+//     color: ${gray_200};
+//   }
 
-  &:focus {
-    border-color: #3692ff;
-  }
-`;
+//   &:focus {
+//     border-color: #3692ff;
+//   }
+// `;
 
 const ButtonRow = styled.div`
   margin-top: 24px;
