@@ -41,14 +41,14 @@ function CompareResults() {
     }
   };
 
-  function updateMediaSize() {
-    const { innerWidth: width } = window;
-    if (width >= 1200) setMediaSize("big");
-    else if (width > 744) setMediaSize("medium");
-    else setMediaSize("small");
-  }
-
+  //반응형 디자인
   useEffect(() => {
+    function updateMediaSize() {
+      const { innerWidth: width } = window;
+      if (width >= 1200) setMediaSize("big");
+      else if (width > 730) setMediaSize("medium");
+      else setMediaSize("small");
+    }
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
     return () => window.removeEventListener("resize", updateMediaSize);
@@ -138,6 +138,7 @@ function CompareResults() {
 
   const rankColumns = [{ label: "순위", name: "ranking", flex: 1 }, ...columns];
 
+  console.log("mediaSize", mediaSize);
   return (
     <>
       <Wrap>
@@ -152,23 +153,25 @@ function CompareResults() {
                 navigate("/select-company", {
                   state: {
                     selectedCompany: companies[0], // 내가 선택한 기업 정보
-
                     compareCompanies: [], // 비교 기업 초기화
+                    preserveOnRefresh: true, // 새로고침 방지용 플래그 추가
                   },
                 })
               }
             />
           </div>
 
-          <InputField>
+          <InputField key={mediaSize} mediaSize={mediaSize}>
             {companies.length > 0 && (
-              <SelectedCompanyBox>
-                <img src={companies[0].imageUrl} alt="로고" />
-                <div>
-                  <div>{companies[0].name}</div>
-                  <div>{companies[0].category}</div>
-                </div>
-              </SelectedCompanyBox>
+              <CenteredWrapper>
+                <SelectedCompanyBox>
+                  <img src={companies[0].imageUrl} alt="로고" />
+                  <div>
+                    <div>{companies[0].name}</div>
+                    <div>{companies[0].category}</div>
+                  </div>
+                </SelectedCompanyBox>
+              </CenteredWrapper>
             )}
           </InputField>
 
@@ -184,30 +187,35 @@ function CompareResults() {
             />
           </div>
 
-          <StyledTable className={styles.table1}>
-            <thead>
-              <TableHeader columns={columns} />
-            </thead>
-            <tbody>
-              {sortCompanies(companies, sortTop).map((company) => (
-                <tr
-                  key={company.id}
-                  onClick={() => navigate(`/company-detail/${company.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
-                  <LeftAlignTD>{company.description}</LeftAlignTD>
-                  <TD>{company.category}</TD>
-                  <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
-                  <TD>{company.revenue}억 원</TD>
-                  <TD>{company.employees}명</TD>
-                </tr>
-              ))}
-            </tbody>
-          </StyledTable>
+          <StyledTableWrapper>
+            <StyledTable1>
+              <thead>
+                <TableHeader columns={columns} />
+              </thead>
+              <tbody>
+                {sortCompanies(companies, sortTop).map((company) => (
+                  <tr
+                    key={company.id}
+                    onClick={() => navigate(`/company-detail/${company.id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                    <LeftAlignTD>{company.description}</LeftAlignTD>
+                    <TD>{company.category}</TD>
+                    <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
+                    <TD>{company.revenue}억 원</TD>
+                    <TD>{company.employees}명</TD>
+                  </tr>
+                ))}
+              </tbody>
+            </StyledTable1>
+          </StyledTableWrapper>
 
           <SpacerSmall />
 
@@ -221,39 +229,46 @@ function CompareResults() {
             />
           </div>
 
-          <StyledTable className={styles.table2}>
-            <thead>
-              <TableHeader columns={rankColumns} />
-            </thead>
-            <tbody>
-              {rankingCompanies.map((company) => (
-                <tr
-                  key={company.id}
-                  onClick={() => navigate(`/company-detail/${company.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <TD>{company.ranking}위</TD>
-                  <CompanyCell>
-                    <img src={company.imageUrl} alt={`${company.name} 로고`} />
-                    <span>{company.name}</span>
-                  </CompanyCell>
-                  <LeftAlignTD>{company.description}</LeftAlignTD>
-                  <TD>{company.category}</TD>
-                  <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
-                  <TD>{company.revenue}억 원</TD>
-                  <TD>{company.employees}명</TD>
-                </tr>
-              ))}
-            </tbody>
-          </StyledTable>
+          <StyledTableWrapper>
+            <StyledTable2>
+              <thead>
+                <TableHeader columns={rankColumns} />
+              </thead>
+              <tbody>
+                {rankingCompanies.map((company) => (
+                  <tr
+                    key={company.id}
+                    onClick={() => navigate(`/company-detail/${company.id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <TD>{company.ranking}위</TD>
+                    <CompanyCell>
+                      <img
+                        src={company.imageUrl}
+                        alt={`${company.name} 로고`}
+                      />
+                      <span>{company.name}</span>
+                    </CompanyCell>
+                    <LeftAlignTD>{company.description}</LeftAlignTD>
+                    <TD>{company.category}</TD>
+                    <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
+                    <TD>{company.revenue}억 원</TD>
+                    <TD>{company.employees}명</TD>
+                  </tr>
+                ))}
+              </tbody>
+            </StyledTable2>
+          </StyledTableWrapper>
 
           <Spacer />
-          <BtnLarge
-            type={"orange"}
-            mediaSize={mediaSize}
-            label={"나의 기업에 투자하기"}
-            onClick={openModal}
-          />
+          <BtnWrapper>
+            <BtnLarge
+              type={"orange"}
+              mediaSize="big"
+              label={"나의 기업에 투자하기"}
+              onClick={openModal}
+            />
+          </BtnWrapper>
 
           {isModalOpen && (
             <InvestmentModal
@@ -288,7 +303,7 @@ const Wrap = styled.div`
 const SelectedCompanyBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   text-align: center;
   gap: 8px;
@@ -307,14 +322,33 @@ const SelectedCompanyBox = styled.div`
   }
 `;
 
-const StyledTable = styled.table`
+const CenteredWrapper = styled.div`
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 16px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-  thead tr {
-    border-bottom: 16px solid #131313;
-  }
+// const StyledTable = styled.table`
+//   width: 100%;
+//   border-collapse: collapse;
+//   margin-top: 16px;
+//   min-width: 696px; /* 부모(Wrapper)에 따라 자동 */
+
+//   thead tr {
+//     border-bottom: 16px solid #131313;
+//   }
+
+//   th,
+//   td {
+//     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+//   }
+// `;
+
+const StyledTableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
 `;
 
 const TD = styled.td`
@@ -324,6 +358,47 @@ const TD = styled.td`
   background-color: #212121;
   color: #d8d8d8;
   text-align: center;
+  word-break: keep-all;
+`;
+
+const StyledTable1 = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 696px;
+
+  thead tr {
+    border-bottom: 16px solid #131313;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  @media (max-width: 730px) {
+    min-width: 576px;
+  }
+`;
+
+const StyledTable2 = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 768px;
+
+  thead tr {
+    border-bottom: 16px solid #131313;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  @media (max-width: 730px) {
+    min-width: 656px;
+  }
 `;
 
 const LeftAlignTD = styled.td`
@@ -364,4 +439,10 @@ const CompanyCell = styled.td`
   span {
     white-space: nowrap;
   }
+`;
+const BtnWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
 `;

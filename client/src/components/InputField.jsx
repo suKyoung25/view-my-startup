@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { black_300 } from "../styles/colors";
 
-function InputField({ mediaSize, variant = "default", children }) {
+function InputField({ variant = "default", children, mediaSize = "big" }) {
+  console.log("🔥 [InputField] mediaSize:", mediaSize);
+
   return (
     <Outer $variant={variant} $mediaSize={mediaSize}>
-      {variant === "dashed" ? (
-        <Inner $mediaSize={mediaSize}>{children}</Inner>
-      ) : (
-        children
-      )}
+      <Inner $mediaSize={mediaSize} $variant={variant}>
+        {children}
+      </Inner>
     </Outer>
   );
 }
@@ -17,23 +17,18 @@ function InputField({ mediaSize, variant = "default", children }) {
 export default InputField;
 
 const Outer = styled.div`
-  width: ${({ $mediaSize }) =>
-    $mediaSize === "big"
-      ? "1200px"
-      : $mediaSize === "medium"
-      ? "696px"
-      : "343px"};
+  width: 100%;
 
-  height: ${({ $mediaSize }) =>
+  min-height: ${({ $mediaSize }) =>
     $mediaSize === "big"
       ? "300px"
       : $mediaSize === "medium"
       ? "239px"
       : "179px"};
 
-  /* height: auto; */
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
@@ -46,14 +41,15 @@ const Outer = styled.div`
 `;
 
 const Inner = styled.div`
-  width: ${({ $mediaSize }) =>
+  width: 100%;
+  max-width: ${({ $mediaSize }) =>
     $mediaSize === "big"
       ? "1168px"
       : $mediaSize === "medium"
       ? "664px"
       : "311px"};
 
-  height: ${({ $mediaSize }) =>
+  min-height: ${({ $mediaSize }) =>
     $mediaSize === "big"
       ? "268px"
       : $mediaSize === "medium"
@@ -65,6 +61,8 @@ const Inner = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   box-sizing: border-box;
+  padding: ${({ $mediaSize }) =>
+    $mediaSize === "big" ? "45px" : $mediaSize === "medium" ? "32px" : "20px"};
 `;

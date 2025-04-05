@@ -25,10 +25,12 @@ const CompareListSection = ({
     return (
       <InputField variant="default" mediaSize={mediaSize}>
         {companies.length === 0 ? (
-          <EmptyText>
-            아직 추가한 기업이 없어요. <br />
-            버튼을 눌러 기업을 추가해보세요!
-          </EmptyText>
+          <EmptyContainer>
+            <EmptyText>
+              아직 추가한 기업이 없어요. <br />
+              버튼을 눌러 기업을 추가해보세요!
+            </EmptyText>
+          </EmptyContainer>
         ) : (
           <CardGrid>
             {companies.map((company) => (
@@ -61,7 +63,7 @@ const CompareListSection = ({
           <BtnLarge
             label="기업 추가하기"
             type={companies.length >= 5 ? "black" : "orange"}
-            mediaSize="small"
+            mediaSize={mediaSize}
             onClick={() => {
               if (companies.length >= 5) return;
               onAddClick();
@@ -104,6 +106,14 @@ const CardContainer = styled.div`
   gap: 12px;
 `;
 
+const EmptyContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const EmptyText = styled.p`
   color: ${gray_200};
   font-size: 14px;
@@ -114,8 +124,12 @@ const EmptyText = styled.p`
 const CardGrid = styled.div`
   display: flex;
   gap: 12px;
+  width: 100%;
+  height: 100%;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: ${({ $mediaSize }) =>
+    $mediaSize === "small" ? "flex-start" : "center"};
+  align-content: center;
 `;
 
 const CompanyCard = styled.div`

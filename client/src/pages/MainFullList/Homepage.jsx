@@ -254,7 +254,6 @@ const Wrap = styled.div`
 const StyledTable = styled.table`
   width: 100%;
   min-width: 696px;
-  /* overflow-x: auto; */
   border-collapse: collapse;
 `;
 
