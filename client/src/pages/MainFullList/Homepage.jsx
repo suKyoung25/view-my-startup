@@ -21,7 +21,6 @@ function HomePage() {
     cho: "",
   });
 
-  //table row 항목
   let columns = [
     { label: "순위", name: "ranking", width: "5%" },
     { label: "기업명", name: "name", width: "18%" },
@@ -32,8 +31,6 @@ function HomePage() {
     { label: "고용 인원", name: "employees", width: "12%" },
   ];
 
-  //반응형/테블릿 사이즈에선 "순위" 컬럼 제외
-  //big 일때는 일부러 조건문 안함.
   if (mediaSize === "medium" || mediaSize === "small") {
     columns = [
       { label: "기업명", name: "name", width: "16%" },
@@ -45,7 +42,6 @@ function HomePage() {
     ];
   }
 
-  //dropdown 항목
   const sortOptions = [
     "누적 투자금액 높은순",
     "누적 투자금액 낮은순",
@@ -55,7 +51,6 @@ function HomePage() {
     "고용 인원 적은순",
   ];
 
-  //반응형 디자인
   useEffect(() => {
     function updateMediaSize() {
       const { innerWidth: width } = window;
@@ -68,7 +63,6 @@ function HomePage() {
     return () => window.removeEventListener("resize", updateMediaSize);
   }, []);
 
-  //초기 렌더링될 데이터 가져오기
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
@@ -138,9 +132,6 @@ function HomePage() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = sortedData.slice(startIndex, endIndex);
 
-  //디버깅
-  console.log("media size: " + mediaSize);
-
   return (
     <Wrap>
       <div className={styles.container}>
@@ -170,47 +161,76 @@ function HomePage() {
             <StyledTable>
               <thead>
                 <HeaderRow>
-                  {columns.map(({ label, name, width }, i) => {
-                    return (
-                      <Th key={name || i} style={{ width }}>
-                        {label}
-                      </Th>
-                    );
-                  })}
+                  {columns.map(({ label, name, width }, i) => (
+                    <Th key={name || i} style={{ width }}>
+                      {label}
+                    </Th>
+                  ))}
                 </HeaderRow>
               </thead>
               <tbody>
                 {paginatedData.length > 0 ? (
-                  paginatedData.map((item, index) => (
-                    <tr key={item.id || index}>
-                      {columns.map((column, index) => {
-                        if (column.name === "ranking") {
-                          return (
-                            <TD key={`ranking-${item.id}`}>
-                              {startIndex + index + 1}위
-                            </TD>
-                          );
+                  paginatedData.map((item, rowIndex) => (
+                    <tr key={item.id || rowIndex}>
+                      {columns.map((column) => {
+                        switch (column.name) {
+                          case "ranking":
+                            return (
+                              <TD key={`ranking-${item.id}`}>
+                                {startIndex + rowIndex + 1}위
+                              </TD>
+                            );
+                          case "name":
+                            return (
+                              <TD key={`name-${item.id}`}>
+                                <CompanyCell $mediaSize={mediaSize}>
+                                  <Logo
+                                    src={item.imageUrl}
+                                    alt={`${item.name} 로고`}
+                                  />
+                                  <Link to={`/company-detail/${item.id}`}>
+                                    {item.name}
+                                  </Link>
+                                </CompanyCell>
+                              </TD>
+                            );
+                          case "description":
+                            return (
+                              <Td key={`desc-${item.id}`}>
+                                <Link to={`/company-detail/${item.id}`}>
+                                  <Text>{item.description}</Text>
+                                </Link>
+                              </Td>
+                            );
+                          case "category":
+                            return (
+                              <TD key={`category-${item.id}`}>
+                                {item.category}
+                              </TD>
+                            );
+                          case "investmentAmount":
+                            return (
+                              <TD key={`investment-${item.id}`}>
+                                {item.realInvestmentAmount?.toLocaleString()}억
+                                원
+                              </TD>
+                            );
+                          case "revenue":
+                            return (
+                              <TD key={`revenue-${item.id}`}>
+                                {item.revenue?.toLocaleString()}억 원
+                              </TD>
+                            );
+                          case "employees":
+                            return (
+                              <TD key={`employees-${item.id}`}>
+                                {item.numberOfEmployees?.toLocaleString()}명
+                              </TD>
+                            );
+                          default:
+                            return null;
                         }
                       })}
-                      <TD>
-                        <CompanyCell $mediaSize={mediaSize}>
-                          <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
-                          <Link to={`/company-detail/${item.id}`}>
-                            {item.name}
-                          </Link>
-                        </CompanyCell>
-                      </TD>
-                      <Td>
-                        <Link to={`/company-detail/${item.id}`}>
-                          <Text>{item.description}</Text>
-                        </Link>
-                      </Td>
-                      <TD>{item.category}</TD>
-                      <TD>
-                        {item.realInvestmentAmount?.toLocaleString()}억 원
-                      </TD>
-                      <TD>{item.revenue?.toLocaleString()}억 원</TD>
-                      <TD>{item.numberOfEmployees?.toLocaleString()}명</TD>
                     </tr>
                   ))
                 ) : (
