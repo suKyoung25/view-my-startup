@@ -44,7 +44,7 @@ const companies = [
   },
   {
     name: "라이프핏",
-    description: "라이프핏는 혁신적인 서비스 스타트업입니다.",
+    description: "라이프핏은 혁신적인 서비스 스타트업입니다.",
     category: "핀테크",
     realInvestmentAmount: 136.0,
     revenue: 22.0,
@@ -74,7 +74,7 @@ const companies = [
   },
   {
     name: "배달의민족",
-    description: "배달의민족는 고객 중심의 솔루션을 제공하고 있습니다.",
+    description: "배달의민족은 고객 중심의 솔루션을 제공하고 있습니다.",
     category: "핀테크",
     realInvestmentAmount: 111.0,
     revenue: 19.0,
@@ -104,7 +104,7 @@ const companies = [
   },
   {
     name: "직방",
-    description: "직방는 고객 중심의 솔루션을 제공하고 있습니다.",
+    description: "직방은 고객 중심의 솔루션을 제공하고 있습니다.",
     category: "헬스케어",
     realInvestmentAmount: 73.0,
     revenue: 57.0,
@@ -124,7 +124,7 @@ const companies = [
   },
   {
     name: "당근마켓",
-    description: "당근마켓는 차세대 기술로 시장을 선도하는 스타트업입니다.",
+    description: "당근마켓은 차세대 기술로 시장을 선도하는 스타트업입니다.",
     category: "핀테크",
     realInvestmentAmount: 15.0,
     revenue: 86.0,
@@ -134,7 +134,7 @@ const companies = [
   },
   {
     name: "크림",
-    description: "크림는 고객 중심의 솔루션을 제공하고 있습니다.",
+    description: "크림은 고객 중심의 솔루션을 제공하고 있습니다.",
     category: "AI",
     realInvestmentAmount: 53.0,
     revenue: 56.0,
@@ -193,7 +193,7 @@ const companies = [
   },
   {
     name: "루닛",
-    description: "루닛는 고객 중심의 솔루션을 제공하고 있습니다.",
+    description: "루닛은 고객 중심의 솔루션을 제공하고 있습니다.",
     category: "헬스케어",
     realInvestmentAmount: 93.0,
     revenue: 62.0,
@@ -213,7 +213,7 @@ const companies = [
   },
   {
     name: "아크릴",
-    description: "아크릴는 글로벌 진출을 목표로 하는 한국 스타트업입니다.",
+    description: "아크릴은 글로벌 진출을 목표로 하는 한국 스타트업입니다.",
     category: "에듀테크",
     realInvestmentAmount: 13.0,
     revenue: 14.0,
@@ -233,7 +233,7 @@ const companies = [
   },
   {
     name: "마인즈랩",
-    description: "마인즈랩는 고객 중심의 솔루션을 제공하고 있습니다.",
+    description: "마인즈랩은 고객 중심의 솔루션을 제공하고 있습니다.",
     category: "바이오",
     realInvestmentAmount: 24.0,
     revenue: 11.0,
@@ -253,7 +253,7 @@ const companies = [
   },
   {
     name: "오늘의집",
-    description: "오늘의집는 고속 성장 중인 기술 기반 기업입니다.",
+    description: "오늘의집은 고속 성장 중인 기술 기반 기업입니다.",
     category: "바이오",
     realInvestmentAmount: 108.0,
     revenue: 81.0,
@@ -293,7 +293,7 @@ const companies = [
   },
   {
     name: "그렙",
-    description: "그렙는 고속 성장 중인 기술 기반 기업입니다.",
+    description: "그렙은 고속 성장 중인 기술 기반 기업입니다.",
     category: "소셜임팩트",
     realInvestmentAmount: 103.0,
     revenue: 77.0,
@@ -303,7 +303,7 @@ const companies = [
   },
   {
     name: "에듀윌",
-    description: "에듀윌는 고속 성장 중인 기술 기반 기업입니다.",
+    description: "에듀윌은 고속 성장 중인 기술 기반 기업입니다.",
     category: "라이프스타일",
     realInvestmentAmount: 76.0,
     revenue: 16.0,
@@ -323,7 +323,7 @@ const companies = [
   },
   {
     name: "프립",
-    description: "프립는 혁신적인 서비스를 제공하는 스타트업입니다.",
+    description: "프립은 혁신적인 서비스를 제공하는 스타트업입니다.",
     category: "라이프스타일",
     realInvestmentAmount: 89.0,
     revenue: 63.0,
@@ -333,7 +333,7 @@ const companies = [
   },
   {
     name: "버즈빌",
-    description: "버즈빌는 차세대 기술로 시장을 선도하는 스타트업입니다.",
+    description: "버즈빌은 차세대 기술로 시장을 선도하는 스타트업입니다.",
     category: "에듀테크",
     realInvestmentAmount: 39.0,
     revenue: 10.0,
@@ -424,7 +424,7 @@ const companies = [
   {
     name: "넥스트유니콘",
     description:
-      "넥스트유니콘는 차세대 기술로 시장을 선도하는 최고의 스타트업입니다.",
+      "넥스트유니콘은 차세대 기술로 시장을 선도하는 최고의 스타트업입니다.",
     category: "에듀테크",
     realInvestmentAmount: 149.0,
     revenue: 71.0,
@@ -434,7 +434,7 @@ const companies = [
   },
   {
     name: "채널톡",
-    description: "채널톡는 혁신적인 서비스를 제공하는 스타트업입니다.",
+    description: "채널톡은 혁신적인 서비스를 제공하는 스타트업입니다.",
     category: "핀테크",
     realInvestmentAmount: 48.0,
     revenue: 48.0,
@@ -509,6 +509,11 @@ const companies = [
 ];
 
 async function main() {
+  // 참조하는 테이블부터 삭제
+  await prisma.investment.deleteMany();
+
+  await prisma.company.deleteMany(); // 기존 데이터 삭제
+
   await prisma.company.createMany({
     data: companies,
     skipDuplicates: true,
