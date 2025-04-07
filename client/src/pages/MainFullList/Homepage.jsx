@@ -301,7 +301,14 @@ const Td = styled.td`
   background-color: #212121;
   color: #d8d8d8;
   font-family: "Pretendard", sans-serif;
-  word-break: keep-all;
+  word-break: break-word;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+  text-overflow: ellipsis; /* 넘어가는 텍스트는 '...'으로 표시 */
 `;
 
 const PaginationWrap = styled.div`
