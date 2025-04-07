@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const investmentsRouter = express.Router();
 
 /**
- * [1] 특정 투자 내역 비밀번호 확인
+ * 특정 투자 내역 비밀번호 확인
  */
 investmentsRouter.post(
   "/:investmentId/verify-password",
@@ -38,7 +38,7 @@ investmentsRouter.post(
 );
 
 /**
- * [2] 가상 투자 등록
+ * 가상 투자 등록
  */
 investmentsRouter.post("/", async (req, res, next) => {
   try {
@@ -75,7 +75,7 @@ investmentsRouter.post("/", async (req, res, next) => {
 });
 
 /**
- * [3] 가상 투자 수정
+ * 가상 투자 수정
  */
 investmentsRouter.put("/:investmentId", async (req, res, next) => {
   try {
@@ -130,7 +130,7 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * [4] 가상 투자 삭제
+ * 가상 투자 삭제
  */
 investmentsRouter.delete("/:investmentId", async (req, res, next) => {
   try {
@@ -160,7 +160,7 @@ investmentsRouter.delete("/:investmentId", async (req, res, next) => {
 });
 
 /**
- * [5] 개별 투자 내역 전체 조회 (투자 히스토리용)
+ * 개별 투자 내역 전체 조회 (투자 내역용)
  */
 investmentsRouter.get("/", async (req, res, next) => {
   try {
@@ -196,7 +196,7 @@ investmentsRouter.get("/", async (req, res, next) => {
 });
 
 /**
- * [6] 투자 현황 요약 조회 (기업별 누적 가상 투자 집계)
+ * 투자 현황 요약 조회 (기업별 누적 가상 투자 집계)
  */
 investmentsRouter.get("/status", async (req, res, next) => {
   try {

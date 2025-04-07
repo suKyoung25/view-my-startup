@@ -4,7 +4,7 @@ const prisma = require("../db/prisma/client.prisma");
 const companiesRouter = express.Router();
 
 /**
- * [1] 전체 기업 리스트 조회 + 가상 투자 총합 포함
+ * 전체 기업 리스트 조회 + 가상 투자 총합 포함
  */
 companiesRouter.get("/", async (req, res, next) => {
   try {
@@ -23,7 +23,7 @@ companiesRouter.get("/", async (req, res, next) => {
 });
 
 /**
- * [2] 특정 기업 상세 조회
+ * 특정 기업 상세 조회
  */
 companiesRouter.get("/:companyId", async (req, res, next) => {
   try {
@@ -44,7 +44,7 @@ companiesRouter.get("/:companyId", async (req, res, next) => {
 });
 
 /**
- * [3] 기업 등록
+ * 기업 등록
  */
 companiesRouter.post("/", async (req, res, next) => {
   try {
@@ -75,7 +75,7 @@ companiesRouter.post("/", async (req, res, next) => {
 });
 
 /**
- * [4] 기업 삭제
+ * 기업 삭제
  */
 companiesRouter.delete("/:companyId", async (req, res, next) => {
   try {

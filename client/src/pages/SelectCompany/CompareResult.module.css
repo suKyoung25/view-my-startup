@@ -57,6 +57,7 @@
   .content1,
   .content2,
   .content3 {
+    flex-shrink: 0;
     width: 100%;
     box-sizing: border-box;
   }

@@ -6,7 +6,6 @@ const rankingsRouter = require("./rankings.module");
 
 const router = express.Router();
 
-// 실제 페이지 기능에 맞는 경로 설정
 router.use("/api/companies", companiesRouter);
 router.use("/api/investments", investmentsRouter);
 router.use("/api/resultCompare", resultCompareRouter);

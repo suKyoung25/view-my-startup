@@ -4,7 +4,9 @@ const Exception = require("../exceptions");
 
 const resultCompareRouter = express.Router();
 
-// 비교 현황 조회 API
+/**
+ * 비교 현황 조회
+ */
 resultCompareRouter.get("/", async (req, res, next) => {
   try {
     const { sortBy = "pickAsMyStartupCount", order = "desc" } = req.query;
@@ -42,9 +44,7 @@ resultCompareRouter.get("/", async (req, res, next) => {
 });
 
 /**
- * 선택 기업 + 비교 기업 데이터 조회 API
- * POST /api/resultCompare/selected
- * body: { selectedCompanyId: string, compareCompanyIds: string[] }
+ * 선택 기업 + 비교 기업 데이터 조회
  */
 resultCompareRouter.post("/selected", async (req, res, next) => {
   try {
@@ -68,7 +68,7 @@ resultCompareRouter.post("/selected", async (req, res, next) => {
       },
     });
 
-    //나의 기업으로 선택된 횟수 증가시키기
+    // 나의 기업으로 선택된 횟수 증가시키기
     await prisma.company.update({
       where: {
         id: selectedCompanyId,
@@ -80,7 +80,7 @@ resultCompareRouter.post("/selected", async (req, res, next) => {
       },
     });
 
-    //비교 기업으로 선택된 횟수 증가시키기
+    // 비교 기업으로 선택된 횟수 증가시키기
     await prisma.company.updateMany({
       where: {
         id: {
