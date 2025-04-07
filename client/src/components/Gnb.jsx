@@ -52,7 +52,7 @@ function Gnb({ length }) {
           투자 현황
         </NavLink>
         {/* 브라우저 width 체크를 위한 코드 후에 삭제 필요. */}
-        <div>{width}</div>
+        {/* <div>{width}</div> */}
       </Text>
     </Contatiner>
   );

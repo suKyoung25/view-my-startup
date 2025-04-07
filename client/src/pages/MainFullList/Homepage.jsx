@@ -185,11 +185,15 @@ function HomePage() {
                     <tr key={item.id || index}>
                       {columns.map((column, index) => {
                         if (column.name === "ranking") {
-                          return <TD>{startIndex + index + 1}위</TD>;
+                          return (
+                            <TD key={`ranking-${item.id}`}>
+                              {startIndex + index + 1}위
+                            </TD>
+                          );
                         }
                       })}
                       <TD>
-                        <CompanyCell mediaSize={mediaSize}>
+                        <CompanyCell $mediaSize={mediaSize}>
                           <Logo src={item.imageUrl} alt={`${item.name} 로고`} />
                           <Link to={`/company-detail/${item.id}`}>
                             {item.name}
@@ -198,7 +202,7 @@ function HomePage() {
                       </TD>
                       <Td>
                         <Link to={`/company-detail/${item.id}`}>
-                          {item.description}
+                          <Text>{item.description}</Text>
                         </Link>
                       </Td>
                       <TD>{item.category}</TD>
@@ -296,19 +300,26 @@ const Td = styled.td`
   padding-left: 10px;
   font-size: 14px;
   width: 100;
-  text-align: start;
+  display: flex;
   border-bottom: 1px solid #333;
   background-color: #212121;
   color: #d8d8d8;
   font-family: "Pretendard", sans-serif;
   word-break: break-word;
 
+  display: flex;
+  align-items: center;
+
+  line-height: 1.2em;
+  min-height: calc(1.2em * 2); /* 두 줄 높이 확보 */
+`;
+
+const Text = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-
   overflow: hidden;
-  text-overflow: ellipsis; /* 넘어가는 텍스트는 '...'으로 표시 */
+  text-overflow: ellipsis;
 `;
 
 const PaginationWrap = styled.div`

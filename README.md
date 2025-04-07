@@ -49,7 +49,6 @@ FS/
 │ │ │ ├── client.prisma.js
 │ │ │ ├── schema.prisma
 │ │ │ └── seed.js
-│ │ ├── middlewares/ # 공통 미들웨어
 │ │ ├── modules/ # 기능별 모듈(라우터)
 │ │ │ ├── companies.module.js
 │ │ │ ├── investments.module.js
