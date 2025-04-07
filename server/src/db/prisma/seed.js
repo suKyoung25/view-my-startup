@@ -34,7 +34,8 @@ const companies = [
   },
   {
     name: "컬리하우스",
-    description: "컬리하우스는 혁신적인 서비스 스타트업입니다.",
+    description:
+      "컬리하우스는 혁신적인 서비스를 통해 시장의 변화를 선도하는 스타트업입니다. 사용자 중심의 솔루션을 개발하며 빠르게 성장하고 있습니다. 기술과 창의성을 바탕으로 새로운 가치를 창출하고 있습니다.",
     category: "에듀테크",
     realInvestmentAmount: 167.0,
     revenue: 77.0,
