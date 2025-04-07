@@ -192,30 +192,6 @@ const Wrap = styled.div`
   justify-content: center;
   width: 100%;
   min-height: 100vh;
-
-  overflow-x: ${(props) => (props.$mediaSize === "small" ? "auto" : "hidden")};
-  display: block;
-
-  &::-webkit-scrollbar {
-    height: 8px; /* 스크롤바 높이 */
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #1a1a1a; /* 어두운 트랙 배경 */
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #444; /* 스크롤 핸들 회색 */
-    border-radius: 10px; /* 둥글게 */
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #666; /* hover 시 진한 회색 */
-  }
-
-  scrollbar-color: #444 #1a1a1a;
-  scrollbar-width: thin;
 `;
 
 const CompanyDetailWrap = styled.div`
