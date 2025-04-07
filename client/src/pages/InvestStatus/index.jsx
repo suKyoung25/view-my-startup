@@ -143,7 +143,7 @@ function InvestState() {
                   </TD>
                   <Td>
                     <Link to={`/company-detail/${item.id}`}>
-                      {item.description}
+                      <div className={styles.text}>{item.description}</div>
                     </Link>
                   </Td>
                   <TD>{item.category}</TD>

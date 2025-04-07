@@ -21,6 +21,16 @@
   margin-bottom: 32px;
 }
 
+.text {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-items: start;
+}
+
 /*타블렛 사이즈*/
 @media (min-width: 375px) and (max-width: 1199px) {
   .hbundle {

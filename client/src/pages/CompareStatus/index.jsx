@@ -133,7 +133,7 @@ function CompareStatus() {
                   </td>
                   <td className={styles.introduce}>
                     <Link to={`/company-detail/${item.id}`}>
-                      {item.description}
+                      <div className={styles.text}>{item.description}</div>
                     </Link>
                   </td>
                   <td className={styles.td}>{item.category}</td>

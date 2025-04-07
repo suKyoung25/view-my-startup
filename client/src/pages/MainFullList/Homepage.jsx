@@ -340,6 +340,7 @@ const Text = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  align-items: start;
 `;
 
 const PaginationWrap = styled.div`
