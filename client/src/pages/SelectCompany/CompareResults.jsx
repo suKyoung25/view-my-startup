@@ -206,7 +206,9 @@ function CompareResults() {
                       />
                       <span>{company.name}</span>
                     </CompanyCell>
-                    <LeftAlignTD>{company.description}</LeftAlignTD>
+                    <LeftAlignTD>
+                      <Text>{company.description}</Text>
+                    </LeftAlignTD>
                     <TD>{company.category}</TD>
                     <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
                     <TD>{company.revenue}억 원</TD>
@@ -249,7 +251,9 @@ function CompareResults() {
                       />
                       <span>{company.name}</span>
                     </CompanyCell>
-                    <LeftAlignTD>{company.description}</LeftAlignTD>
+                    <LeftAlignTD>
+                      <Text>{company.description}</Text>
+                    </LeftAlignTD>
                     <TD>{company.category}</TD>
                     <TD>{company.investmentAmount?.toLocaleString()}억 원</TD>
                     <TD>{company.revenue}억 원</TD>
@@ -393,6 +397,22 @@ const LeftAlignTD = styled.td`
   color: #d8d8d8;
   text-align: left;
   vertical-align: middle;
+  width: 300px;
+  max-width: 300px; /* ✅ 최대 너비 제한 */
+  min-width: 300px;
+`;
+const Text = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+  max-height: 3em;
+  word-break: break-word;
+  white-space: normal;
+
+  text-align: left;
 `;
 
 const Spacer = styled.div`
@@ -412,6 +432,7 @@ const CompanyCell = styled.td`
   background-color: #212121;
   color: #d8d8d8;
   font-size: 14px;
+  height: 3em;
 
   img {
     width: 32px;

@@ -59,6 +59,15 @@
   color: #d8d8d8;
   word-break: keep-all;
 }
+.text {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-items: start;
+}
 
 .rank {
   padding: 20px 14px;
