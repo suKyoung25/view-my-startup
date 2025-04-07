@@ -304,8 +304,8 @@ const Td = styled.td`
   word-break: break-word;
 
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* 최대 2줄까지 표시 */
-  -webkit-box-orient: vertical; /* 텍스트의 방향을 세로로 설정 */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
   overflow: hidden;
   text-overflow: ellipsis; /* 넘어가는 텍스트는 '...'으로 표시 */
