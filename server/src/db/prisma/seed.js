@@ -34,7 +34,8 @@ const companies = [
   },
   {
     name: "컬리하우스",
-    description: "컬리하우스는 혁신적인 서비스 스타트업입니다.",
+    description:
+      "컬리하우스는 혁신적인 서비스 스타트업입니다.컬리하우스는 혁신적인 서비스 스타트업입니다.컬리하우스는 혁신적인 서비스 스타트업입니다.",
     category: "에듀테크",
     realInvestmentAmount: 167.0,
     revenue: 77.0,
