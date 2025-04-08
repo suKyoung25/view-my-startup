@@ -18,6 +18,7 @@ function InvestState() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  //table row 항목
   let columns = [
     { label: "순위", name: "ranking", width: "10%" },
     { label: "기업명", name: "name", width: "16%" },
@@ -35,6 +36,10 @@ function InvestState() {
     },
   ];
 
+  //반응형 테블릿/모바일 사이즈에선
+  //"View My Startup 투자 금액" >>> "View My Startup" 으로 변경
+  //문자열로 넘겨지기 때문에 word-break가 안됨.
+  //big 일때는 일부러 조건문 안함.
   if (mediaSize === "medium" || mediaSize === "small") {
     columns = [
       { label: "순위", name: "ranking", width: "10%" },
@@ -71,6 +76,7 @@ function InvestState() {
     setMediaSize(width > 1199 ? "big" : width > 375 ? "medium" : "small");
   };
 
+  //브라우저 크기 조절 시
   useEffect(() => {
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
