@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Outlet } from "react-router-dom";
-import Nav from "./Nav";
+import Gnb from "./Gnb";
 
 function MainLayout() {
   const [mediaSize, setMediaSize] = useState("");
@@ -29,7 +29,7 @@ function MainLayout() {
 
   return (
     <>
-      <Nav mediaSize={mediaSize} />
+      <Gnb length={mediaSize} />
       <Outlet />
     </>
   );

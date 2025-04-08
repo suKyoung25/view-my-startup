@@ -17,8 +17,6 @@ function BtnPage({ text, mediaSize, isActive }) {
 
   useEffect(() => {
     setIsClicked(false);
-    console.log("BtnPage mediaSize:", mediaSize);
-
   }, []);
 
   return (

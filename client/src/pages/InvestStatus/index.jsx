@@ -109,9 +109,6 @@ function InvestState() {
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = sortedData.slice(startIndex, endIndex);
 
-  //디버깅
-  console.log(mediaSize);
-
   return (
     <Wrap>
       <div className={styles.content}>

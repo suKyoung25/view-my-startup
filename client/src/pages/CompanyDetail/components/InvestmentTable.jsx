@@ -24,8 +24,6 @@ function InvestmentTable({ data = [], onRefresh, mediaSize }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDropdownId, setSelectedDropdownId] = useState(null);
 
-  console.log("InvestmentTable - mediaSize:", mediaSize);
-
   const handlePasswordSubmit = async (password) => {
     if (!selectedInvestment) return;
 
