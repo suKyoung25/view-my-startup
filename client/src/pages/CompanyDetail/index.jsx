@@ -170,7 +170,7 @@ function CompanyDetail() {
         <PopupOneButton
           onClose={() => setIsPopupOpen(false)}
           mediaSize={mediaSize}
-          type={"delete-success"}
+          type={"success"}
         />
       )}
     </Wrap>
