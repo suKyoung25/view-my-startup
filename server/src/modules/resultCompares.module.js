@@ -50,10 +50,6 @@ resultCompareRouter.post("/selected", async (req, res, next) => {
   try {
     const { selectedCompanyId, compareCompanyIds = [] } = req.body;
 
-    console.log("선택 기업 ID:", selectedCompanyId);
-    console.log("비교 기업 ID 목록:", compareCompanyIds);
-    console.log("전체 요청 body:", req.body);
-
     if (!selectedCompanyId) {
       throw new Exception.BadRequest("선택된 기업 ID는 필수입니다.");
     }

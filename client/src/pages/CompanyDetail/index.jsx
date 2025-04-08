@@ -31,7 +31,6 @@ function CompanyDetail() {
     fetchData();
   }, [companyId]);
 
-  // 새로고침용 함수 분리
   const fetchData = async () => {
     try {
       const company = await companyAPI.getCompanyById(companyId);
@@ -43,15 +42,11 @@ function CompanyDetail() {
 
       setCompanyData(company);
       setInvestors(filtered);
-      setInvestors([
-        ...investments.filter((inv) => inv.company.id === companyId),
-      ]);
     } catch (error) {
       console.error("Error fetching company data:", error);
     }
   };
 
-  //페이지네이션 로직
   const currentInvestors = investors.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -74,7 +69,7 @@ function CompanyDetail() {
 
   return (
     <Wrap>
-      <CompanyDetailWrap $size={mediaSize}>
+      <CompanyDetailWrap $mediaSize={mediaSize}>
         <div className={styles.companyContainer}>
           <Img
             $mediaSize={mediaSize}
@@ -136,12 +131,16 @@ function CompanyDetail() {
             억
           </TotalAmount>
 
-          {/* 수정: InvestmentTable에 onRefresh 전달 */}
-          <InvestmentTable
-            data={currentInvestors} //5명의 투자자마 보여주기
-            onRefresh={fetchData}
-            mediaSize={mediaSize}
-          />
+          {/* 가로 스크롤 위치를 페이지네이션 위로 */}
+          <TableScroll $mediaSize={mediaSize}>
+            <TableInner $mediaSize={mediaSize}>
+              <InvestmentTable
+                data={currentInvestors}
+                onRefresh={fetchData}
+                mediaSize={mediaSize}
+              />
+            </TableInner>
+          </TableScroll>
         </TableWrap>
 
         <PaginationWrap>
@@ -161,7 +160,7 @@ function CompanyDetail() {
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsPopupOpen(true);
-            fetchData(); // 화면이 최신 데이터로 바뀜
+            fetchData();
           }}
         />
       )}
@@ -268,12 +267,66 @@ const InvestTitle = styled.div`
     props.$mediaSize === "big"
       ? "20px"
       : props.$mediaSize === "medium" || props.$mediaSize === "small"
-      ? "16"
+      ? "16px"
       : null};
 `;
 
 const TableWrap = styled.div`
   margin-top: 20px;
+`;
+
+const TableScroll = styled.div`
+  width: 100%;
+  margin-bottom: 8px;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  ${({ $mediaSize }) =>
+    $mediaSize === "small"
+      ? `
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #999;
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #bbb;
+    }
+
+    scrollbar-color: #999 transparent;
+    scrollbar-width: thin;
+  `
+      : `
+    overflow-x: hidden;
+  `}
+`;
+
+const TableInner = styled.div`
+  width: 100%;
+
+  ${({ $mediaSize }) =>
+    $mediaSize === "small"
+      ? `
+    min-width: 600px;
+  `
+      : `
+    max-width: 100%;
+    overflow-x: hidden;
+    > * {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+  `}
 `;
 
 const PaginationWrap = styled.div`
