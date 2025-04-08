@@ -18,7 +18,6 @@ function InvestState() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  //table row 항목
   let columns = [
     { label: "순위", name: "ranking", width: "10%" },
     { label: "기업명", name: "name", width: "16%" },
@@ -36,10 +35,6 @@ function InvestState() {
     },
   ];
 
-  //반응형 테블릿/모바일 사이즈에선
-  //"View My Startup 투자 금액" >>> "View My Startup" 으로 변경
-  //문자열로 넘겨지기 때문에 word-break가 안됨.
-  //big 일때는 일부러 조건문 안함.
   if (mediaSize === "medium" || mediaSize === "small") {
     columns = [
       { label: "순위", name: "ranking", width: "10%" },
@@ -76,7 +71,6 @@ function InvestState() {
     setMediaSize(width > 1199 ? "big" : width > 375 ? "medium" : "small");
   };
 
-  //브라우저 크기 조절 시
   useEffect(() => {
     updateMediaSize();
     window.addEventListener("resize", updateMediaSize);
@@ -122,12 +116,11 @@ function InvestState() {
           />
         </div>
 
-        <div className={styles.tableWrap}>
+        <TableContainer $mediaSize={mediaSize}>
           <StyledTable>
             <thead>
               <TableHeader columns={columns} />
             </thead>
-
             <tbody>
               {paginatedData.map((item, index) => (
                 <tr key={item.id}>
@@ -152,7 +145,7 @@ function InvestState() {
               ))}
             </tbody>
           </StyledTable>
-        </div>
+        </TableContainer>
 
         <PaginationWrap>
           <BtnPagination
@@ -170,8 +163,6 @@ function InvestState() {
 
 export default InvestState;
 
-// Styled Components
-
 const Wrap = styled.div`
   background-color: ${black_400};
   color: ${gray_100};
@@ -181,13 +172,41 @@ const Wrap = styled.div`
   min-height: 100vh;
 `;
 
+const TableContainer = styled.div`
+  width: 100%;
+  overflow-x: ${({ $mediaSize }) =>
+    $mediaSize === "small" ? "auto" : "hidden"};
+  -webkit-overflow-scrolling: touch;
+
+  ${({ $mediaSize }) =>
+    $mediaSize === "small"
+      ? `
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #999;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #bbb;
+    }
+    scrollbar-color: #999 transparent;
+    scrollbar-width: thin;
+  `
+      : ``}
+`;
+
 const StyledTable = styled.table`
   width: 100%;
   min-width: 696px;
   border-collapse: collapse;
 
   thead tr {
-    border-bottom: 16px solid #131313; // 헤더 아래 간격
+    border-bottom: 16px solid #131313;
   }
 `;
 
@@ -201,7 +220,6 @@ const TD = styled.td`
   color: #d8d8d8;
   font-family: "Pretendard", sans-serif;
   word-break: keep-all;
-  /* width: 696px; */
 `;
 
 const Td = styled.td`
