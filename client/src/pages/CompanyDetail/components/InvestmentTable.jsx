@@ -38,6 +38,7 @@ function InvestmentTable({ data = [], onRefresh, mediaSize }) {
         // 삭제 모드 - 비밀번호 일치 후 삭제 진행
         await investmentAPI.deleteInvestment(selectedInvestment.id, password);
         setPopupType("delete-success");
+        setIsPopupOpen(true);
         onRefresh && onRefresh();
       }
     } catch (e) {
