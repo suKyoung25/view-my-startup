@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import bigLogo from "../assets/images/gnb/standard=pc.svg";
-import smallLogo from "../assets/images/gnb/standard=mobile.svg";
+import bigLogo from "../../assets/images/gnb/standard=pc.svg";
+import smallLogo from "../../assets/images/gnb/standard=mobile.svg";
 import { NavLink } from "react-router-dom";
-import { gray_100, gray_200, black_400 } from "../styles/colors";
+import { gray_100, gray_200, black_400 } from "../../styles/colors";
 
 const getLinkStyle = ({ isActive }) => {
   return {

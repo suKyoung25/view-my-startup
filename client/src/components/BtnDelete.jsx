@@ -4,7 +4,6 @@ import { brand_orange } from "../styles/colors";
 
 // type prop: "delete" (default), "confirm"
 export default function BtnDelete({ onClick, mediaSize, type, style }) {
-  console.log("Button mediaSize:", mediaSize); // 전달되는 값 확인
   let buttonText = "삭제하기"; // 기본값
 
   if (type === "confirm") buttonText = "확인";

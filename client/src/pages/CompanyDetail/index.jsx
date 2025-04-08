@@ -57,9 +57,6 @@ function CompanyDetail() {
     currentPage * itemsPerPage
   );
 
-  //디버깅
-  console.log(investors.length);
-
   // 반응형 사이즈 계산
   useEffect(() => {
     function updateMediaSize() {
@@ -74,9 +71,6 @@ function CompanyDetail() {
   }, []);
 
   if (!companyData) return <p>Loading...</p>;
-
-  //디버깅
-  console.log(mediaSize);
 
   return (
     <Wrap>

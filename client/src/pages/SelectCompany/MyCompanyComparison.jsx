@@ -52,9 +52,7 @@ function MyCompanyComparison() {
     }
   }, [location.state]);
 
-  useEffect(() => {
-    console.log("mediaSize 상태 변경됨: ", mediaSize);
-  }, [mediaSize]);
+  useEffect(() => {}, [mediaSize]);
 
   // '나의 기업' 선택 핸들러
   const handleSelectMyCompany = (company) => {
@@ -104,10 +102,6 @@ function MyCompanyComparison() {
       alert("비교할 기업을 1개 이상 선택해주세요!");
       return;
     }
-
-    // 디버깅
-    console.log("선택 기업 ID:", selectedCompanyId);
-    console.log("비교 기업 IDs:", compareCompanyIds);
 
     navigate("/select-company/compare-results", {
       state: {
