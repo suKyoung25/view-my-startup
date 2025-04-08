@@ -106,7 +106,7 @@ function CompareStatus() {
           />
         </div>
 
-        <div className={styles.record}>
+        <StyledTableWrapper>
           <table className={styles.styledTable}>
             <thead>
               <tr>
@@ -147,7 +147,7 @@ function CompareStatus() {
               ))}
             </tbody>
           </table>
-        </div>
+        </StyledTableWrapper>
 
         <div className={styles.paginationWrap}>
           <BtnPagination
@@ -165,6 +165,7 @@ function CompareStatus() {
 
 export default CompareStatus;
 
+// 배경 및 텍스트 컬러
 const Wrap = styled.div`
   background-color: ${black_400};
   color: ${gray_100};
@@ -172,4 +173,31 @@ const Wrap = styled.div`
   justify-content: center;
   width: 100%;
   min-height: 100vh;
+`;
+
+// 회색 가로 스크롤
+const StyledTableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb;
+  }
+
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
 `;
