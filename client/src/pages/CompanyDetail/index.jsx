@@ -52,6 +52,7 @@ function CompanyDetail() {
     currentPage * itemsPerPage
   );
 
+  // 반응형 사이즈 계산
   useEffect(() => {
     function updateMediaSize() {
       const { innerWidth: width } = window;
@@ -168,7 +169,7 @@ function CompanyDetail() {
         <PopupOneButton
           onClose={() => setIsPopupOpen(false)}
           mediaSize={mediaSize}
-          type={"success"}
+          type={"delete-success"}
         />
       )}
     </Wrap>
@@ -187,7 +188,7 @@ const Wrap = styled.div`
 `;
 
 const CompanyDetailWrap = styled.div`
-  width: ${(props) =>
+  max-width: ${(props) =>
     props.$mediaSize === "small"
       ? "343px"
       : props.$mediaSize === "medium"

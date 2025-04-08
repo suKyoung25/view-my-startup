@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { black_300 } from "../styles/colors";
 
 function InputField({ variant = "default", children, mediaSize = "big" }) {
-  console.log("🔥 [InputField] mediaSize:", mediaSize);
-
   return (
     <Outer $variant={variant} $mediaSize={mediaSize}>
       <Inner $mediaSize={mediaSize} $variant={variant}>

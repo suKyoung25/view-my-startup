@@ -72,7 +72,6 @@ const InvestmentModal = ({ onClose, mediaSize, onSuccess, company }) => {
         companyId: company?.id || companyId, // 수정된 부분 // 여기서 company.id로 고정
       });
 
-      console.log("투자 성공:", InvestmentData);
       // alert("투자 등록이 완료되었습니다!"); // 피드백 불필요하여 주석 처리함
 
       // 입력 초기화
