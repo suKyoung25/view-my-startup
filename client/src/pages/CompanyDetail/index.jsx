@@ -275,17 +275,16 @@ const TableWrap = styled.div`
 `;
 
 const TableScroll = styled.div`
-  overflow-x: ${({ $mediaSize }) =>
-    $mediaSize === "small" ? "auto" : "visible"};
-  overflow-y: hidden;
   width: 100%;
   margin-bottom: 8px;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
 
   ${({ $mediaSize }) =>
-    $mediaSize === "small" &&
-    `
-    /* Webkit 기반 브라우저용 회색 스크롤 */
+    $mediaSize === "small"
+      ? `
+    overflow-x: auto;
+
     &::-webkit-scrollbar {
       height: 6px;
     }
@@ -295,23 +294,38 @@ const TableScroll = styled.div`
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #999;  /* 회색 */
+      background-color: #999;
       border-radius: 3px;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background-color: #bbb;  /* 밝은 회색 */
+      background-color: #bbb;
     }
 
-    /* Firefox 대응 */
     scrollbar-color: #999 transparent;
     scrollbar-width: thin;
+  `
+      : `
+    overflow-x: hidden;
   `}
 `;
 
 const TableInner = styled.div`
+  width: 100%;
+
   ${({ $mediaSize }) =>
-    $mediaSize === "small" ? "min-width: 600px;" : "width: 100%;"}
+    $mediaSize === "small"
+      ? `
+    min-width: 600px;
+  `
+      : `
+    max-width: 100%;
+    overflow-x: hidden;
+    > * {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+  `}
 `;
 
 const PaginationWrap = styled.div`
