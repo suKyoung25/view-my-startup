@@ -40,7 +40,7 @@ body {
   align-items: center;
 }
 
-/*타블렛 사이즈*/
+/* 타블렛 사이즈 */
 @media (min-width: 630px) and (max-width: 1199px) {
   .head {
     justify-content: space-between;
@@ -62,7 +62,7 @@ body {
   }
 }
 
-/*모바일 사이즈 디자인*/
+/* 모바일 사이즈 */
 @media (max-width: 629px) {
   .head {
     flex-direction: column;
