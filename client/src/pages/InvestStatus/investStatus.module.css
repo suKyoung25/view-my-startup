@@ -33,14 +33,6 @@
 
 /*타블렛 사이즈*/
 @media (min-width: 375px) and (max-width: 1199px) {
-  .hbundle {
-    /* display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px; */
-  }
-
   .content {
     /* width: 1200px;
     padding: 40px 0; */
