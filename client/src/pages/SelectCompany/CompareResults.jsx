@@ -336,6 +336,24 @@ const CenteredWrapper = styled.div`
 const StyledTableWrapper = styled.div`
   width: 100%;
   overflow-x: auto;
+
+  /* 회색 스크롤 스타일 */
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb;
+  }
+
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
 `;
 
 const TD = styled.td`
@@ -397,7 +415,7 @@ const LeftAlignTD = styled.td`
   text-align: left;
   vertical-align: middle;
   width: 300px;
-  max-width: 300px; /* ✅ 최대 너비 제한 */
+  max-width: 300px; /* 최대 너비 제한 */
   min-width: 300px;
 `;
 const Text = styled.div`
