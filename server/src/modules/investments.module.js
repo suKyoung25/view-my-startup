@@ -118,8 +118,6 @@ investmentsRouter.put("/:investmentId", async (req, res, next) => {
       },
     });
 
-    console.log("[PUT] 투자 수정 결과:", updated);
-
     res.json({
       message: "투자 수정 완료",
       updated,
