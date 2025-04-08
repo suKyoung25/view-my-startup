@@ -52,7 +52,6 @@ function CompanyDetail() {
     currentPage * itemsPerPage
   );
 
-  // 반응형 사이즈 계산
   useEffect(() => {
     function updateMediaSize() {
       const { innerWidth: width } = window;
