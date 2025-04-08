@@ -157,7 +157,7 @@ function HomePage() {
             </div>
           </div>
 
-          <div className={styles.record}>
+          <StyledTableWrapper>
             <StyledTable>
               <thead>
                 <HeaderRow>
@@ -249,7 +249,7 @@ function HomePage() {
                 )}
               </tbody>
             </StyledTable>
-          </div>
+          </StyledTableWrapper>
 
           <PaginationWrap>
             <BtnPagination
@@ -268,11 +268,36 @@ function HomePage() {
 
 export default HomePage;
 
-// styled-components
 const Wrap = styled.div`
   background-color: #131313;
   min-height: 100vh;
   width: 100%;
+`;
+
+const StyledTableWrapper = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb;
+  }
+
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
 `;
 
 const StyledTable = styled.table`
@@ -301,8 +326,6 @@ const Th = styled.th`
 
 const TD = styled.td`
   /* padding: 20px 16px; */
-  padding-top: 20px;
-  padding-bottom: 20px;
   font-size: 14px;
   text-align: center;
   border-bottom: 1px solid #333;
@@ -319,17 +342,13 @@ const Td = styled.td`
   padding-bottom: 20px;
   padding-left: 10px;
   font-size: 14px;
-  width: 100;
   display: flex;
+  align-items: center;
   border-bottom: 1px solid #333;
   background-color: #212121;
   color: #d8d8d8;
   font-family: "Pretendard", sans-serif;
   word-break: break-word;
-
-  display: flex;
-  align-items: center;
-
   line-height: 1.2em;
   min-height: calc(1.2em * 2); /* 두 줄 높이 확보 */
 `;
