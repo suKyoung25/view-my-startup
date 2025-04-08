@@ -31,7 +31,6 @@ function CompanyDetail() {
     fetchData();
   }, [companyId]);
 
-  // 새로고침용 함수 분리
   const fetchData = async () => {
     try {
       const company = await companyAPI.getCompanyById(companyId);
@@ -43,24 +42,16 @@ function CompanyDetail() {
 
       setCompanyData(company);
       setInvestors(filtered);
-      setInvestors([
-        ...investments.filter((inv) => inv.company.id === companyId),
-      ]);
     } catch (error) {
       console.error("Error fetching company data:", error);
     }
   };
 
-  //페이지네이션 로직
   const currentInvestors = investors.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  //디버깅
-  console.log(investors.length);
-
-  // 반응형 사이즈 계산
   useEffect(() => {
     function updateMediaSize() {
       const { innerWidth: width } = window;
@@ -75,12 +66,9 @@ function CompanyDetail() {
 
   if (!companyData) return <p>Loading...</p>;
 
-  //디버깅
-  console.log(mediaSize);
-
   return (
     <Wrap>
-      <CompanyDetailWrap $size={mediaSize}>
+      <CompanyDetailWrap $mediaSize={mediaSize}>
         <div className={styles.companyContainer}>
           <Img
             $mediaSize={mediaSize}
@@ -142,12 +130,16 @@ function CompanyDetail() {
             억
           </TotalAmount>
 
-          {/* 수정: InvestmentTable에 onRefresh 전달 */}
-          <InvestmentTable
-            data={currentInvestors} //5명의 투자자마 보여주기
-            onRefresh={fetchData}
-            mediaSize={mediaSize}
-          />
+          {/* 가로 스크롤 위치를 페이지네이션 위로 */}
+          <TableScroll $mediaSize={mediaSize}>
+            <TableInner $mediaSize={mediaSize}>
+              <InvestmentTable
+                data={currentInvestors}
+                onRefresh={fetchData}
+                mediaSize={mediaSize}
+              />
+            </TableInner>
+          </TableScroll>
         </TableWrap>
 
         <PaginationWrap>
@@ -167,7 +159,7 @@ function CompanyDetail() {
           onClose={() => setIsModalOpen(false)}
           onSuccess={() => {
             setIsPopupOpen(true);
-            fetchData(); // 화면이 최신 데이터로 바뀜
+            fetchData();
           }}
         />
       )}
@@ -274,12 +266,52 @@ const InvestTitle = styled.div`
     props.$mediaSize === "big"
       ? "20px"
       : props.$mediaSize === "medium" || props.$mediaSize === "small"
-      ? "16"
+      ? "16px"
       : null};
 `;
 
 const TableWrap = styled.div`
   margin-top: 20px;
+`;
+
+const TableScroll = styled.div`
+  overflow-x: ${({ $mediaSize }) =>
+    $mediaSize === "small" ? "auto" : "visible"};
+  overflow-y: hidden;
+  width: 100%;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+
+  ${({ $mediaSize }) =>
+    $mediaSize === "small" &&
+    `
+    /* Webkit 기반 브라우저용 회색 스크롤 */
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #999;  /* 회색 */
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #bbb;  /* 밝은 회색 */
+    }
+
+    /* Firefox 대응 */
+    scrollbar-color: #999 transparent;
+    scrollbar-width: thin;
+  `}
+`;
+
+const TableInner = styled.div`
+  ${({ $mediaSize }) =>
+    $mediaSize === "small" ? "min-width: 600px;" : "width: 100%;"}
 `;
 
 const PaginationWrap = styled.div`
