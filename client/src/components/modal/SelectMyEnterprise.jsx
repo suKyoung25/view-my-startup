@@ -90,8 +90,6 @@ function SelectMyEnterprise({
 
   if (!isOpen) return null;
 
-  console.log(mediaSize);
-
   return (
     <Overlay onClick={onClose}>
       <Container $mediaSize={mediaSize} onClick={(e) => e.stopPropagation()}>

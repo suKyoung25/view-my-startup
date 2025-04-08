@@ -11,7 +11,6 @@ export default function ModalPassword({
   mediaSize,
   isUpdateMode,
 }) {
-  console.log("ModalPassword - mediaSize:", mediaSize);
   const [password, setPassword] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 

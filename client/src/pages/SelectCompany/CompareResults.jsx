@@ -138,7 +138,6 @@ function CompareResults() {
 
   const rankColumns = [{ label: "순위", name: "ranking", flex: 1 }, ...columns];
 
-  console.log("mediaSize", mediaSize);
   return (
     <>
       <Wrap>

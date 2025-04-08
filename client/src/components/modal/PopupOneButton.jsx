@@ -21,7 +21,6 @@ export default function PopupOneButton({ onClose, mediaSize, type }) {
   };
 
   const onConfirm = () => {
-    console.log("닫힘");
     onClose();
   };
 
