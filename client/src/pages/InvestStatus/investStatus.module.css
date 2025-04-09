@@ -31,7 +31,7 @@
   align-items: start;
 }
 
-/*타블렛 사이즈*/
+/* 타블렛 사이즈 */
 @media (min-width: 375px) and (max-width: 1199px) {
   .content {
     /* width: 1200px;
@@ -43,15 +43,13 @@
   }
 }
 
-/*모바일 사이즈 디자인*/
+/* 모바일 사이즈 */
 @media (max-width: 629px) {
   .tableWrap {
     overflow-x: auto;
   }
 
   .content {
-    /* width: 1200px;
-    padding: 40px 0; */
     width: 100%;
     margin-left: 16px;
     margin-right: 16px;
