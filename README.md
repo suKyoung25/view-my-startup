@@ -56,11 +56,9 @@ FS/
 │ │ │ └── resultCompares.module.js
 │ │ ├── app.js  
 │ │ └── exceptions.js  
-│ ├── .env
 │ ├── .gitignore
 │ ├── package.json
 │ └── README.md
-
 ├── node_modules/  
 ├── .gitignore
 ├── package.json  
