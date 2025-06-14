@@ -1,3 +1,6 @@
+## 기능 구현 영상
+https://drive.google.com/file/d/1ur2VWXADmo9mb_fwlUKUmt6--SbwQO2h/view?usp=sharing
+
 ## 5TEAM
 - 5팀 초급프로젝트 작업공간
 - https://zest-kitchen-ec0.notion.site/1bd7be15f9c880c8a9bee89cee58b9dc?v=1bd7be15f9c881a29670000c4644aaee&pvs=4
