@@ -13,8 +13,7 @@
 - 주제:View My Startup
 - 프로젝트 기간: 2025. 03. 21 ~ 2025. 04. 10
 
-### 원본 주소
-git organization: https://github.com/6th-ViewMyStartup-5team-FS/FS
+### 원본 레포지토리:  https://github.com/6th-ViewMyStartup-5team-FS/FS
 
 ### 기술 스택
 
