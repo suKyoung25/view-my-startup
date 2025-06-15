@@ -3,6 +3,8 @@
   <img src="https://img.youtube.com/vi/GjIuis9ayFw/hqdefault.jpg" width="480" height="270" alt="유튜브 썸네일" />
 </a>
 
+<br/>
+
 ## 🙋 프로젝트 소개
 - **주제:**
   View My Startup
@@ -27,6 +29,8 @@
   - InvestStatus: 투자 현황 Page
   - CompareStatus: 비교 현황 Page
   - CompanyDetail: 기업 상세 Page
+
+    <br/>
     
 ## ⚙️ 기술 스택
 
@@ -47,15 +51,23 @@
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white)
 ![Bcrypt](https://img.shields.io/badge/Bcrypt-orange?style=flat)
 
+<br/>
+
 ## 🔗 배포 주소
 - **client url:** https://view-my-startup-fs6.netlify.app/
 - **server url:** https://fs-d0af.onrender.com
 
+<br/>
+
 ## 💾 원본 레포지토리 
 https://github.com/6th-ViewMyStartup-5team-FS/FS
+
+  <br/>
   
 ## 🏷️ 작업공간
 - https://zest-kitchen-ec0.notion.site/1bd7be15f9c880c8a9bee89cee58b9dc?v=1bd7be15f9c881a29670000c4644aaee&pvs=4
+
+<br/>
 
 ## 🧑‍💻 팀원
 - 최지예(팀장) https://github.com/kongduu
@@ -63,6 +75,8 @@ https://github.com/6th-ViewMyStartup-5team-FS/FS
 - 김수경 https://github.com/suKyoung25
 - 이나경 https://github.com/nagyeong05
 - 신수민 https://github.com/Shinmilli
+
+<br/>
 
 ## 📁 파일 구조
 
