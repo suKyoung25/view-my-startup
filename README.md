@@ -1,5 +1,5 @@
 ## 기능 구현 영상
-
+[![view my startup](https://img.youtube.com/vi/GjIuis9ayFw/hqdefault.jpg)](https://www.youtube.com/watch?v=GjIuis9ayFw)
 
 ## ⚙️ 기술 스택
 
