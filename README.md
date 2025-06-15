@@ -1,5 +1,6 @@
 ## 기능 구현 영상
-https://www.youtube.com/watch?v=GjIuis9ayFw
+[![view my startup](https://img.youtube.com/vi/GjIuis9ayFw/0.jpg)](https://www.youtube.com/watch?v=GjIuis9ayFw)
+
 
 ## ⚙️ 기술 스택
 
