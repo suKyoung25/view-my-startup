@@ -1,16 +1,15 @@
 ## 기능 구현 영상
-[![view my startup](https://img.youtube.com/vi/GjIuis9ayFw/0.jpg)](https://www.youtube.com/watch?v=GjIuis9ayFw)
-
+[![view my startup](https://img.youtube.com/vi/GjIuis9ayFw/hqdefault.jpg)](https://www.youtube.com/watch?v=GjIuis9ayFw)
 
 ## ⚙️ 기술 스택
 
-### ✅ Language
+### Language
 
 ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![Styled Components](https://img.shields.io/badge/Styled--Components-DB7093?style=flat&logo=styled-components&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
-### ✅ Framework & Libraries
+### Framework & Libraries
 
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
 ![Netlify Status](https://img.shields.io/badge/Netlify-00C7B7?style=flat&logo=netlify&logoColor=white)
