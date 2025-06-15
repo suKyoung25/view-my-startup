@@ -1,5 +1,5 @@
 ## 기능 구현 영상
-https://drive.google.com/file/d/1ur2VWXADmo9mb_fwlUKUmt6--SbwQO2h/view?usp=sharing
+https://www.youtube.com/watch?v=GjIuis9ayFw
 
 ## ⚙️ 기술 스택
 
