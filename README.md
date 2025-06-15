@@ -1,15 +1,15 @@
-## 기능 구현 영상
+## 🎬 기능 구현 영상
 [![view my startup](https://img.youtube.com/vi/GjIuis9ayFw/hqdefault.jpg)](https://www.youtube.com/watch?v=GjIuis9ayFw)
 
 ## ⚙️ 기술 스택
 
-### Language
+- **Language**
 
 ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![Styled Components](https://img.shields.io/badge/Styled--Components-DB7093?style=flat&logo=styled-components&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
-### Framework & Libraries
+- **Framework & Libraries**
 
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
 ![Netlify Status](https://img.shields.io/badge/Netlify-00C7B7?style=flat&logo=netlify&logoColor=white)
@@ -20,11 +20,10 @@
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat&logo=prisma&logoColor=white)
 ![Bcrypt](https://img.shields.io/badge/Bcrypt-orange?style=flat)
 
-## 5TEAM
-- 5팀 초급프로젝트 작업공간
+## 🏷️ 작업공간
 - https://zest-kitchen-ec0.notion.site/1bd7be15f9c880c8a9bee89cee58b9dc?v=1bd7be15f9c881a29670000c4644aaee&pvs=4
 
-### 팀원 구성
+### 🧑‍💻 팀원 구성
 - 김다은 https://github.com/fs6-kde
 - 김수경 https://github.com/suKyoung25
 - 이나경 https://github.com/nagyeong05
@@ -36,10 +35,6 @@
 - 프로젝트 기간: 2025. 03. 21 ~ 2025. 04. 10
 
 ### 원본 레포지토리:  https://github.com/6th-ViewMyStartup-5team-FS/FS
-
-### 기술 스택
-
-
 
 ### 팀원별 구현 기능 상세
 
