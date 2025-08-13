@@ -54,8 +54,8 @@
 <br/>
 
 ## 🔗 배포 주소
-- **client url:** https://view-my-startup-fs6.netlify.app/
-- **server url:** https://fs-d0af.onrender.com
+- **client url:** https://view-my-startup-seven.vercel.app/
+- **server url:** https://view-my-startup-waqg.onrender.com
 
 <br/>
 
