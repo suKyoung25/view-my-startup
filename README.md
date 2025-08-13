@@ -54,7 +54,7 @@
 <br/>
 
 ## 🔗 배포 주소
-- **client url:** https://view-my-startup-seven.vercel.app/
+- **client url:** https://view-my-startup-gold.vercel.app/
 - **server url:** https://view-my-startup-waqg.onrender.com
 
 <br/>
